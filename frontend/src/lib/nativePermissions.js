@@ -1,7 +1,7 @@
 import { Capacitor, registerPlugin } from "@capacitor/core";
 import { Geolocation } from "@capacitor/geolocation";
 
-const FarmlyPermissions = registerPlugin("FarmlyPermissions");
+const AgriRootsPermissions = registerPlugin("AgriRootsPermissions");
 
 export function isNativeApp() {
   return Capacitor.isNativePlatform?.() || Capacitor.getPlatform?.() !== "web";
@@ -12,7 +12,7 @@ export async function requestMicrophonePermission() {
     return "granted";
   }
 
-  const result = await FarmlyPermissions.requestMicrophone();
+  const result = await AgriRootsPermissions.requestMicrophone();
   if (result?.microphone !== "granted") {
     const error = new Error("Microphone permission denied.");
     error.name = "NotAllowedError";
@@ -22,7 +22,7 @@ export async function requestMicrophonePermission() {
   return result.microphone;
 }
 
-export async function getCurrentFarmlyPosition(options) {
+export async function getCurrentAgriRootsPosition(options) {
   if (!isNativeApp()) {
     return new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(resolve, reject, options);

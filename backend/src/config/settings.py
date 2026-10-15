@@ -14,7 +14,7 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    app_name: str = "Farmly Backend"
+    app_name: str = "AgriRoots Backend"
     debug: bool = True
 
     database_url: str = Field(..., min_length=1)
@@ -39,7 +39,7 @@ class Settings(BaseSettings):
     kindwise_plant_id_api_key: str | None = None
     kindwise_crop_health_api_key: str | None = None
 
-    sorghum_model_path: str = "backend/model/farmly_sorghum_efficientnet_b0_best.pt"
+    sorghum_model_path: str = "backend/model/agriroots_sorghum_efficientnet_b0_best.pt"
     sorghum_model_server_url: str = "http://127.0.0.1:8001"
     sorghum_model_server_timeout_seconds: int = 30
     plant_id_sorghum_threshold: float = 0.35

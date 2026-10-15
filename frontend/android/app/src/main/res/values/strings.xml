@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Farmly</string>
-    <string name="title_activity_main">Farmly</string>
-    <string name="package_name">com.farmly.app</string>
-    <string name="custom_url_scheme">com.farmly.app</string>
+    <string name="app_name">AgriRoots</string>
+    <string name="title_activity_main">AgriRoots</string>
+    <string name="package_name">com.agriroots.app</string>
+    <string name="custom_url_scheme">com.agriroots.app</string>
 </resources>

@@ -1,1 +1,1 @@
-"""Persistence-layer repositories for Farmly."""
+"""Persistence-layer repositories for AgriRoots."""

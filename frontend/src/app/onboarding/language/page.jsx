@@ -10,14 +10,14 @@ import { api } from "@/lib/api";
 const COPY = {
   en: {
     title: "Choose Language",
-    subtitle: "Select your preferred language for Farmly.",
+    subtitle: "Select your preferred language for AgriRoots.",
     cardTitle: "Language Selection",
     back: "Back",
     continue: "Continue",
   },
   am: {
     title: "ቋንቋ ይምረጡ",
-    subtitle: "ለFarmly የሚፈልጉትን ቋንቋ ይምረጡ።",
+    subtitle: "ለAgriRoots የሚፈልጉትን ቋንቋ ይምረጡ።",
     cardTitle: "የቋንቋ ምርጫ",
     back: "ተመለስ",
     continue: "ቀጥል",
@@ -55,7 +55,7 @@ export default function OnboardingLanguagePage() {
   function handleContinue() {
     if (!canContinue) return;
     setLanguage(selectedLanguage);
-    sessionStorage.setItem("farmly_onboarding_language", selectedLanguage);
+    sessionStorage.setItem("agriroots_onboarding_language", selectedLanguage);
     navigate("/onboarding/farming");
   }
 

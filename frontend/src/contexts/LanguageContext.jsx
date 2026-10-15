@@ -18,7 +18,7 @@ export function getVoiceLanguageCode(language) {
 
 export function LanguageProvider({ children }) {
   const [language, setLanguageState] = useState(() => {
-    const saved = localStorage.getItem("farmly_language");
+    const saved = localStorage.getItem("agriroots_language");
     return saved === "en" || saved === "am" ? saved : "en";
   });
 
@@ -26,7 +26,7 @@ export function LanguageProvider({ children }) {
     () => ({
       language,
       setLanguage: (next) => {
-        localStorage.setItem("farmly_language", next);
+        localStorage.setItem("agriroots_language", next);
         setLanguageState(next);
       },
     }),

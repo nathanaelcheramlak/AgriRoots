@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { api } from "@/lib/api";
-import { getCurrentFarmlyPosition, isNativeApp } from "@/lib/nativePermissions";
+import { getCurrentAgriRootsPosition, isNativeApp } from "@/lib/nativePermissions";
 
 const COPY = {
   en: {
@@ -102,8 +102,8 @@ export default function OnboardingLocationPage() {
 
   function persistLocation(nextLocation) {
     setLocationData(nextLocation);
-    sessionStorage.setItem("farmly_onboarding_location", JSON.stringify(nextLocation));
-    sessionStorage.setItem("farmly_onboarding_location_string", toLocationString(nextLocation));
+    sessionStorage.setItem("agriroots_onboarding_location", JSON.stringify(nextLocation));
+    sessionStorage.setItem("agriroots_onboarding_location_string", toLocationString(nextLocation));
     setTimeout(() => navigate("/onboarding/language"), 900);
   }
 
@@ -120,7 +120,7 @@ export default function OnboardingLocationPage() {
     }
 
     try {
-      const position = await getCurrentFarmlyPosition({
+      const position = await getCurrentAgriRootsPosition({
         enableHighAccuracy: true,
         timeout: 10000,
         maximumAge: 120000,

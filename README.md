@@ -1,9 +1,9 @@
-# Farmly
+# AgriRoots
 
-Farmly is an AI-assisted farming advisory app for Ethiopian farmers. It supports chat-based agricultural guidance, crop disease diagnosis, weather/soil-aware recommendations, farm risk alerts, OTP authentication, English voice, Amharic voice, a custom sorghum disease model, and a custom enset disease model.
+AgriRoots is an AI-assisted farming advisory app for Ethiopian farmers. It supports chat-based agricultural guidance, crop disease diagnosis, weather/soil-aware recommendations, farm risk alerts, OTP authentication, English voice, Amharic voice, a custom sorghum disease model, and a custom enset disease model.
 
-- Frontend: https://famrly.birukabza.me/
-- Backend API: https://farmly-backend.birukabza.me/
+- Frontend URL example: https://agriroots.example.com/
+- Backend API URL example: https://api.agriroots.example.com/
 - Frontend hosting: Vercel
 - Backend hosting: DigitalOcean Ubuntu
 
@@ -14,8 +14,8 @@ Farmly is an AI-assisted farming advisory app for Ethiopian farmers. It supports
 - AI chat agent for crop, fertilizer, weather, and general farming advice.
 - Crop image diagnosis:
     - Gemini image triage decides whether an image is a plant, sorghum, enset, a supported crop, or unsupported.
-    - Sorghum is routed to Farmly's own EfficientNet-B0 PyTorch model.
-    - Enset is routed to Farmly's own EfficientNet-B0 PyTorch model.
+    - Sorghum is routed to AgriRoots' own EfficientNet-B0 PyTorch model.
+    - Enset is routed to AgriRoots' own EfficientNet-B0 PyTorch model.
     - Supported non-sorghum, non-enset crops are routed to Kindwise Crop.health.
 - Voice:
     - English STT/TTS uses Google Cloud Speech-to-Text and Text-to-Speech.
@@ -66,7 +66,7 @@ curl http://127.0.0.1:8000/health
 Place the model checkpoint at:
 
 ```text
-backend/model/farmly_sorghum_efficientnet_b0_best.pt
+backend/model/agriroots_sorghum_efficientnet_b0_best.pt
 ```
 
 Run:
@@ -130,9 +130,9 @@ Do not commit `.env` files, database files, service-account JSON files, or produ
 Core:
 
 ```env
-APP_NAME=Farmly Backend
+APP_NAME=AgriRoots Backend
 DEBUG=false
-DATABASE_URL=sqlite:///./farmly.db
+DATABASE_URL=sqlite:///./agriroots.db
 JWT_SECRET_KEY=replace_with_a_long_random_secret_at_least_16_chars
 JWT_ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=10080
@@ -162,7 +162,7 @@ KINDWISE_CROP_HEALTH_API_KEY=your_crop_health_api_key
 Sorghum model:
 
 ```env
-SORGHUM_MODEL_PATH=backend/model/farmly_sorghum_efficientnet_b0_best.pt
+SORGHUM_MODEL_PATH=backend/model/agriroots_sorghum_efficientnet_b0_best.pt
 SORGHUM_MODEL_SERVER_URL=http://127.0.0.1:8001
 SORGHUM_MODEL_SERVER_TIMEOUT_SECONDS=30
 PLANT_ID_SORGHUM_THRESHOLD=0.35
@@ -213,22 +213,24 @@ DEBUG_RESET_TOKEN=replace_with_debug_reset_token
 Production Vercel env:
 
 ```env
-VITE_API_BASE_URL=https://farmly-backend.birukabza.me
+VITE_API_BASE_URL=https://api.agriroots.example.com
 VITE_DEBUG=false
 ```
 
 ## Deployment
 
-The production frontend is deployed on Vercel at:
+The `example.com` URLs below are placeholders. Configure your own frontend and API domains, then set `VITE_API_BASE_URL` to your deployed API URL.
+
+Example frontend URL for a Vercel deployment:
 
 ```text
-https://famrly.birukabza.me/
+https://agriroots.example.com/
 ```
 
-The production backend is deployed on DigitalOcean Ubuntu at:
+Example backend API URL for a DigitalOcean Ubuntu deployment:
 
 ```text
-https://farmly-backend.birukabza.me/
+https://api.agriroots.example.com/
 ```
 
 The sorghum and enset model servers run as separate backend services and are called by the main backend through `SORGHUM_MODEL_SERVER_URL` and `ENSET_MODEL_SERVER_URL`. Both model services should remain private unless deployed behind their own protected endpoints.
@@ -236,14 +238,14 @@ The sorghum and enset model servers run as separate backend services and are cal
 SQLite can be used for demos, but PostgreSQL is recommended for production:
 
 ```env
-DATABASE_URL=postgresql+psycopg2://farmly_user:strong_password@127.0.0.1:5432/farmly
+DATABASE_URL=postgresql+psycopg2://agriroots_user:strong_password@127.0.0.1:5432/agriroots
 ```
 
 ## Database Notes
 
 The backend uses SQLAlchemy models and creates tables at startup.
 
-Uploaded crop images and voice recordings are not permanently stored by Farmly in the current implementation. Chat messages store text/transcripts and metadata.
+Uploaded crop images and voice recordings are not permanently stored by AgriRoots in the current implementation. Chat messages store text/transcripts and metadata.
 
 ## Security Notes
 

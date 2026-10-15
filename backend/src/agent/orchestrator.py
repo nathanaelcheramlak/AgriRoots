@@ -15,7 +15,7 @@ from src.db.models.user import UserProfile
 logger = logging.getLogger("uvicorn.error")
 
 
-def run_farmly_agent(
+def run_agriroots_agent(
     *,
     db: Session,
     session_id: str,
@@ -30,7 +30,7 @@ def run_farmly_agent(
     recent_messages = collect_recent_messages(db, session_id, limit=5)
     profile_field_count = sum(1 for value in profile_context.values() if value)
     logger.info(
-        "Farmly agent:start session_id=%s has_image=%s image_mime_type=%s "
+        "AgriRoots agent:start session_id=%s has_image=%s image_mime_type=%s "
         "language_code=%s message_chars=%s profile_present=%s",
         session_id,
         bool(image_bytes),
@@ -40,7 +40,7 @@ def run_farmly_agent(
         bool(profile),
     )
     logger.info(
-        "Farmly agent:context_loaded session_id=%s recent_messages=%s profile_fields=%s",
+        "AgriRoots agent:context_loaded session_id=%s recent_messages=%s profile_fields=%s",
         session_id,
         len(recent_messages),
         profile_field_count,
@@ -63,7 +63,7 @@ def run_farmly_agent(
     def classify_node(current: AgentState) -> AgentState:
         classify_started_at = perf_counter()
         logger.info(
-            "Farmly agent:classify_start session_id=%s has_image=%s message_chars=%s",
+            "AgriRoots agent:classify_start session_id=%s has_image=%s message_chars=%s",
             session_id,
             current["has_image"],
             len(current["message"] or ""),
@@ -71,7 +71,7 @@ def run_farmly_agent(
         if current["has_image"]:
             current["intent"] = "disease_diagnosis"
             logger.info(
-                "Farmly agent:classify_bypass session_id=%s intent=%s reason=image_upload elapsed_ms=%s",
+                "AgriRoots agent:classify_bypass session_id=%s intent=%s reason=image_upload elapsed_ms=%s",
                 session_id,
                 current["intent"],
                 round((perf_counter() - classify_started_at) * 1000),
@@ -86,7 +86,7 @@ def run_farmly_agent(
         )
         current["intent"] = decision.intent
         logger.info(
-            "Farmly agent:classify_done session_id=%s intent=%s confidence=%.2f "
+            "AgriRoots agent:classify_done session_id=%s intent=%s confidence=%.2f "
             "reason=%s elapsed_ms=%s",
             session_id,
             decision.intent,
@@ -100,14 +100,14 @@ def run_farmly_agent(
         intent = current["intent"]
         tool_started_at = perf_counter()
         logger.info(
-            "Farmly agent:tool_start session_id=%s intent=%s",
+            "AgriRoots agent:tool_start session_id=%s intent=%s",
             session_id,
             intent,
         )
         try:
             current["result_text"] = run_agent_tool(intent, current["message"], tool_context)
             logger.info(
-                "Farmly agent:tool_done session_id=%s intent=%s response_chars=%s elapsed_ms=%s",
+                "AgriRoots agent:tool_done session_id=%s intent=%s response_chars=%s elapsed_ms=%s",
                 session_id,
                 intent,
                 len(current["result_text"] or ""),
@@ -115,13 +115,13 @@ def run_farmly_agent(
             )
         except Exception:
             logger.exception(
-                "Farmly agent:tool_error session_id=%s intent=%s",
+                "AgriRoots agent:tool_error session_id=%s intent=%s",
                 session_id,
                 intent,
             )
             current["result_text"] = fallback_response(intent, current["message"])
             logger.info(
-                "Farmly agent:fallback_used session_id=%s intent=%s response_chars=%s",
+                "AgriRoots agent:fallback_used session_id=%s intent=%s response_chars=%s",
                 session_id,
                 intent,
                 len(current["result_text"] or ""),
@@ -138,7 +138,7 @@ def run_farmly_agent(
     app = graph.compile()
     out: dict[str, Any] = app.invoke(state)
     logger.info(
-        "Farmly agent:done session_id=%s final_intent=%s response_chars=%s elapsed_ms=%s",
+        "AgriRoots agent:done session_id=%s final_intent=%s response_chars=%s elapsed_ms=%s",
         session_id,
         out["intent"],
         len(out["result_text"] or ""),

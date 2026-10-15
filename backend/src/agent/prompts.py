@@ -5,7 +5,7 @@ from src.db.models.user import UserProfile
 DIAGNOSIS_FAILURE_MESSAGE = (
     "I could not diagnose a crop disease from this image.\n"
     "Please upload a clear photo of the crop leaf, stem, or head. "
-    "If the image is not a plant, Farmly cannot run disease diagnosis on it."
+    "If the image is not a plant, AgriRoots cannot run disease diagnosis on it."
 )
 
 DIAGNOSIS_IMAGE_REQUEST_MESSAGE = (

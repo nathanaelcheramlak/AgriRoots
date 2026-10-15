@@ -11,10 +11,10 @@ BACKEND_ROOT = Path(__file__).resolve().parents[1]
 if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 
-TEST_DB_PATH = Path(tempfile.gettempdir()) / "farmly_pytest.db"
+TEST_DB_PATH = Path(tempfile.gettempdir()) / "agriroots_pytest.db"
 
 os.environ["DATABASE_URL"] = f"sqlite:///{TEST_DB_PATH.as_posix()}"
-os.environ["JWT_SECRET_KEY"] = "farmly_test_secret_key_for_pytest_only"
+os.environ["JWT_SECRET_KEY"] = "agriroots_test_secret_key_for_pytest_only"
 os.environ["JWT_ALGORITHM"] = "HS256"
 os.environ["ACCESS_TOKEN_EXPIRE_MINUTES"] = "10080"
 os.environ["DEBUG"] = "true"

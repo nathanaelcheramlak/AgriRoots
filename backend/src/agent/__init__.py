@@ -1,2 +1,2 @@
-"""Farmly agent orchestration package."""
+"""AgriRoots agent orchestration package."""
 

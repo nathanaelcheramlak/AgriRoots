@@ -130,13 +130,13 @@ export default function OnboardingFarmingPage() {
   const [error, setError] = useState("");
 
   const [locationString, setLocationString] = useState(
-    () => sessionStorage.getItem("farmly_onboarding_location_string") || ""
+    () => sessionStorage.getItem("agriroots_onboarding_location_string") || ""
   );
   const [cropInput, setCropInput] = useState("");
   const [formData, setFormData] = useState({
     full_name: "",
     phone_number: "",
-    preferred_language: sessionStorage.getItem("farmly_onboarding_language") || "en",
+    preferred_language: sessionStorage.getItem("agriroots_onboarding_language") || "en",
     user_type: "",
     years_experience: "0",
     main_goal: "",
@@ -239,9 +239,9 @@ export default function OnboardingFarmingPage() {
         crops_grown: formData.crops_grown,
       });
 
-      sessionStorage.removeItem("farmly_onboarding_location");
-      sessionStorage.removeItem("farmly_onboarding_location_string");
-      sessionStorage.removeItem("farmly_onboarding_language");
+      sessionStorage.removeItem("agriroots_onboarding_location");
+      sessionStorage.removeItem("agriroots_onboarding_location_string");
+      sessionStorage.removeItem("agriroots_onboarding_language");
       navigate("/main-page");
     } catch (submitError) {
       setError(errorMessageFrom(submitError, copy.fallbackError));
@@ -275,7 +275,7 @@ export default function OnboardingFarmingPage() {
                 onChange={(value) => {
                   setFormData((prev) => ({ ...prev, preferred_language: value }));
                   setLanguage(value);
-                  sessionStorage.setItem("farmly_onboarding_language", value);
+                  sessionStorage.setItem("agriroots_onboarding_language", value);
                 }}
               >
                 <option value="en">{copy.english}</option>

@@ -8,11 +8,11 @@ import { SUPPORTED_LANGUAGES } from "@/contexts/LanguageContext";
 
 const COPY = {
   en: {
-    title: "Farmly Assistant",
+    title: "AgriRoots Assistant",
     responseLanguage: "Response language",
     alertBannerTitle: "Farm alerts need attention",
     alertBannerMore: "View",
-    welcomeTitle: "Welcome to Farmly",
+    welcomeTitle: "Welcome to AgriRoots",
     welcomeSubtitle: "Your personal agricultural assistant. Ask me anything or choose an option below.",
     quickActions: [
       { icon: Sprout, label: "Recommend a crop", text: "Can you recommend a crop suitable for my location?" },
@@ -22,11 +22,11 @@ const COPY = {
     ],
   },
   am: {
-    title: "Farmly ረዳት",
+    title: "AgriRoots ረዳት",
     responseLanguage: "የመልስ ቋንቋ",
     alertBannerTitle: "የእርሻ አስጠንቅቂያ ትኩረት ይፈልጋል",
     alertBannerMore: "ይመልከቱ",
-    welcomeTitle: "ወደ Farmly እንኳን በደህና መጡ",
+    welcomeTitle: "ወደ AgriRoots እንኳን በደህና መጡ",
     welcomeSubtitle: "የግብርና ጥያቄዎን በጽሑፍ፣ በድምጽ ወይም በምስል ይጠይቁ።",
     quickActions: [
       { icon: Sprout, label: "የሰብል ምክር", text: "ለአካባቢዬ የሚስማማ ሰብል ምን ልዝራ?" },

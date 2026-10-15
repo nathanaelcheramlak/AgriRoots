@@ -223,7 +223,7 @@ def _fallback_crop_diagnosis_advice(crop_name: str, top_disease_name: str | None
 
 def _uncertain_crop_advice() -> str:
     return (
-        "Farmly can see that this may be a plant, but the crop is not clear enough to route diagnosis safely. "
+        "AgriRoots can see that this may be a plant, but the crop is not clear enough to route diagnosis safely. "
         "Please upload a closer, well-lit image of the affected leaf, stem, head, fruit, grain, or visible pest."
     )
 
@@ -409,7 +409,7 @@ def _triage_crop_candidate(triage: dict) -> dict | None:
 def _unsupported_crop_advice(top_crop: dict | None) -> str:
     crop_name = _crop_display_name(top_crop, default="this plant")
     return (
-        f"Farmly identified {crop_name}, but disease diagnosis is not available for that crop yet. "
+        f"AgriRoots identified {crop_name}, but disease diagnosis is not available for that crop yet. "
         "Please upload a clear sorghum image or another supported crop image for disease diagnosis."
     )
 
@@ -417,7 +417,7 @@ def _unsupported_crop_advice(top_crop: dict | None) -> str:
 def _unclear_crop_health_advice(top_crop: dict | None) -> str:
     crop_name = _crop_display_name(top_crop)
     return (
-        f"Farmly identified {crop_name}, but the disease scan could not read the crop health clearly from this photo. "
+        f"AgriRoots identified {crop_name}, but the disease scan could not read the crop health clearly from this photo. "
         "Please upload a closer, well-lit image of the affected leaf, stem, head, fruit, grain, or visible pest."
     )
 
@@ -449,7 +449,7 @@ def _build_sorghum_advice(
         extra={
             "diagnosis_summary": json.dumps(
                 {
-                    "provider": "farmly_sorghum",
+                    "provider": "agriroots_sorghum",
                     "identified_crop": "sorghum",
                     "prediction": display_sorghum_class(class_name),
                     "confidence_status": confidence_status,
@@ -527,7 +527,7 @@ def _run_sorghum_diagnosis(
         diseases=diseases,
         advice_text=advice_text,
         used_fallback=used_fallback,
-        provider="farmly_sorghum",
+        provider="agriroots_sorghum",
         confidence_status=confidence_status,
         needs_retake=needs_retake,
     )
@@ -559,7 +559,7 @@ def _build_enset_advice(
         extra={
             "diagnosis_summary": json.dumps(
                 {
-                    "provider": "farmly_enset",
+                    "provider": "agriroots_enset",
                     "identified_crop": "enset",
                     "prediction": display_enset_class(class_name),
                     "confidence_status": confidence_status,
@@ -637,7 +637,7 @@ def _run_enset_diagnosis(
         diseases=diseases,
         advice_text=advice_text,
         used_fallback=used_fallback,
-        provider="farmly_enset",
+        provider="agriroots_enset",
         confidence_status=confidence_status,
         needs_retake=needs_retake,
     )

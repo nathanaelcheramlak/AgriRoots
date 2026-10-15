@@ -50,7 +50,7 @@ def collect_recent_messages(db: Session, session_id: str, limit: int = 5) -> lis
 def run_agent_tool(intent: AgentIntent, message: str, context: AgentToolContext) -> str:
     tool_started_at = perf_counter()
     logger.info(
-        "Farmly tool:dispatch intent=%s profile_present=%s has_image=%s "
+        "AgriRoots tool:dispatch intent=%s profile_present=%s has_image=%s "
         "image_mime_type=%s recent_messages=%s",
         intent,
         bool(context.profile),
@@ -61,12 +61,12 @@ def run_agent_tool(intent: AgentIntent, message: str, context: AgentToolContext)
 
     if intent == "crop_recommendation":
         if not context.profile:
-            logger.info("Farmly tool:missing_profile intent=%s", intent)
+            logger.info("AgriRoots tool:missing_profile intent=%s", intent)
             return "Please complete onboarding profile first."
         result = run_crop_recommendation(context.profile, recent_messages=context.recent_messages)
         text = result["recommendation_text"]
         logger.info(
-            "Farmly tool:completed intent=%s response_chars=%s elapsed_ms=%s",
+            "AgriRoots tool:completed intent=%s response_chars=%s elapsed_ms=%s",
             intent,
             len(text or ""),
             round((perf_counter() - tool_started_at) * 1000),
@@ -75,12 +75,12 @@ def run_agent_tool(intent: AgentIntent, message: str, context: AgentToolContext)
 
     if intent == "fertilizer_recommendation":
         if not context.profile:
-            logger.info("Farmly tool:missing_profile intent=%s", intent)
+            logger.info("AgriRoots tool:missing_profile intent=%s", intent)
             return "Please complete onboarding profile first."
         result = run_fertilizer_recommendation(context.profile, recent_messages=context.recent_messages)
         text = result["recommendation_text"]
         logger.info(
-            "Farmly tool:completed intent=%s response_chars=%s elapsed_ms=%s",
+            "AgriRoots tool:completed intent=%s response_chars=%s elapsed_ms=%s",
             intent,
             len(text or ""),
             round((perf_counter() - tool_started_at) * 1000),
@@ -89,12 +89,12 @@ def run_agent_tool(intent: AgentIntent, message: str, context: AgentToolContext)
 
     if intent == "weather_recommendation":
         if not context.profile:
-            logger.info("Farmly tool:missing_profile intent=%s", intent)
+            logger.info("AgriRoots tool:missing_profile intent=%s", intent)
             return "Please complete onboarding profile first."
         result = run_weather_recommendation(context.profile, recent_messages=context.recent_messages)
         text = result["recommendation_text"]
         logger.info(
-            "Farmly tool:completed intent=%s response_chars=%s elapsed_ms=%s",
+            "AgriRoots tool:completed intent=%s response_chars=%s elapsed_ms=%s",
             intent,
             len(text or ""),
             round((perf_counter() - tool_started_at) * 1000),
@@ -103,10 +103,10 @@ def run_agent_tool(intent: AgentIntent, message: str, context: AgentToolContext)
 
     if intent == "disease_diagnosis":
         if not context.image_bytes:
-            logger.info("Farmly tool:missing_image intent=%s", intent)
+            logger.info("AgriRoots tool:missing_image intent=%s", intent)
             return DIAGNOSIS_IMAGE_REQUEST_MESSAGE
         if not context.profile:
-            logger.info("Farmly tool:missing_profile intent=%s", intent)
+            logger.info("AgriRoots tool:missing_profile intent=%s", intent)
             return "Please complete onboarding profile first."
         diagnosis = run_diagnosis(
             context.profile,
@@ -115,7 +115,7 @@ def run_agent_tool(intent: AgentIntent, message: str, context: AgentToolContext)
             recent_messages=context.recent_messages,
         )
         logger.info(
-            "Farmly tool:completed intent=%s provider=%s confidence_status=%s "
+            "AgriRoots tool:completed intent=%s provider=%s confidence_status=%s "
             "needs_retake=%s response_chars=%s elapsed_ms=%s",
             intent,
             diagnosis.provider,
@@ -132,7 +132,7 @@ def run_agent_tool(intent: AgentIntent, message: str, context: AgentToolContext)
         profile_context=context.profile_context,
     )
     logger.info(
-        "Farmly tool:completed intent=%s response_chars=%s elapsed_ms=%s",
+        "AgriRoots tool:completed intent=%s response_chars=%s elapsed_ms=%s",
         intent,
         len(text or ""),
         round((perf_counter() - tool_started_at) * 1000),

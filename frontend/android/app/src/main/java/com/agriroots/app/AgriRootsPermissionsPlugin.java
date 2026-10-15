@@ -1,4 +1,4 @@
-package com.farmly.app;
+package com.agriroots.app;
 
 import android.Manifest;
 
@@ -12,12 +12,12 @@ import com.getcapacitor.annotation.Permission;
 import com.getcapacitor.annotation.PermissionCallback;
 
 @CapacitorPlugin(
-    name = "FarmlyPermissions",
+    name = "AgriRootsPermissions",
     permissions = {
         @Permission(alias = "microphone", strings = { Manifest.permission.RECORD_AUDIO })
     }
 )
-public class FarmlyPermissionsPlugin extends Plugin {
+public class AgriRootsPermissionsPlugin extends Plugin {
     private static final String MICROPHONE = "microphone";
 
     @PluginMethod

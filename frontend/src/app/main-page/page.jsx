@@ -97,7 +97,7 @@ export default function MainPage() {
         return;
       }
 
-      const saved = localStorage.getItem("farmly_active_session_id");
+      const saved = localStorage.getItem("agriroots_active_session_id");
       const savedExists = saved && data.some((s) => s.session_id === saved);
 
       if (savedExists) {
@@ -132,7 +132,7 @@ export default function MainPage() {
 
   const handleSelectSession = async (sessionId) => {
     setActiveSessionId(sessionId);
-    localStorage.setItem("farmly_active_session_id", sessionId);
+    localStorage.setItem("agriroots_active_session_id", sessionId);
 
     try {
       const { data } = await chatApi.getSessionMessages(sessionId);
@@ -144,7 +144,7 @@ export default function MainPage() {
 
   const handleNewSession = () => {
     setActiveSessionId(null);
-    localStorage.removeItem("farmly_active_session_id");
+    localStorage.removeItem("agriroots_active_session_id");
     setMessages([]);
   };
 
@@ -296,7 +296,7 @@ export default function MainPage() {
         sessionId = res.data.session_id;
         wasNewSession = true;
         setActiveSessionId(sessionId);
-        localStorage.setItem("farmly_active_session_id", sessionId);
+        localStorage.setItem("agriroots_active_session_id", sessionId);
         setSessions((prev) => [res.data, ...prev]);
       }
 

@@ -4,7 +4,7 @@ from uuid import UUID
 from fastapi import UploadFile
 from sqlalchemy.orm import Session
 
-from src.agent.orchestrator import run_farmly_agent
+from src.agent.orchestrator import run_agriroots_agent
 from src.api.schemas.chat import (
     ChatDeleteResponse,
     ChatMessageResponse,
@@ -151,7 +151,7 @@ class ChatService:
             except Exception as exc:
                 raise ServiceError(502, f"Amharic-to-English translation failed: {exc}") from exc
 
-        chosen_route, assistant_text_english = run_farmly_agent(
+        chosen_route, assistant_text_english = run_agriroots_agent(
             db=self.db,
             session_id=session.session_id,
             profile=profile,

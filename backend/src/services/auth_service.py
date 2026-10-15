@@ -82,7 +82,7 @@ class AuthService:
 
         debug_otp = self._send_otp_sms(
             phone_number,
-            f"Farmly verification code: {otp_code}. Expires in {self.settings.otp_expire_minutes} minutes.",
+            f"AgriRoots verification code: {otp_code}. Expires in {self.settings.otp_expire_minutes} minutes.",
             otp_code,
         )
         return OTPRequestedResponse(
@@ -221,7 +221,7 @@ class AuthService:
 
         debug_otp = self._send_otp_sms(
             new_phone,
-            f"Farmly phone change code: {otp_code}. Expires in {self.settings.otp_expire_minutes} minutes.",
+            f"AgriRoots phone change code: {otp_code}. Expires in {self.settings.otp_expire_minutes} minutes.",
             otp_code,
         )
         return PhoneChangeRequestedResponse(
@@ -297,7 +297,7 @@ class AuthService:
 
         debug_otp = self._send_otp_sms(
             phone_number,
-            f"Farmly password reset code: {otp_code}. Expires in {self.settings.otp_expire_minutes} minutes.",
+            f"AgriRoots password reset code: {otp_code}. Expires in {self.settings.otp_expire_minutes} minutes.",
             otp_code,
         )
         return OTPRequestedResponse(

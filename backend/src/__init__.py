@@ -1,2 +1,2 @@
-"""Farmly backend package."""
+"""AgriRoots backend package."""
 

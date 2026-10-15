@@ -10,7 +10,7 @@ def test_chat_session_lifecycle_and_message_send(client, monkeypatch):
         assert kwargs["image_bytes"] is None
         return "general", "Use clean seed, proper spacing, and timely weeding."
 
-    monkeypatch.setattr("src.services.chat_service.run_farmly_agent", fake_agent)
+    monkeypatch.setattr("src.services.chat_service.run_agriroots_agent", fake_agent)
 
     create_response = client.post(
         "/api/chat/sessions",

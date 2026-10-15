@@ -11,14 +11,14 @@ async def lifespan(app: FastAPI):
     yield
 
 
-app = FastAPI(title="Farmly Sorghum Model Server", lifespan=lifespan)
+app = FastAPI(title="AgriRoots Sorghum Model Server", lifespan=lifespan)
 
 
 @app.get("/health")
 def health_check() -> dict[str, str]:
     return {
         "status": "ok",
-        "service": "Farmly Sorghum Model Server",
+        "service": "AgriRoots Sorghum Model Server",
     }
 
 

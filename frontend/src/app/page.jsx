@@ -6,7 +6,7 @@ import { SUPPORTED_LANGUAGES, useLanguage } from "@/contexts/LanguageContext";
 
 const COPY = {
   en: {
-    brand: "Farmly",
+    brand: "AgriRoots",
     signIn: "Sign In",
     heroTitle: "Empowering Farmers with AI-Powered Agricultural Insights",
     heroSubtitle:
@@ -14,7 +14,7 @@ const COPY = {
     getStarted: "Get Started",
   },
   am: {
-    brand: "Farmly",
+    brand: "AgriRoots",
     signIn: "ግባ",
     heroTitle: "ገበሬዎችን በAI የታገዘ የግብርና ምክር ማብቃት",
     heroSubtitle:

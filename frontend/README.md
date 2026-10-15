@@ -1,4 +1,4 @@
-﻿# Farmly Frontend (React + Vite)
+﻿# AgriRoots Frontend (React + Vite)
 
 This frontend is now built with React, Vite, and Tailwind CSS.
 

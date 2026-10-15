@@ -7,7 +7,7 @@ export function AuthProvider({ children }) {
   const [accessToken, setAccessToken] = useState(null);
 
   useEffect(() => {
-    setAccessToken(localStorage.getItem("farmly_access_token"));
+    setAccessToken(localStorage.getItem("agriroots_access_token"));
     setIsHydrated(true);
   }, []);
 
@@ -17,11 +17,11 @@ export function AuthProvider({ children }) {
       isAuthenticated: Boolean(accessToken),
       isHydrated,
       setToken: (token) => {
-        localStorage.setItem("farmly_access_token", token);
+        localStorage.setItem("agriroots_access_token", token);
         setAccessToken(token);
       },
       clearToken: () => {
-        localStorage.removeItem("farmly_access_token");
+        localStorage.removeItem("agriroots_access_token");
         setAccessToken(null);
       },
     }),

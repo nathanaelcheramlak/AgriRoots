@@ -66,7 +66,7 @@ def _fallback_intent(has_image: bool, reason: str) -> IntentDecision:
             reason=reason,
         )
     logger.info(
-        "Farmly intent:fallback intent=%s confidence=%.2f reason=%s has_image=%s",
+        "AgriRoots intent:fallback intent=%s confidence=%.2f reason=%s has_image=%s",
         decision.intent,
         decision.confidence,
         decision.reason,
@@ -84,7 +84,7 @@ def classify_intent(
 ) -> IntentDecision:
     profile_field_count = sum(1 for value in profile_context.values() if value)
     logger.info(
-        "Farmly intent:llm_request has_image=%s message_chars=%s recent_messages=%s "
+        "AgriRoots intent:llm_request has_image=%s message_chars=%s recent_messages=%s "
         "profile_fields=%s tool_count=%s",
         has_image,
         len(message or ""),
@@ -101,18 +101,18 @@ def classify_intent(
             tool_catalog=TOOL_CATALOG,
         )
     except Exception:
-        logger.exception("Farmly intent:llm_error")
+        logger.exception("AgriRoots intent:llm_error")
         return _fallback_intent(has_image, "intent_router_failed")
 
     intent = str(payload.get("intent") or "").strip()
     logger.info(
-        "Farmly intent:llm_response raw_intent=%s confidence=%s reason=%s",
+        "AgriRoots intent:llm_response raw_intent=%s confidence=%s reason=%s",
         intent,
         payload.get("confidence"),
         payload.get("reason") or "",
     )
     if intent not in VALID_INTENTS:
-        logger.warning("Farmly intent:invalid_intent raw_intent=%s", intent)
+        logger.warning("AgriRoots intent:invalid_intent raw_intent=%s", intent)
         return _fallback_intent(has_image, "invalid_intent")
 
     return IntentDecision(

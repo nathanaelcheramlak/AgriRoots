@@ -49,7 +49,7 @@ def _build_system_instruction(profile_context: dict[str, str]) -> str:
 
     profile_block = "\n".join(profile_lines) if profile_lines else "- profile: not provided"
     return (
-        "You are Farmly, an agricultural assistant for Ethiopian smallholder farmers.\n"
+        "You are AgriRoots, an agricultural assistant for Ethiopian smallholder farmers.\n"
         "Give practical, clear, and simple advice suitable for the farmer's context.\n"
         "Prefer agriculture-focused answers. If off-topic, gently redirect to farming help.\n"
         "Keep the answer short and easy to understand for non-technical farmers.\n"
@@ -166,7 +166,7 @@ def classify_chat_intent(
         raise RuntimeError("GEMINI_MODEL is not configured")
 
     prompt = (
-        "You are Farmly's tool-selection agent.\n"
+        "You are AgriRoots' tool-selection agent.\n"
         "Choose exactly one tool for the latest farmer request.\n"
         "Do not answer the farmer. Only select the best tool.\n\n"
         "Available tools:\n"
@@ -262,12 +262,12 @@ def classify_crop_image(
 
     supported_crop_text = ", ".join(sorted(set(supported_crops)))
     prompt = (
-        "You are Farmly's crop image triage system.\n"
+        "You are AgriRoots' crop image triage system.\n"
         "Look at the uploaded image and decide if it is a plant/crop image.\n"
         "If it is a plant, identify the most likely crop.\n"
         "Use English crop names and scientific names when possible, even if the crop is known in another language.\n"
-        "Sorghum (Sorghum bicolor) must be routed to Farmly's local sorghum disease model.\n"
-        "Enset (Ensete ventricosum), also called false banana or Ethiopian banana, must be routed to Farmly's local enset disease model. "
+        "Sorghum (Sorghum bicolor) must be routed to AgriRoots' local sorghum disease model.\n"
+        "Enset (Ensete ventricosum), also called false banana or Ethiopian banana, must be routed to AgriRoots' local enset disease model. "
         "Enset looks similar to a banana plant but is NOT a banana — it is a staple crop in Ethiopia. "
         "If the image shows enset, set is_enset=true and decision=enset_model.\n"
         "Non-sorghum, non-enset crops can be routed to Kindwise Crop.health only if they match this supported crop list:\n"

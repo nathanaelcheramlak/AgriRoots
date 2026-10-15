@@ -12,7 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 const COPY = {
   en: {
     genericError: "Something went wrong. Please try again.",
-    title: "Farmly Authentication",
+    title: "AgriRoots Authentication",
     signIn: "Sign In",
     signUp: "Sign Up",
     phoneNumber: "Phone Number",
@@ -60,7 +60,7 @@ const COPY = {
   },
   am: {
     genericError: "ችግር ተፈጥሯል። እባክዎ እንደገና ይሞክሩ።",
-    title: "የFarmly መግቢያ",
+    title: "የAgriRoots መግቢያ",
     signIn: "ግባ",
     signUp: "መዝገብ",
     phoneNumber: "ስልክ ቁጥር",
