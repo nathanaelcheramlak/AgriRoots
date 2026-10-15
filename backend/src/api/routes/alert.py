@@ -1,3 +1,4 @@
+from src.services.delivery_policy import require_review_workflow
 from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.orm import Session
 
@@ -15,7 +16,7 @@ from src.services.alert_app_service import AlertAppService
 from src.services.exceptions import ServiceError
 
 
-router = APIRouter(prefix="/api/alerts", tags=["Alerts"])
+router = APIRouter(prefix="/api/alerts", tags=["Alerts"], dependencies=[Depends(require_review_workflow)])
 
 
 def _service(db: Session) -> AlertAppService:

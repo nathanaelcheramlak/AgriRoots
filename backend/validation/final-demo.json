@@ -1,0 +1,291 @@
+{
+  "executed_at": "2026-10-15T16:52:55.419Z",
+  "kind": "real local model, real MCP, live weather, browser actions; synthetic households",
+  "scripted_review": true,
+  "agronomist_review": false,
+  "demo": true,
+  "checks": [
+    "Officer logs in through the real form",
+    "Cluster selection starts a persisted real agent run",
+    "Real open-weights run stops at pending review with visible tool activity",
+    "Officer can inspect five stored evidence snapshots",
+    "Approval requires a separate explicit release action",
+    "Officer explicitly releases the exact approved version",
+    "Farmer sees the exact released action and supporting evidence",
+    "Farmer plays real locally synthesized released advice"
+  ],
+  "status": "passed",
+  "run_id": "60c03a76-efb6-43ea-bcad-24ef84bb54cb",
+  "run": {
+    "id": "60c03a76-efb6-43ea-bcad-24ef84bb54cb",
+    "office_id": "4026099e-a95d-45d4-a555-396082404def",
+    "officer_id": "39cf251d-b003-4d30-b82b-b004cb322886",
+    "cluster_id": "bf57e132-0797-4309-9be7-a0d28a09f1cd",
+    "task": "Assess planting readiness using the locally reviewed rainfall, wind, temperature and calendar rules.",
+    "status": "pending_review",
+    "stage": "pending_review",
+    "warnings": [
+      {
+        "message": "Generated rationale is unverified and retained in private run logs only. Advisory actions and uncertainty use controlled text; inspect the evidence before approving."
+      }
+    ],
+    "error": null,
+    "attempt": 1,
+    "tool_calls": 5,
+    "advisory_id": "53c98d9a-8630-4a4a-a2f1-f8cd43aedb6c",
+    "model_config": {
+      "provider": "local-llama.cpp",
+      "model": "qwen3-0.6b-q8",
+      "revision": "23749fefcc72300e3a2ad315e1317431b06b590a",
+      "temperature": 0,
+      "seed": 42,
+      "compute_cost_per_hour_usd": 0.1,
+      "cost_status": "estimated",
+      "max_tokens": 1400,
+      "context_characters": 24000,
+      "cloud_fallback": false
+    },
+    "created_at": "2026-10-15T16:52:59.383139",
+    "updated_at": "2026-10-15T16:53:58.093466",
+    "calls": [
+      {
+        "run_id": "60c03a76-efb6-43ea-bcad-24ef84bb54cb",
+        "tool_name": "get_cluster_plot_history",
+        "output": {
+          "plots": [
+            {
+              "name": "SYNTHETIC benchmark plot 1",
+              "household_id": "aa3d8e27-de1f-47a6-8711-902eb1b3bead",
+              "latitude": 9.03,
+              "longitude": 38.74,
+              "area": 1,
+              "area_unit": "ha",
+              "agroclimatic_zone": "Synthetic benchmark zone bf57e132-0797-4309-9be7-a0d28a09f1cd",
+              "id": "d8928534-9a8f-462e-917f-fc1ca3c418a9",
+              "synthetic": true,
+              "season_id": "b44b67d1-609b-444f-9b3d-4c58ee9b76a8",
+              "season": {
+                "plot_id": "d8928534-9a8f-462e-917f-fc1ca3c418a9",
+                "crop": "maize",
+                "stage": "planned",
+                "planting_date": "2026-10-15",
+                "harvest_date": "2026-12-14",
+                "previous_yield": null,
+                "yield_unit": null
+              }
+            }
+          ],
+          "evidence_ids": [
+            "3a97694e-0bf7-4f26-a42d-3541dc317cd9"
+          ]
+        },
+        "started_at": "2026-10-15T16:53:01.037143",
+        "duration_ms": 34,
+        "estimated_cost_usd": 0,
+        "inputs": {},
+        "id": "ccdcdae1-7157-4ede-a15e-286ec7a45021",
+        "attempt": 1,
+        "error": null,
+        "finished_at": "2026-10-15T16:53:01.053608",
+        "usage": {}
+      },
+      {
+        "run_id": "60c03a76-efb6-43ea-bcad-24ef84bb54cb",
+        "tool_name": "model.plan",
+        "output": {
+          "rationale": "The most relevant evidence tool to start with is get_crop_risk_context.",
+          "first_tool": "get_crop_risk_context"
+        },
+        "started_at": "2026-10-15T16:53:01.067660",
+        "duration_ms": 1874,
+        "estimated_cost_usd": 0.000052044954805751334,
+        "inputs": {
+          "schema": "Plan",
+          "context_characters": 892
+        },
+        "id": "3d51b433-0e17-416c-9288-f9292bddb957",
+        "attempt": 1,
+        "error": null,
+        "finished_at": "2026-10-15T16:53:02.940310",
+        "usage": {
+          "completion_tokens": 41,
+          "prompt_tokens": 492,
+          "total_tokens": 533,
+          "prompt_tokens_details": {
+            "cached_tokens": 491
+          }
+        }
+      },
+      {
+        "run_id": "60c03a76-efb6-43ea-bcad-24ef84bb54cb",
+        "tool_name": "get_crop_risk_context",
+        "output": {
+          "evidence_ids": [
+            "86b5e08a-b6a9-4e8b-a9aa-14291a8380ee",
+            "443f1b40-a0b7-4063-bc4f-f5720d1c5a3b"
+          ],
+          "warnings": []
+        },
+        "started_at": "2026-10-15T16:53:02.957960",
+        "duration_ms": 23,
+        "estimated_cost_usd": 0,
+        "inputs": {},
+        "id": "2f266e48-eca4-4938-a9c3-ff5c202e7e84",
+        "attempt": 1,
+        "error": null,
+        "finished_at": "2026-10-15T16:53:02.976560",
+        "usage": {}
+      },
+      {
+        "run_id": "60c03a76-efb6-43ea-bcad-24ef84bb54cb",
+        "tool_name": "get_weather_evidence",
+        "output": null,
+        "started_at": "2026-10-15T16:53:02.993015",
+        "duration_ms": 15242,
+        "estimated_cost_usd": 0,
+        "inputs": {},
+        "id": "c4a89875-9239-4c96-a63d-6ab261612c03",
+        "attempt": 1,
+        "error": {
+          "code": "upstream_unavailable",
+          "message": "Weather service unavailable or timed out",
+          "retryable": true
+        },
+        "finished_at": "2026-10-15T16:53:18.231595",
+        "usage": {}
+      },
+      {
+        "run_id": "60c03a76-efb6-43ea-bcad-24ef84bb54cb",
+        "tool_name": "get_weather_evidence",
+        "output": {
+          "evidence_ids": [
+            "4beb61ca-7fc7-4666-866f-4682be4775cc"
+          ]
+        },
+        "started_at": "2026-10-15T16:53:18.242911",
+        "duration_ms": 1162,
+        "estimated_cost_usd": 0,
+        "inputs": {},
+        "id": "e7c2b6cc-59db-444d-a3a3-9b47f988a07a",
+        "attempt": 1,
+        "error": null,
+        "finished_at": "2026-10-15T16:53:19.402155",
+        "usage": {}
+      },
+      {
+        "run_id": "60c03a76-efb6-43ea-bcad-24ef84bb54cb",
+        "tool_name": "borrowed_mcp.fetch",
+        "output": {
+          "evidence_ids": [
+            "32a3a866-f31f-4ab1-b74d-e217c1ad6f62"
+          ],
+          "server_version": "2026.10.10",
+          "cache_hits": [
+            true
+          ]
+        },
+        "started_at": "2026-10-15T16:53:19.418519",
+        "duration_ms": 18,
+        "estimated_cost_usd": 0,
+        "inputs": {
+          "sources": [
+            "nrcs-soil-health"
+          ]
+        },
+        "id": "aa35ee47-f70a-479a-a120-4970ac8a4979",
+        "attempt": 1,
+        "error": null,
+        "finished_at": "2026-10-15T16:53:19.434309",
+        "usage": {}
+      },
+      {
+        "run_id": "60c03a76-efb6-43ea-bcad-24ef84bb54cb",
+        "tool_name": "model.draft",
+        "output": {
+          "title": "Climate Advisories for Ethiopian Extension Officer",
+          "recommendations": [
+            {
+              "plot_id": "d8928534-9a8f-462e-917f-fc1ca3c418a9",
+              "crop": "maize",
+              "action_code": "hold_planting",
+              "proposed_date": "2026-10-15",
+              "evidence_ids": [
+                "443f1b40-a0b7-4063-bc4f-f5720d1c5a3b",
+                "86b5e08a-b6a9-4e8b-a9aa-14291a8380ee",
+                "3a97694e-0bf7-4f26-a42d-3541dc317cd9",
+                "32a3a866-f31f-4ab1-b74d-e217c1ad6f62",
+                "4beb61ca-7fc7-4666-866f-4682be4775cc"
+              ],
+              "rationale": "The evidence shows that the plot is in a synthetic benchmark zone and has a planned planting date. The climate conditions are favorable for planting, and the evidence supports the decision to hold planting.",
+              "uncertainty": "The decision is based on the evidence reviewed, and there is no uncertainty in the data."
+            }
+          ],
+          "missing_information": "No field inspections have been completed."
+        },
+        "started_at": "2026-10-15T16:53:19.450115",
+        "duration_ms": 38575,
+        "estimated_cost_usd": 0.0010715274587778873,
+        "inputs": {
+          "schema": "Candidates",
+          "context_characters": 3851
+        },
+        "id": "b9f50e76-0c4e-46ee-b932-2a4fe455a64c",
+        "attempt": 1,
+        "error": null,
+        "finished_at": "2026-10-15T16:53:58.024026",
+        "usage": {
+          "completion_tokens": 370,
+          "prompt_tokens": 1644,
+          "total_tokens": 2014,
+          "prompt_tokens_details": {
+            "cached_tokens": 118
+          }
+        }
+      },
+      {
+        "run_id": "60c03a76-efb6-43ea-bcad-24ef84bb54cb",
+        "tool_name": "save_advisory_draft",
+        "output": {
+          "advisory_id": "53c98d9a-8630-4a4a-a2f1-f8cd43aedb6c",
+          "version": 1,
+          "status": "draft"
+        },
+        "started_at": "2026-10-15T16:53:58.052570",
+        "duration_ms": 23,
+        "estimated_cost_usd": 0,
+        "inputs": {
+          "title": "Sourced climate advisory",
+          "recommendations": [
+            {
+              "plot_id": "d8928534-9a8f-462e-917f-fc1ca3c418a9",
+              "crop": "maize",
+              "action_code": "hold_planting",
+              "proposed_date": "2026-10-15",
+              "evidence_ids": [
+                "443f1b40-a0b7-4063-bc4f-f5720d1c5a3b",
+                "86b5e08a-b6a9-4e8b-a9aa-14291a8380ee",
+                "3a97694e-0bf7-4f26-a42d-3541dc317cd9",
+                "32a3a866-f31f-4ab1-b74d-e217c1ad6f62",
+                "4beb61ca-7fc7-4666-866f-4682be4775cc"
+              ],
+              "rationale": "The evidence shows that the plot is in a synthetic benchmark zone and has a planned planting date. The climate conditions are favorable for planting, and the evidence supports the decision to hold planting.",
+              "uncertainty": "The decision is based on the evidence reviewed, and there is no uncertainty in the data."
+            }
+          ],
+          "missing_information": "Officer field verification required"
+        },
+        "id": "585e58fc-6a1f-4d3b-90b2-b6adb780cc44",
+        "attempt": 1,
+        "error": null,
+        "finished_at": "2026-10-15T16:53:58.072546",
+        "usage": {}
+      }
+    ]
+  },
+  "farmer_received_version_id": "561dd079-e72b-4e15-96fb-80053fe3a563",
+  "voice": "Real local eSpeak NG audio decoded and advanced during HTML audio playback; no cloud credentials or provider test double.",
+  "elapsed_seconds": 85.304,
+  "page_errors": [],
+  "video": "demo/officer-to-farmer.webm",
+  "under_three_minutes": true
+}

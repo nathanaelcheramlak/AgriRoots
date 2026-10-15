@@ -1,0 +1,9 @@
+{
+  "kind": "initial PostgreSQL portability run, before checkpoint-stage fix",
+  "passed": false,
+  "tests": 55,
+  "failed": 10,
+  "passed_tests": 45,
+  "cause": "Per-plot checkpoint key was copied into a VARCHAR(40) stage column; PostgreSQL correctly rejected the oversized value. SQLite had accepted it.",
+  "fix": "Keep detailed per-plot keys in JSON state and render a bounded drafting_plot stage label. Full PostgreSQL rerun is recorded separately."
+}

@@ -13,7 +13,9 @@ if str(BACKEND_ROOT) not in sys.path:
 
 TEST_DB_PATH = Path(tempfile.gettempdir()) / "agriroots_pytest.db"
 
-os.environ["DATABASE_URL"] = f"sqlite:///{TEST_DB_PATH.as_posix()}"
+test_database_url = os.environ.get("AGRIROOTS_TEST_DATABASE_URL", f"sqlite:///{TEST_DB_PATH.as_posix()}")
+# An explicit test database is disposable; never fall back to an operator's DATABASE_URL.
+os.environ["DATABASE_URL"] = test_database_url
 os.environ["JWT_SECRET_KEY"] = "agriroots_test_secret_key_for_pytest_only"
 os.environ["JWT_ALGORITHM"] = "HS256"
 os.environ["ACCESS_TOKEN_EXPIRE_MINUTES"] = "10080"

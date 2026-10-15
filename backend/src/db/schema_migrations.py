@@ -1,34 +1,33 @@
-from sqlalchemy import inspect, text
-from sqlalchemy.engine import Engine
+"""Ordered, recorded schema upgrades shared by startup and the CLI.
+
+Run one migration process before starting multiple production workers.
+"""
+from sqlalchemy import Column, Integer, Table, select
+from src.db.base import Base
+from src.db.migrations import v001_legacy, v002_workspace, v003_advisory_runs
+
+revisions = Table("schema_revisions", Base.metadata, Column("version", Integer, primary_key=True))
+MIGRATIONS = ((1, v001_legacy), (2, v002_workspace), (3, v003_advisory_runs))
 
 
-CHAT_MESSAGE_COLUMNS = {
-    "content_type": "VARCHAR(20)",
-    "message_content_english": "TEXT",
-    "media_url": "VARCHAR(512)",
-    "language_used": "VARCHAR(100)",
-}
-
-
-def ensure_chat_message_storage_columns(engine: Engine) -> None:
-    inspector = inspect(engine)
-    if not inspector.has_table("chat_messages"):
-        return
-
-    existing_columns = {
-        column["name"]
-        for column in inspector.get_columns("chat_messages")
-    }
-    missing_columns = [
-        (name, column_type)
-        for name, column_type in CHAT_MESSAGE_COLUMNS.items()
-        if name not in existing_columns
-    ]
-    if not missing_columns:
-        return
-
+def migrate(engine):
     with engine.begin() as connection:
-        for name, column_type in missing_columns:
-            connection.execute(
-                text(f"ALTER TABLE chat_messages ADD COLUMN {name} {column_type}")
-            )
+        revisions.create(connection, checkfirst=True)
+        applied = set(connection.scalars(select(revisions.c.version)))
+        for version, migration in MIGRATIONS:
+            if version not in applied:
+                migration.upgrade(connection)
+                connection.execute(revisions.insert().values(version=version))
+
+
+def ensure_chat_message_storage_columns(engine):
+    """Compatibility entrypoint for existing tooling."""
+    from sqlalchemy import inspect
+    if inspect(engine).has_table("chat_messages"):
+        with engine.begin() as connection:
+            v001_legacy.upgrade(connection)
+
+
+if __name__ == "__main__":
+    from src.db.session import engine
+    migrate(engine)

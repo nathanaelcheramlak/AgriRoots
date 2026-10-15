@@ -1,3 +1,4 @@
+from src.services.delivery_policy import require_review_workflow
 from fastapi import APIRouter, Depends, File, UploadFile, status
 from sqlalchemy.orm import Session
 
@@ -10,7 +11,7 @@ from src.services.diagnosis_service import DiagnosisService
 from src.services.exceptions import ServiceError
 
 
-router = APIRouter(prefix="/api/crop-health", tags=["Crop Health"])
+router = APIRouter(prefix="/api/crop-health", tags=["Crop Health"], dependencies=[Depends(require_review_workflow)])
 
 
 @router.post("/diagnose", response_model=DiagnosisResponse, status_code=status.HTTP_200_OK)

@@ -1,255 +1,99 @@
-# AgriRoots
+# AgriRoots extension-office advisory workspace
 
-AgriRoots is an AI-assisted farming advisory app for Ethiopian farmers. It supports chat-based agricultural guidance, crop disease diagnosis, weather/soil-aware recommendations, farm risk alerts, OTP authentication, English voice, Amharic voice, a custom sorghum disease model, and a custom enset disease model.
+An Ethiopian extension-office prototype for sourced planting/hold decisions and crop inspection: select a household cluster, gather evidence with a local open-weights agent, inspect a sourced draft, approve an exact version, then explicitly release it to its farmer recipients. The agent stops at officer review. The demonstration uses labelled synthetic households and reviewed demonstration guidance; no real participating office or field validation is claimed.
 
-- Frontend URL example: https://agriroots.example.com/
-- Backend API URL example: https://api.agriroots.example.com/
-- Frontend hosting: Vercel
-- Backend hosting: DigitalOcean Ubuntu
+## Start the local demonstration
 
-## Features
-
-- Phone-number OTP registration, login, password reset, and phone change verification.
-- Farmer onboarding with location, preferred language, experience level, goals, and crops grown.
-- AI chat agent for crop, fertilizer, weather, and general farming advice.
-- Crop image diagnosis:
-    - Gemini image triage decides whether an image is a plant, sorghum, enset, a supported crop, or unsupported.
-    - Sorghum is routed to AgriRoots' own EfficientNet-B0 PyTorch model.
-    - Enset is routed to AgriRoots' own EfficientNet-B0 PyTorch model.
-    - Supported non-sorghum, non-enset crops are routed to Kindwise Crop.health.
-- Voice:
-    - English STT/TTS uses Google Cloud Speech-to-Text and Text-to-Speech.
-    - Amharic STT/TTS and Amharic-English translation use Hasab AI.
-- Open-Meteo weather, iSDA soil context, SMS Ethiopia OTP delivery, and in-app farm risk alerts.
-
-## Architecture
-
-```text
-frontend/                                   React + Vite + Capacitor
-backend/                                    FastAPI + SQLAlchemy backend
-backend/src/model_server.py
-                                            Separate FastAPI service for the sorghum model
-backend/src/enset_model_server.py
-                                            Separate FastAPI service for the enset model
-backend/model/                              PyTorch model files location
-```
-
-Runtime layout:
-
-```text
-Vercel frontend -> DigitalOcean backend API -> external APIs
-                                               |
-                                               -> local/private sorghum model server
-                                               -> local/private enset model server
-```
-
-In production, the frontend calls the public backend API domain. The sorghum and enset model servers run as separate services, and the backend calls them using `SORGHUM_MODEL_SERVER_URL` and `ENSET_MODEL_SERVER_URL`.
-
-## Local Development
-
-### Backend
+From the repository root:
 
 ```bash
-cd backend
-source .venv/Scripts/activate
-python -m uvicorn src.main:app --reload --host 0.0.0.0 --port 8000
+python3 scripts/demo.py
 ```
 
-Health check:
+Requirements: Linux x86_64, Python 3.11+ plus **uv** (recommended; selects Python 3.13), or Python 3.11–3.13 with venv/pip; Node.js 22.12+ and npm; an internet connection. Tested host: Intel i3-1315U, 12 GB RAM, CPU only. Allow at least 2 GB free RAM and 3 GB free disk for dependencies, caches and inference. GPU support is not required. Other platforms require a separately built pinned llama.cpp runtime.
+
+First start installs exact Python/npm dependencies, downloads approximately 640 MB of weights and an 18 MB runtime, verifies checksums, runs migrations, creates a dedicated synthetic database and builds the frontend. Download time depends on the connection. The launcher waits for usable login accounts, authenticated model identity, both real MCP stdio handshakes, live weather, public guidance and frontend/API readiness. An unavailable upstream source prevents readiness. Later starts reuse database/model storage; the frontend build is reproducible through `npm ci`.
+
+Open **http://127.0.0.1:4173/workspace** after `READY` appears. All services bind to loopback. The native launcher is intended for a local demo, and does not require Docker.
+
+| Account | Phone | Password |
+| --- | --- | --- |
+| Officer | +251900000002 | SyntheticDemo123! |
+| Farmer | +251900000003 | SyntheticDemo123! |
+| Administrator | +251900000001 | SyntheticDemo123! |
+
+These public credentials are only for the isolated demo. The launcher creates random local authentication/model keys and strips cloud credentials from the synthetic runtime. It does not use an existing production database or backend `.env`. Press Ctrl-C to stop all child services. The SQLite database, keys, downloads and service logs persist in ignored `backend/runtime/`; do not publish that directory. Existing demo data is preserved. If synthetic seasons have expired, update their records in the workspace before restarting. A partial seed or broken login fails readiness instead of silently overwriting data.
+
+For a readiness-and-shutdown check:
 
 ```bash
-curl http://127.0.0.1:8000/health
+python3 scripts/demo.py --check
 ```
 
-### Sorghum Model Server
+A failure points to logs in `backend/runtime/{api,worker,model,frontend}.log`. Ports 4173, 8000 and 8081 must be available. Initial downloads need public PyPI/npm/GitHub/Hugging Face access; advisory runs need Open-Meteo and approved NRCS guidance (or its valid cache). Startup from a separate source tree with a fresh Python environment, npm cache, database and keys passed in 56.94 seconds, reusing verified model downloads and Python package caches. A fully uncached Ubuntu CI job is provided in `.github/workflows/verify.yml`; its remote execution is not claimed.
 
-Place the model checkpoint at:
+## Demonstrate the workflow
 
-```text
-backend/model/agriroots_sorghum_efficientnet_b0_best.pt
-```
+1. Sign in as the officer; open `/workspace`. Under **Agent advisory runs**, choose **SYNTHETIC cluster** and start a run.
+2. Inspect progress, model/tool calls, warning messages and the five evidence snapshots. Planned crops use explicit officer-reviewed planting rules to draft a plant/hold decision with numerical reasons. Growing crops receive inspection advice. The agent cannot approve or release advice.
+3. Open the saved draft in the review queue. Edit into a new version or reject with a reason as needed. Approve the exact version, then separately select **Release approved version to farmers**.
+4. Sign in as the farmer and open `/advisories`. Only released versions addressed to that account appear, with the reviewed wording and evidence.
 
-Run:
+Edits create a new draft requiring approval. Previous releases and audit history remain available. General chat provides a small educational catalogue and queues household-specific requests for the officer. Existing direct AI recommendation, diagnosis, alerts and arbitrary speech-delivery routes require review. The repository's legacy crop models are not needed by this demo.
+
+Released audio works locally without cloud keys using pinned eSpeak NG in a bounded subprocess. English and Amharic synthesis and real browser audio playback are verified; pronunciation quality still needs native-speaker review. The endpoint synthesizes only the released action, reason and uncertainty or an already-reviewed translation, and records the exact version/language in the audit. Optional cloud speech requires `ADVISORY_AUDIO_PROVIDER=cloud`, legacy speech dependencies and provider credentials; the synthetic launcher always uses local speech.
+
+## Reproduce verification
+
+After startup has created the demo environment:
 
 ```bash
-cd backend
-source .venv/Scripts/activate
-python -m uvicorn src.model_server:app --reload --host 127.0.0.1 --port 8001
+backend/runtime/demo-venv/bin/python scripts/evaluate.py
+npm --prefix frontend run lint
+npm --prefix frontend run build
+npm --prefix scripts/browser ci
+CHROME_PATH=/path/to/chrome npm --prefix scripts/browser test
 ```
 
-Test:
+The browser check uses actual login forms, a real model run, evidence inspection, rejection, correction, approval, explicit release and farmer viewing. It also decodes and plays real local speech. Default Chrome path: `/opt/google/chrome/chrome`. It creates and releases **synthetic** advisories, so run it only against the launcher's local demo. Browser dependencies are separate from production frontend dependencies.
+
+To record an unedited demonstration with the same real agent and scripted officer controls:
 
 ```bash
-curl -X POST "http://127.0.0.1:8001/predict?top_k=3" -F "image=@/path/to/sorghum.jpg"
+cd scripts/browser
+npx playwright install ffmpeg
+npm run demo
 ```
 
-### Enset Model Server
+The existing [unedited recording](demo/officer-to-farmer.webm) is **85.56 seconds**. It shows a real planting/hold decision, weather timeout and successful retry, readable review pauses and actual local audio playback. The earlier inspection recording is preserved as `demo/phase3-inspection.webm`. New recordings use that same path; reports and screenshots go to `backend/validation/`. The report measures runtime and flags whether the recording is under three minutes. Scripted review demonstrates the controls; it is not agronomist endorsement. Public hosting is not configured.
 
-Place the model checkpoint at:
+See [EVALS.md](EVALS.md) for real outcomes, failures, model repetition, latency and cost assumptions; [ARCHITECTURE.md](ARCHITECTURE.md) for trust boundaries and recovery; [SUBMISSION.md](SUBMISSION.md) for the description draft and outstanding submission facts; and [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for provenance. Original code is licensed under [Apache-2.0](LICENSE), with owner-confirmed redistribution rights and third-party terms retained.
 
-```text
-backend/model/enset_efficientnet_b0_final_best.pt
-```
+## Configuration and provenance
 
-Run:
+The one-command demo uses `backend/requirements-demo.lock`, the frontend npm lock, and `backend/local_model.lock.json`. Qwen3-0.6B Q8_0 runs through pinned llama.cpp on loopback, with four CPU threads, one slot and an 8,192-token context. Both planning and drafting use this model without a Gemini fallback. Custom and borrowed MCP servers are spawned over stdio within each run. SQLite stores durable queue state, immutable advisory versions, audit events and evidence.
+
+Manual setup, administrator provisioning, optional integrations and production configuration are documented in [backend/PHASE1.md](backend/PHASE1.md), [backend/PHASE2.md](backend/PHASE2.md), and the secret-free [backend/.env.example](backend/.env.example). Original heavyweight classifier dependencies remain in `backend/requirements.txt`; the advisory demo deliberately has its own coherent lock.
+
+Every demo household and local guidance record is synthetic. Weather is live and dated; public NRCS material is attributed general soil-health background. The model repeatedly invented claims of completed fieldwork during testing. Generated narrative is therefore kept in private logs; farmer-facing actions, titles, uncertainty and missing-information wording are controlled. Planting/hold eligibility comes from officer-entered rainfall, temperature, wind and calendar rules. No universal agronomic thresholds are supplied. Fresh demo thresholds are explicitly synthetic. Pesticide/fertilizer prescribing remains outside scope.
+
+The specific target office remains unconfirmed, and no officer feedback has been collected. PostgreSQL 18.6 passed the same 60-test suite as SQLite, including fresh/legacy migrations and concurrent release. A real five-plot task completed in 219.75 seconds on the stated CPU host; this is one household with five plots, not a production SLA. Physical host country, production deployment and competition eligibility remain unverified. No public deployment URL or real-office use is claimed.
+
+
+## Planting rules, capacity and cost
+
+Set a season's stage to **planned** and enter a matching reviewed guidance/calendar with explicit planting/hold actions and a complete planting rule. Choose rainfall days (1–3), minimum/maximum accumulated rain, maximum temperature and wind. These values must come from the cited office guidance. The validator requires the full forecast window; unsuitable rain, heat, wind or dates produce a hold decision, and conflicting pest reports require a field visit. Rules and numerical reasons are preserved with the advisory's evidence. Growing seasons cannot receive planting instructions. Each plot is drafted and checkpointed independently, with exactly five matching citations.
+
+Run `python3 scripts/demo.py --compute-cost-per-hour 0.10` to use an explicitly assumed $0.10/hour compute rate. Default cost status is **unpriced**, not free. Model logs and CLI reports record the rate, token usage, latency, inference estimate and exclusions. The five-plot check cost $0.006042 of inference in that scenario; this is not a measured hosting bill.
+
+Additional reproducible checks:
 
 ```bash
-cd backend
-source .venv/Scripts/activate
-python -m uvicorn src.enset_model_server:app --reload --host 127.0.0.1 --port 8002
+python3 scripts/verify_clean_start.py --reuse-model-downloads
+# Omit the flag to download model/runtime archives again.
+AGRIROOTS_TEST_DATABASE_URL=postgresql+psycopg://USER:PASSWORD@127.0.0.1:5432/DISPOSABLE_TEST_DB backend/runtime/demo-venv/bin/python scripts/evaluate.py --output backend/validation/my-postgres.json
 ```
 
-Test:
+The PostgreSQL test database is **disposable**: tests drop/recreate its application tables. They never use the normal `DATABASE_URL` as a test fallback. CI runs SQLite/PostgreSQL tests and frontend checks; its manually enabled cold-start job additionally downloads the real model and executes the browser workflow. GitHub Actions are pinned to immutable commits.
 
-```bash
-curl -X POST "http://127.0.0.1:8002/predict?top_k=3" -F "image=@/path/to/enset.jpg"
-```
-
-### Frontend
-
-```bash
-cd frontend
-npm install
-cp .env.example .env
-npm run dev
-```
-
-Local frontend env:
-
-```env
-VITE_API_BASE_URL=http://127.0.0.1:8000
-VITE_DEBUG=false
-```
-
-## Environment Configuration
-
-Do not commit `.env` files, database files, service-account JSON files, or production secrets.
-
-### Backend `.env`
-
-Core:
-
-```env
-APP_NAME=AgriRoots Backend
-DEBUG=false
-DATABASE_URL=sqlite:///./agriroots.db
-JWT_SECRET_KEY=replace_with_a_long_random_secret_at_least_16_chars
-JWT_ALGORITHM=HS256
-ACCESS_TOKEN_EXPIRE_MINUTES=10080
-```
-
-OTP and SMS:
-
-```env
-OTP_EXPIRE_MINUTES=5
-OTP_MAX_ATTEMPTS=5
-PHONE_CHANGE_COOLDOWN_SECONDS=60
-SMS_ETHIOPIA_API_KEY=your_sms_ethiopia_api_key
-SMS_ETHIOPIA_BASE_URL=https://smsethiopia.et/api
-```
-
-AI and advisory integrations:
-
-```env
-GEMINI_API_KEY=your_gemini_api_key
-GEMINI_MODEL=gemini-3.5-flash
-GEMINI_TIMEOUT_SECONDS=20
-ISDA_USERNAME=your_isda_username
-ISDA_PASSWORD=your_isda_password
-KINDWISE_CROP_HEALTH_API_KEY=your_crop_health_api_key
-```
-
-Sorghum model:
-
-```env
-SORGHUM_MODEL_PATH=backend/model/agriroots_sorghum_efficientnet_b0_best.pt
-SORGHUM_MODEL_SERVER_URL=http://127.0.0.1:8001
-SORGHUM_MODEL_SERVER_TIMEOUT_SECONDS=30
-PLANT_ID_SORGHUM_THRESHOLD=0.35
-PLANT_ID_SUPPORTED_CROP_THRESHOLD=0.40
-SORGHUM_CONFIDENT_THRESHOLD=0.60
-SORGHUM_UNCERTAIN_THRESHOLD=0.40
-```
-
-Enset model:
-
-```env
-ENSET_MODEL_PATH=backend/model/enset_efficientnet_b0_final_best.pt
-ENSET_MODEL_SERVER_URL=http://127.0.0.1:8002
-ENSET_MODEL_SERVER_TIMEOUT_SECONDS=30
-PLANT_ID_ENSET_THRESHOLD=0.35
-ENSET_CONFIDENT_THRESHOLD=0.60
-ENSET_UNCERTAIN_THRESHOLD=0.40
-```
-
-Voice:
-
-```env
-GOOGLE_CLOUD_PROJECT=your_google_cloud_project_id
-GOOGLE_APPLICATION_CREDENTIALS=/absolute/path/to/google-service-account.json
-GOOGLE_CLOUD_LOCATION=global
-GOOGLE_STT_LANGUAGE_CODE=en-US
-GOOGLE_STT_MODEL=latest_short
-GOOGLE_TTS_LANGUAGE_CODE=en-US
-GOOGLE_TTS_VOICE_NAME=en-US-Chirp3-HD-Aoede
-GOOGLE_TTS_AUDIO_ENCODING=MP3
-GOOGLE_TTS_SPEAKING_RATE=0.96
-
-HASAB_API_KEY=your_hasab_api_key
-HASAB_API_BASE_URL=https://api.hasab.ai/api
-HASAB_TIMEOUT_SECONDS=60
-HASAB_AMHARIC_LANGUAGE_CODE=amh
-HASAB_TTS_AMHARIC_SPEAKER_NAME=Selam
-```
-
-Debug-only reset endpoint:
-
-```env
-DEBUG_RESET_TOKEN=replace_with_debug_reset_token
-```
-
-### Frontend `.env`
-
-Production Vercel env:
-
-```env
-VITE_API_BASE_URL=https://api.agriroots.example.com
-VITE_DEBUG=false
-```
-
-## Deployment
-
-The `example.com` URLs below are placeholders. Configure your own frontend and API domains, then set `VITE_API_BASE_URL` to your deployed API URL.
-
-Example frontend URL for a Vercel deployment:
-
-```text
-https://agriroots.example.com/
-```
-
-Example backend API URL for a DigitalOcean Ubuntu deployment:
-
-```text
-https://api.agriroots.example.com/
-```
-
-The sorghum and enset model servers run as separate backend services and are called by the main backend through `SORGHUM_MODEL_SERVER_URL` and `ENSET_MODEL_SERVER_URL`. Both model services should remain private unless deployed behind their own protected endpoints.
-
-SQLite can be used for demos, but PostgreSQL is recommended for production:
-
-```env
-DATABASE_URL=postgresql+psycopg2://agriroots_user:strong_password@127.0.0.1:5432/agriroots
-```
-
-## Database Notes
-
-The backend uses SQLAlchemy models and creates tables at startup.
-
-Uploaded crop images and voice recordings are not permanently stored by AgriRoots in the current implementation. Chat messages store text/transcripts and metadata.
-
-## Security Notes
-
-- Keep `DEBUG=false` in production.
-- Keep the sorghum and enset model servers private unless they are separately protected.
-- Use HTTPS for deployed frontend and backend.
-- Restrict DigitalOcean firewall ports to SSH, HTTP, and HTTPS.
+For a separate synthetic capacity fixture, run `python -m src.cli.seed_benchmark --plots 5` from `backend/` with your synthetic database configured, then pass its printed cluster ID to `python -m src.cli.check_advisory_run --cluster-id UUID --output validation/my-capacity.json`. Add `--planned` to seed planting/hold examples. The fixture refuses databases containing non-synthetic households and creates a separate labelled household/account. Reports state the actual household/plot counts, latency and cost assumptions. Never point these commands at production records.

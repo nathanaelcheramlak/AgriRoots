@@ -1,0 +1,8 @@
+{
+  "executed_at": "2026-10-15T16:11:27.932285+00:00",
+  "kind": "live borrowed MCP Fetch with restricted proxy and pure-Python parser",
+  "source": "https://www.nrcs.usda.gov/conservation-basics/natural-resource-concerns/soil/soil-health",
+  "characters": 4000,
+  "sha256": "b01956b69c1d314e51ae2ff9a570f5430bb9aae66626bca84af7fcaf937c89e0",
+  "passed": true
+}

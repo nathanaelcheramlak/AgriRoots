@@ -1,0 +1,83 @@
+{
+  "executed_at": "2026-10-15T15:45:54.798874+00:00",
+  "data": "labelled synthetic households",
+  "host": {
+    "system": "Linux",
+    "architecture": "x86_64",
+    "processor": ""
+  },
+  "run_id": "b6d2221c-8ebe-4570-824d-099d3a47ef8c",
+  "status": "failed",
+  "stage": "get_public_guidance",
+  "error": {
+    "code": "upstream_failure",
+    "message": "Client error '400 Bad Request' for url 'http://127.0.0.1:8081/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400",
+    "retryable": true
+  },
+  "model": {
+    "provider": "local-llama.cpp",
+    "model": "qwen3-0.6b-q8",
+    "revision": "23749fefcc72300e3a2ad315e1317431b06b590a",
+    "temperature": 0,
+    "seed": 42,
+    "max_tokens": 1400,
+    "context_characters": 24000,
+    "cloud_fallback": false
+  },
+  "elapsed_seconds": 7.75,
+  "advisory_id": null,
+  "calls": [
+    {
+      "tool": "get_cluster_plot_history",
+      "duration_ms": 68,
+      "error": null,
+      "usage": {},
+      "estimated_cost_usd": 0.0
+    },
+    {
+      "tool": "model.plan",
+      "duration_ms": 4982,
+      "error": null,
+      "usage": {
+        "completion_tokens": 62,
+        "prompt_tokens": 440,
+        "total_tokens": 502,
+        "prompt_tokens_details": {
+          "cached_tokens": 439
+        }
+      },
+      "estimated_cost_usd": 0.0
+    },
+    {
+      "tool": "get_crop_risk_context",
+      "duration_ms": 34,
+      "error": null,
+      "usage": {},
+      "estimated_cost_usd": 0.0
+    },
+    {
+      "tool": "get_weather_evidence",
+      "duration_ms": 984,
+      "error": null,
+      "usage": {},
+      "estimated_cost_usd": 0.0
+    },
+    {
+      "tool": "borrowed_mcp.fetch",
+      "duration_ms": 29,
+      "error": null,
+      "usage": {},
+      "estimated_cost_usd": 0.0
+    },
+    {
+      "tool": "model.draft",
+      "duration_ms": 40,
+      "error": {
+        "code": "model_failure",
+        "message": "Local structured inference failed"
+      },
+      "usage": {},
+      "estimated_cost_usd": 0.0
+    }
+  ]
+}

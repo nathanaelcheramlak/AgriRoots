@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "version_id": "561dd079-e72b-4e15-96fb-80053fe3a563",
+  "language": "en",
+  "media_type": "audio/wav",
+  "duration_seconds": 54.857,
+  "bytes": 2419232,
+  "audit_actor": "authorized synthetic farmer",
+  "audit_details": {
+    "version_id": "561dd079-e72b-4e15-96fb-80053fe3a563",
+    "language": "en",
+    "provider": "local",
+    "duration_ms": 67
+  },
+  "artifact": "demo/released-example.wav"
+}

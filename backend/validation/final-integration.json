@@ -1,0 +1,114 @@
+{
+  "executed_at": "2026-10-15T16:52:43.165303+00:00",
+  "kind": "deterministic integration; explicit test model, synthetic forecasts and cached public document; real custom MCP stdio",
+  "voice": "exact reviewed-text authorization test plus real local English/Amharic PCM synthesis; browser playback recorded separately",
+  "database": "SQLite",
+  "tests": 60,
+  "failed": 0,
+  "skipped": 0,
+  "exit_code": 0,
+  "tasks": [
+    {
+      "task": "complete_consistent_records",
+      "test": "test_real_mcp_graph_stops_at_review_and_is_idempotent",
+      "passed": true,
+      "seconds": 0.965
+    },
+    {
+      "task": "missing_plot_history",
+      "test": "test_missing_history_blocks_draft",
+      "passed": true,
+      "seconds": 0.871
+    },
+    {
+      "task": "stale_weather_and_unsupported_advice",
+      "test": "test_candidate_validation_rejects_stale_invented_and_inapplicable_support",
+      "passed": true,
+      "seconds": 0.99
+    },
+    {
+      "task": "weather_unavailable",
+      "test": "test_graph_weather_retries_are_bounded",
+      "passed": true,
+      "seconds": 0.9
+    },
+    {
+      "task": "conflicting_pest_reports",
+      "test": "test_conflicting_pest_reports_require_field_visit",
+      "passed": true,
+      "seconds": 0.97
+    },
+    {
+      "task": "cross_office_access",
+      "test": "test_scope_and_privilege_escalation",
+      "passed": true,
+      "seconds": 0.147
+    },
+    {
+      "task": "unapproved_release_and_reviewed_audio",
+      "test": "test_review_approval_release_and_exact_audio",
+      "passed": true,
+      "seconds": 0.122
+    },
+    {
+      "task": "edit_after_approval",
+      "test": "test_new_version_invalidates_approval_and_preserves_history",
+      "passed": true,
+      "seconds": 0.101
+    },
+    {
+      "task": "concurrent_release",
+      "test": "test_concurrent_release_publishes_once",
+      "passed": true,
+      "seconds": 0.125
+    },
+    {
+      "task": "malicious_document_and_model_output",
+      "test": "test_untrusted_output_cannot_add_approval_or_recipient_fields",
+      "passed": true,
+      "seconds": 0.922
+    },
+    {
+      "task": "restart_after_save",
+      "test": "test_interrupted_save_resumes_without_another_draft",
+      "passed": true,
+      "seconds": 1.655
+    },
+    {
+      "task": "fresh_and_legacy_migrations",
+      "test": "test_migrations_fresh_and_legacy_copy",
+      "passed": true,
+      "seconds": 0.03
+    },
+    {
+      "task": "reject_cancel_and_correct",
+      "test": "test_reject_cancel_replace_and_record_audits",
+      "passed": true,
+      "seconds": 0.128
+    },
+    {
+      "task": "unverified_generated_claims",
+      "test": "test_generated_claims_are_retained_privately_and_excluded_from_advisory",
+      "passed": true,
+      "seconds": 0.939
+    },
+    {
+      "task": "five_plot_citations_and_recovery",
+      "test": "test_five_plots_have_independent_citations_and_resumable_drafts",
+      "passed": true,
+      "seconds": 1.103
+    },
+    {
+      "task": "planting_rules_and_coverage",
+      "test": "test_planting_rules_are_required_and_weather_window_is_complete",
+      "passed": true,
+      "seconds": 0.095
+    },
+    {
+      "task": "offline_speech_limits",
+      "test": "test_local_speech_rejects_unreviewed_languages_and_oversized_text",
+      "passed": true,
+      "seconds": 0.01
+    }
+  ]
+}

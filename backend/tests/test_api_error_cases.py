@@ -45,22 +45,22 @@ def test_recommendations_diagnosis_and_alerts_documented_error_cases(client):
         files={"image": ("note.txt", b"not-an-image", "text/plain")},
         headers=user["headers"],
     )
-    assert invalid_file_response.status_code == 400
-    assert invalid_file_response.json()["detail"] == "Uploaded file must be an image."
+    assert invalid_file_response.status_code == 409
+    assert "requires officer review" in invalid_file_response.json()["detail"]
 
     read_missing_alert = client.patch(
         "/api/alerts/00000000-0000-0000-0000-000000000000/read",
         headers=user["headers"],
     )
-    assert read_missing_alert.status_code == 404
-    assert read_missing_alert.json()["detail"] == "Alert not found"
+    assert read_missing_alert.status_code == 409
+    assert "requires officer review" in read_missing_alert.json()["detail"]
 
     delete_missing_alert = client.delete(
         "/api/alerts/00000000-0000-0000-0000-000000000000",
         headers=user["headers"],
     )
-    assert delete_missing_alert.status_code == 404
-    assert delete_missing_alert.json()["detail"] == "Alert not found"
+    assert delete_missing_alert.status_code == 409
+    assert "requires officer review" in delete_missing_alert.json()["detail"]
 
 
 def test_chat_documented_error_cases(client):

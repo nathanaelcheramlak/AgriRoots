@@ -4,7 +4,9 @@ from uuid import UUID
 from fastapi import UploadFile
 from sqlalchemy.orm import Session
 
-from src.agent.orchestrator import run_agriroots_agent
+from sqlalchemy import select
+from src.db.models.workspace import Membership, WorkspaceRecord
+from src.services.delivery_policy import EDUCATION, EDUCATION_AM, REVIEW_NOTICE, REVIEW_NOTICE_AM
 from src.api.schemas.chat import (
     ChatDeleteResponse,
     ChatMessageResponse,
@@ -16,7 +18,6 @@ from src.api.schemas.chat import (
 from src.db.models.chat import ChatMessage, ChatSession
 from src.db.models.user import User
 from src.integrations.voice.google_stt import transcribe_audio
-from src.integrations.voice.hasab_client import translate_text_with_hasab
 from src.repositories.chat_repository import ChatRepository
 from src.repositories.user_repository import UserRepository
 from src.services.exceptions import ServiceError
@@ -35,6 +36,13 @@ def to_session_response(session: ChatSession) -> ChatSessionResponse:
 
 
 def to_message_response(message: ChatMessage) -> ChatMessageResponse:
+    # Pre-workflow assistant messages were never reviewed and must not be replayed.
+    if message.sender == "assistant" and message.content_type != "education":
+        return ChatMessageResponse(
+            message_id=message.message_id, session_id=message.session_id,
+            sender=message.sender, content=REVIEW_NOTICE, content_type="text",
+            sequence_no=message.sequence_no, created_at=message.created_at,
+        )
     return ChatMessageResponse(
         message_id=message.message_id,
         session_id=message.session_id,
@@ -46,22 +54,6 @@ def to_message_response(message: ChatMessage) -> ChatMessageResponse:
         language_used=message.language_used,
         sequence_no=message.sequence_no,
         created_at=message.created_at,
-    )
-
-
-def _translate_amharic_to_english(text: str) -> str:
-    return translate_text_with_hasab(
-        text,
-        source_language="am-ET",
-        target_language="en-US",
-    )
-
-
-def _translate_english_to_amharic(text: str) -> str:
-    return translate_text_with_hasab(
-        text,
-        source_language="en-US",
-        target_language="am-ET",
     )
 
 
@@ -107,10 +99,8 @@ class ChatService:
         if image is None and audio is None and not text:
             raise ServiceError(400, "Provide message, image, or audio")
 
-        image_bytes: bytes | None = None
-        image_mime_type: str | None = None
         if image is not None:
-            image_bytes, image_mime_type = read_image_upload(image)
+            read_image_upload(image)
 
         profile = self.users.get_profile(current_user.user_id)
         effective_language = language_code or (profile.preferred_language if profile else None)
@@ -129,7 +119,7 @@ class ChatService:
                     language_code=bcp47_language,
                     filename=audio.filename or "voice-message.webm",
                     content_type=audio.content_type or "audio/webm",
-                    translate_to_english=normalized_language == "am",
+                    translate_to_english=False,
                 )
             except Exception as exc:
                 raise ServiceError(502, f"Voice transcription failed: {exc}") from exc
@@ -145,27 +135,34 @@ class ChatService:
         user_content = text if text else "[image uploaded for diagnosis]"
         if not user_content_english and normalized_language == "en":
             user_content_english = user_content
-        elif not user_content_english and normalized_language == "am" and text:
-            try:
-                user_content_english = _translate_amharic_to_english(user_content)
-            except Exception as exc:
-                raise ServiceError(502, f"Amharic-to-English translation failed: {exc}") from exc
-
-        chosen_route, assistant_text_english = run_agriroots_agent(
-            db=self.db,
-            session_id=session.session_id,
-            profile=profile,
-            message=user_content_english or user_content,
-            image_bytes=image_bytes,
-            image_mime_type=image_mime_type,
-            language_code=bcp47_language,
+        educational_key = user_content.strip().lower()
+        catalogue = EDUCATION_AM if educational_key in EDUCATION_AM else EDUCATION
+        educational = catalogue.get(educational_key) if image is None and audio is None else None
+        chosen_route = "education" if educational else "officer_review_required"
+        assistant_text_english = (
+            "General education: " + educational + " This is not a household recommendation."
+            if educational else REVIEW_NOTICE
         )
         assistant_text = assistant_text_english
-        if normalized_language == "am":
-            try:
-                assistant_text = _translate_english_to_amharic(assistant_text_english)
-            except Exception as exc:
-                raise ServiceError(502, f"English-to-Amharic translation failed: {exc}") from exc
+        if catalogue is EDUCATION_AM and educational:
+            assistant_text = "አጠቃላይ ትምህርት፦ " + educational + " ይህ ለቤተሰብዎ የተሰጠ ምክር አይደለም።"
+        elif normalized_language == "am" and not educational:
+            assistant_text = REVIEW_NOTICE_AM
+        if not educational:
+            membership = self.db.scalar(select(Membership).where(Membership.user_id == current_user.user_id))
+            if membership and membership.role == "farmer":
+                request = WorkspaceRecord(office_id=membership.office_id, kind="request",
+                    created_by=current_user.user_id,
+                    data={"farmer_user_id": current_user.user_id, "message": user_content,
+                          "has_image": image is not None, "has_audio": audio is not None,
+                          "status": "needs_officer", "language": normalized_language})
+                self.db.add(request)
+                self.db.flush()
+                from src.services.workspace_service import WorkspaceService
+                WorkspaceService(self.db, current_user).event(
+                    membership.office_id, request.id, "review_requested", session_id=session.session_id)
+                assistant_text += (" ጥያቄዎ ለባለሙያ ግምገማ ተመዝግቧል።" if normalized_language == "am"
+                                   else " Your request has been added to the office review queue.")
 
         next_seq = self.chats.next_sequence_no(session.session_id)
         user_message = ChatMessage(
@@ -182,8 +179,8 @@ class ChatService:
             session_id=session.session_id,
             sender="assistant",
             content=assistant_text,
-            content_type="text",
-            message_content_english=assistant_text_english,
+            content_type="education",
+            message_content_english=assistant_text_english if catalogue is EDUCATION else None,
             media_url=None,
             language_used=language_used,
             sequence_no=next_seq + 1,

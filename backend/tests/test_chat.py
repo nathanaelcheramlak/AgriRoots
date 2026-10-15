@@ -5,13 +5,6 @@ def test_chat_session_lifecycle_and_message_send(client, monkeypatch):
     user = register_user(client, phone_number="0911000002")
     complete_onboarding(client, user)
 
-    def fake_agent(**kwargs):
-        assert kwargs["message"] == "How can I improve maize yield?"
-        assert kwargs["image_bytes"] is None
-        return "general", "Use clean seed, proper spacing, and timely weeding."
-
-    monkeypatch.setattr("src.services.chat_service.run_agriroots_agent", fake_agent)
-
     create_response = client.post(
         "/api/chat/sessions",
         json={"title": "Maize support"},
@@ -27,10 +20,10 @@ def test_chat_session_lifecycle_and_message_send(client, monkeypatch):
     )
     assert send_response.status_code == 200
     body = send_response.json()
-    assert body["chosen_route"] == "general"
+    assert body["chosen_route"] == "officer_review_required"
     assert body["user_message"]["sequence_no"] == 1
     assert body["assistant_message"]["sequence_no"] == 2
-    assert body["assistant_message"]["content"] == "Use clean seed, proper spacing, and timely weeding."
+    assert "requires officer review" in body["assistant_message"]["content"]
 
     messages_response = client.get(
         f"/api/chat/sessions/{session_id}/messages?limit=10&offset=0",

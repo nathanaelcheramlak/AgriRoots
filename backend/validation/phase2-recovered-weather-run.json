@@ -1,0 +1,117 @@
+{
+  "executed_at": "2026-10-15T15:49:24.825483+00:00",
+  "data": "labelled synthetic households",
+  "host": {
+    "system": "Linux",
+    "architecture": "x86_64",
+    "processor": ""
+  },
+  "run_id": "4d400304-4c19-402c-ac4e-abe50b77d160",
+  "status": "pending_review",
+  "stage": "pending_review",
+  "error": null,
+  "model": {
+    "provider": "local-llama.cpp",
+    "model": "qwen3-0.6b-q8",
+    "revision": "23749fefcc72300e3a2ad315e1317431b06b590a",
+    "temperature": 0,
+    "seed": 42,
+    "max_tokens": 1400,
+    "context_characters": 24000,
+    "cloud_fallback": false
+  },
+  "elapsed_seconds": 99.02,
+  "advisory_id": "4844eaed-c0ac-4a7c-9cfd-46e326036d81",
+  "calls": [
+    {
+      "tool": "get_cluster_plot_history",
+      "duration_ms": 72,
+      "error": null,
+      "usage": {},
+      "estimated_cost_usd": 0.0
+    },
+    {
+      "tool": "model.plan",
+      "duration_ms": 4539,
+      "error": null,
+      "usage": {
+        "completion_tokens": 62,
+        "prompt_tokens": 440,
+        "total_tokens": 502,
+        "prompt_tokens_details": {
+          "cached_tokens": 439
+        }
+      },
+      "estimated_cost_usd": 0.0
+    },
+    {
+      "tool": "get_crop_risk_context",
+      "duration_ms": 29,
+      "error": null,
+      "usage": {},
+      "estimated_cost_usd": 0.0
+    },
+    {
+      "tool": "get_weather_evidence",
+      "duration_ms": 15333,
+      "error": {
+        "code": "upstream_unavailable",
+        "message": "Weather service unavailable or timed out",
+        "retryable": true
+      },
+      "usage": {},
+      "estimated_cost_usd": 0.0
+    },
+    {
+      "tool": "get_weather_evidence",
+      "duration_ms": 882,
+      "error": null,
+      "usage": {},
+      "estimated_cost_usd": 0.0
+    },
+    {
+      "tool": "borrowed_mcp.fetch",
+      "duration_ms": 34,
+      "error": null,
+      "usage": {},
+      "estimated_cost_usd": 0.0
+    },
+    {
+      "tool": "model.draft",
+      "duration_ms": 76393,
+      "error": null,
+      "usage": {
+        "completion_tokens": 413,
+        "prompt_tokens": 1542,
+        "total_tokens": 1955,
+        "prompt_tokens_details": {
+          "cached_tokens": 113
+        }
+      },
+      "estimated_cost_usd": 0.0
+    },
+    {
+      "tool": "save_advisory_draft",
+      "duration_ms": 41,
+      "error": null,
+      "usage": {},
+      "estimated_cost_usd": 0.0
+    }
+  ],
+  "saved_status": "pending_review",
+  "evidence_count": 5,
+  "recommendations": [
+    {
+      "action": "Inspect the crop and record visible symptoms for officer review.",
+      "evidence_ids": [
+        "757a5745-47f6-410d-91dc-c4c4acff6f60",
+        "d20f7c08-e8e0-4c41-9fc3-df62e03dd87d",
+        "3f531f9b-2fef-42e0-8468-71f2292741f4",
+        "8ddd3110-745a-47fb-9b59-4249f2c3a21f",
+        "14eb7bc4-5718-4f43-9d90-558979b4ec6e"
+      ],
+      "uncertainty": "The evidence shows that crops and drainage were inspected and verified, but there is no specific information about the current yield or conditions. Draft rationale: The plot is in a synthetic demonstration zone, and the evidence shows that crops and drainage were inspected and verified. The historical data confirms the crop's status, and the weather indicates no significant issues.",
+      "proposed_date": "2026-10-15"
+    }
+  ]
+}

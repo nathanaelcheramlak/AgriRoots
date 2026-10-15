@@ -23,7 +23,7 @@ const COPY = {
     preview: "Selected image preview",
     stopRecording: "Stop recording",
     recordVoice: "Record voice message",
-    placeholder: "Ask AgriRoots for advice...",
+    placeholder: "Ask a general question or request officer review...",
     sendMessage: "Send message",
     recording: "Recording...",
     processing: "Processing audio...",

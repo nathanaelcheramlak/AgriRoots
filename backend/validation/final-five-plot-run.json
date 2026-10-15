@@ -1,0 +1,241 @@
+{
+  "executed_at": "2026-10-15T16:45:22.979334+00:00",
+  "data": "labelled synthetic households",
+  "host": {
+    "system": "Linux",
+    "architecture": "x86_64",
+    "processor": ""
+  },
+  "run_id": "33dd2e39-0382-4cb6-8243-41862e9ca11c",
+  "status": "pending_review",
+  "stage": "pending_review",
+  "error": null,
+  "model": {
+    "provider": "local-llama.cpp",
+    "model": "qwen3-0.6b-q8",
+    "revision": "23749fefcc72300e3a2ad315e1317431b06b590a",
+    "temperature": 0,
+    "seed": 42,
+    "compute_cost_per_hour_usd": 0.1,
+    "cost_status": "estimated",
+    "max_tokens": 1400,
+    "context_characters": 24000,
+    "cloud_fallback": false
+  },
+  "elapsed_seconds": 219.75,
+  "advisory_id": "f21dea12-44dd-4755-93aa-1bc2a85ac185",
+  "calls": [
+    {
+      "tool": "get_cluster_plot_history",
+      "duration_ms": 42,
+      "error": null,
+      "usage": {},
+      "estimated_cost_usd": 0.0,
+      "public_source_cache_hits": null
+    },
+    {
+      "tool": "model.plan",
+      "duration_ms": 19771,
+      "error": null,
+      "usage": {
+        "completion_tokens": 59,
+        "prompt_tokens": 1754,
+        "total_tokens": 1813,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "estimated_cost_usd": 0.0005491920494997531,
+      "public_source_cache_hits": null
+    },
+    {
+      "tool": "get_crop_risk_context",
+      "duration_ms": 24,
+      "error": null,
+      "usage": {},
+      "estimated_cost_usd": 0.0,
+      "public_source_cache_hits": null
+    },
+    {
+      "tool": "get_weather_evidence",
+      "duration_ms": 1066,
+      "error": null,
+      "usage": {},
+      "estimated_cost_usd": 0.0,
+      "public_source_cache_hits": null
+    },
+    {
+      "tool": "borrowed_mcp.fetch",
+      "duration_ms": 21,
+      "error": null,
+      "usage": {},
+      "estimated_cost_usd": 0.0,
+      "public_source_cache_hits": [
+        true
+      ]
+    },
+    {
+      "tool": "model.draft.plot1",
+      "duration_ms": 37834,
+      "error": null,
+      "usage": {
+        "completion_tokens": 357,
+        "prompt_tokens": 1583,
+        "total_tokens": 1940,
+        "prompt_tokens_details": {
+          "cached_tokens": 113
+        }
+      },
+      "estimated_cost_usd": 0.0010509575631666747,
+      "public_source_cache_hits": null
+    },
+    {
+      "tool": "model.draft.plot2",
+      "duration_ms": 38170,
+      "error": null,
+      "usage": {
+        "completion_tokens": 378,
+        "prompt_tokens": 1637,
+        "total_tokens": 2015,
+        "prompt_tokens_details": {
+          "cached_tokens": 134
+        }
+      },
+      "estimated_cost_usd": 0.0010602822392777147,
+      "public_source_cache_hits": null
+    },
+    {
+      "tool": "model.draft.plot3",
+      "duration_ms": 38431,
+      "error": null,
+      "usage": {
+        "completion_tokens": 395,
+        "prompt_tokens": 1579,
+        "total_tokens": 1974,
+        "prompt_tokens_details": {
+          "cached_tokens": 134
+        }
+      },
+      "estimated_cost_usd": 0.0010675349711944163,
+      "public_source_cache_hits": null
+    },
+    {
+      "tool": "model.draft.plot4",
+      "duration_ms": 38033,
+      "error": null,
+      "usage": {
+        "completion_tokens": 382,
+        "prompt_tokens": 1638,
+        "total_tokens": 2020,
+        "prompt_tokens_details": {
+          "cached_tokens": 134
+        }
+      },
+      "estimated_cost_usd": 0.0010564751246945688,
+      "public_source_cache_hits": null
+    },
+    {
+      "tool": "model.draft.plot5",
+      "duration_ms": 45272,
+      "error": null,
+      "usage": {
+        "completion_tokens": 384,
+        "prompt_tokens": 1625,
+        "total_tokens": 2009,
+        "prompt_tokens_details": {
+          "cached_tokens": 134
+        }
+      },
+      "estimated_cost_usd": 0.0012575516553333728,
+      "public_source_cache_hits": null
+    },
+    {
+      "tool": "save_advisory_draft",
+      "duration_ms": 66,
+      "error": null,
+      "usage": {},
+      "estimated_cost_usd": 0.0,
+      "public_source_cache_hits": null
+    }
+  ],
+  "saved_status": "pending_review",
+  "evidence_count": 25,
+  "recommendations": [
+    {
+      "action": "SYNTHETIC benchmark plot 1: Inspect the crop and record visible symptoms for officer review.",
+      "evidence_ids": [
+        "545b50d6-4ab9-4d8d-ab8b-57e29b24af7e",
+        "5ff0fab0-e71d-44ab-8671-c03b89c90afe",
+        "dcd1e7da-65a8-4e6d-bebb-62cb15c8177e",
+        "04411849-decf-4fea-a43d-0b224874ac45",
+        "d8eabf0a-9288-4d9f-a342-c54f24858cb4"
+      ],
+      "uncertainty": "This draft uses dated records and forecasts. Current field conditions still require confirmation by the extension officer.",
+      "proposed_date": "2026-10-15",
+      "basis": "The recorded crop is already growing; local guidance supports inspection and officer follow-up."
+    },
+    {
+      "action": "SYNTHETIC benchmark plot 2: Inspect the crop and record visible symptoms for officer review.",
+      "evidence_ids": [
+        "e0514633-ba63-49ba-b8c2-7a56f82e4827",
+        "83710a86-74cf-436d-831d-7e2f45d6e54f",
+        "2a376046-de1b-4b86-8cc9-47eb886b3d71",
+        "2177bda3-9fd2-434a-9792-18be3a0c0fa6",
+        "3b5be471-0f86-4287-9c82-595d7a10dccf"
+      ],
+      "uncertainty": "This draft uses dated records and forecasts. Current field conditions still require confirmation by the extension officer.",
+      "proposed_date": "2026-10-15",
+      "basis": "The recorded crop is already growing; local guidance supports inspection and officer follow-up."
+    },
+    {
+      "action": "SYNTHETIC benchmark plot 3: Inspect the crop and record visible symptoms for officer review.",
+      "evidence_ids": [
+        "50698356-3c44-48ca-b63a-55b0d022f982",
+        "0fe7ad97-0ee3-4b94-8c71-c637a1b4e0ba",
+        "a796228e-81bd-4c14-82d9-a9584d42cf42",
+        "239c8a75-38ff-4496-b11c-905cd77b4470",
+        "fac9860f-3585-4ff0-8f81-18b0633b72bc"
+      ],
+      "uncertainty": "This draft uses dated records and forecasts. Current field conditions still require confirmation by the extension officer.",
+      "proposed_date": "2026-10-15",
+      "basis": "The recorded crop is already growing; local guidance supports inspection and officer follow-up."
+    },
+    {
+      "action": "SYNTHETIC benchmark plot 4: Inspect the crop and record visible symptoms for officer review.",
+      "evidence_ids": [
+        "1b61548e-20a8-4928-8af0-79ede035278e",
+        "25054108-0b37-4039-9216-2acf017319fc",
+        "4ac7c1c8-fbce-428c-bb1b-3ceff54ba0fa",
+        "82693940-63ba-48d7-93a7-a173aeb24e6d",
+        "949fabad-1c87-4596-b856-ae5625016c84"
+      ],
+      "uncertainty": "This draft uses dated records and forecasts. Current field conditions still require confirmation by the extension officer.",
+      "proposed_date": "2026-10-15",
+      "basis": "The recorded crop is already growing; local guidance supports inspection and officer follow-up."
+    },
+    {
+      "action": "SYNTHETIC benchmark plot 5: Inspect the crop and record visible symptoms for officer review.",
+      "evidence_ids": [
+        "e6c01c52-1760-43b7-9889-77f32537c24f",
+        "c947be63-e43b-4e56-b7f8-e890391a9784",
+        "c9437287-fdaf-4253-9abf-0bb3d792e152",
+        "6c4728c4-bca6-4362-b78f-06de5a54bcc7",
+        "44db7635-7886-4903-9958-cdae3a501b64"
+      ],
+      "uncertainty": "This draft uses dated records and forecasts. Current field conditions still require confirmation by the extension officer.",
+      "proposed_date": "2026-10-15",
+      "basis": "The recorded crop is already growing; local guidance supports inspection and officer follow-up."
+    }
+  ],
+  "plot_count": 5,
+  "household_count": 1,
+  "cost": {
+    "status": "estimated",
+    "assumed_hourly_host_usd": 0.1,
+    "model_seconds": 217.511,
+    "inference_usd": 0.006042,
+    "wall_time_host_usd": 0.006104,
+    "exclusions": "Provider fees, idle time, electricity and first-start downloads; rate is an operator assumption"
+  },
+  "under_fifteen_minutes": true
+}

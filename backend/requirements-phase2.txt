@@ -1,0 +1,4 @@
+# Install alongside requirements.txt. SDK 2.x is incompatible with this Fetch release.
+mcp==1.29.0
+mcp-server-fetch==2026.10.10
+langgraph==1.1.10

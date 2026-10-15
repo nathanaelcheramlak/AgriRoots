@@ -1,0 +1,26 @@
+.workspace { max-width: 1100px; margin: auto; padding: 1.5rem; line-height: 1.6; }
+.workspace nav, .workspace-actions { display: flex; flex-wrap: wrap; gap: 1rem; }
+.workspace nav a { text-decoration: underline; }
+.workspace h1 { font-size: 2rem; font-weight: 700; margin: 1.5rem 0; }
+.workspace h2 { font-size: 1.4rem; font-weight: 650; margin: 1rem 0; }
+.workspace h3 { font-size: 1.15rem; font-weight: 650; }
+.workspace section, .workspace article { margin: 1.5rem 0; padding: 1rem; border: 1px solid #78927c; border-radius: .6rem; }
+.workspace label { display: flex; flex-direction: column; margin: .6rem 0; text-transform: capitalize; }
+.workspace input, .workspace select, .workspace textarea { border: 1px solid #78927c; border-radius: .3rem; padding: .6rem; background: var(--background, #fff); color: inherit; width: 100%; }
+.workspace input[type=checkbox] { width: 1.5rem; height: 1.5rem; }
+.workspace textarea { min-height: 6rem; }
+.workspace select[multiple] { min-height: 7rem; }
+.workspace button { border: 1px solid #78927c; border-radius: .35rem; padding: .55rem .9rem; margin: .4rem .4rem .4rem 0; cursor: pointer; }
+.workspace button:disabled { opacity: .5; cursor: wait; }
+.workspace button.release { background: #205c36; color: white; }
+.workspace fieldset:not(.workspace-body) { border: 1px solid #78927c; padding: 1rem; margin: 1rem 0; }
+.workspace-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: .8rem; }
+.workspace dt { font-weight: 600; }
+.workspace dd { overflow-wrap: anywhere; white-space: pre-wrap; }
+.workspace dl > div { margin: .5rem 0; }
+.workspace summary { cursor: pointer; text-decoration: underline; margin: .6rem 0; }
+.workspace .workspace-error { border-left: 4px solid #a32626; padding: .8rem; }
+.workspace ol { list-style: decimal; padding-left: 1.6rem; }
+.workspace a:focus-visible, .workspace button:focus-visible, .workspace summary:focus-visible { outline: 3px solid #498cff; outline-offset: 3px; }
+
+.workspace .run-json { white-space: pre-wrap; overflow-wrap: anywhere; font-size: .8rem; }

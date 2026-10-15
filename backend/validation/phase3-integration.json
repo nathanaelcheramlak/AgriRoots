@@ -1,0 +1,95 @@
+{
+  "executed_at": "2026-10-15T16:15:42.337453+00:00",
+  "kind": "deterministic integration; explicit test model, synthetic forecasts and cached public document; real custom MCP stdio",
+  "voice": "provider test double verifies exact reviewed text; does not demonstrate actual synthesis/playback",
+  "tests": 48,
+  "failed": 0,
+  "skipped": 0,
+  "exit_code": 0,
+  "tasks": [
+    {
+      "task": "complete_consistent_records",
+      "test": "test_real_mcp_graph_stops_at_review_and_is_idempotent",
+      "passed": true,
+      "seconds": 1.819
+    },
+    {
+      "task": "missing_plot_history",
+      "test": "test_missing_history_blocks_draft",
+      "passed": true,
+      "seconds": 1.526
+    },
+    {
+      "task": "stale_weather_and_unsupported_advice",
+      "test": "test_candidate_validation_rejects_stale_invented_and_inapplicable_support",
+      "passed": true,
+      "seconds": 1.749
+    },
+    {
+      "task": "weather_unavailable",
+      "test": "test_graph_weather_retries_are_bounded",
+      "passed": true,
+      "seconds": 1.534
+    },
+    {
+      "task": "conflicting_pest_reports",
+      "test": "test_conflicting_pest_reports_require_field_visit",
+      "passed": true,
+      "seconds": 1.727
+    },
+    {
+      "task": "cross_office_access",
+      "test": "test_scope_and_privilege_escalation",
+      "passed": true,
+      "seconds": 0.255
+    },
+    {
+      "task": "unapproved_release_and_reviewed_audio",
+      "test": "test_review_approval_release_and_exact_audio",
+      "passed": true,
+      "seconds": 0.302
+    },
+    {
+      "task": "edit_after_approval",
+      "test": "test_new_version_invalidates_approval_and_preserves_history",
+      "passed": true,
+      "seconds": 0.257
+    },
+    {
+      "task": "concurrent_release",
+      "test": "test_concurrent_release_publishes_once",
+      "passed": true,
+      "seconds": 0.484
+    },
+    {
+      "task": "malicious_document_and_model_output",
+      "test": "test_untrusted_output_cannot_add_approval_or_recipient_fields",
+      "passed": true,
+      "seconds": 1.681
+    },
+    {
+      "task": "restart_after_save",
+      "test": "test_interrupted_save_resumes_without_another_draft",
+      "passed": true,
+      "seconds": 3.007
+    },
+    {
+      "task": "fresh_and_legacy_migrations",
+      "test": "test_migrations_fresh_and_legacy_copy",
+      "passed": true,
+      "seconds": 0.113
+    },
+    {
+      "task": "reject_cancel_and_correct",
+      "test": "test_reject_cancel_replace_and_record_audits",
+      "passed": true,
+      "seconds": 0.352
+    },
+    {
+      "task": "unverified_generated_claims",
+      "test": "test_generated_claims_are_retained_privately_and_excluded_from_advisory",
+      "passed": true,
+      "seconds": 1.707
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "executed_at": "2026-10-15T15:56:10.201288+00:00",
+  "data": "labelled synthetic households",
+  "host": {
+    "system": "Linux",
+    "architecture": "x86_64",
+    "processor": ""
+  },
+  "run_id": "faf212d7-8f0e-4b9a-b925-33bdb1a69f25",
+  "status": "pending_review",
+  "stage": "pending_review",
+  "error": null,
+  "model": {
+    "provider": "local-llama.cpp",
+    "model": "qwen3-0.6b-q8",
+    "revision": "23749fefcc72300e3a2ad315e1317431b06b590a",
+    "temperature": 0,
+    "seed": 42,
+    "max_tokens": 1400,
+    "context_characters": 24000,
+    "cloud_fallback": false
+  },
+  "elapsed_seconds": 81.52,
+  "advisory_id": "67bedb42-9d39-4405-ba7d-fd968aabe013",
+  "calls": [
+    {
+      "tool": "get_cluster_plot_history",
+      "duration_ms": 74,
+      "error": null,
+      "usage": {},
+      "estimated_cost_usd": 0.0,
+      "public_source_cache_hits": null
+    },
+    {
+      "tool": "model.plan",
+      "duration_ms": 4994,
+      "error": null,
+      "usage": {
+        "completion_tokens": 62,
+        "prompt_tokens": 440,
+        "total_tokens": 502,
+        "prompt_tokens_details": {
+          "cached_tokens": 439
+        }
+      },
+      "estimated_cost_usd": 0.0,
+      "public_source_cache_hits": null
+    },
+    {
+      "tool": "get_crop_risk_context",
+      "duration_ms": 25,
+      "error": null,
+      "usage": {},
+      "estimated_cost_usd": 0.0,
+      "public_source_cache_hits": null
+    },
+    {
+      "tool": "get_weather_evidence",
+      "duration_ms": 904,
+      "error": null,
+      "usage": {},
+      "estimated_cost_usd": 0.0,
+      "public_source_cache_hits": null
+    },
+    {
+      "tool": "borrowed_mcp.fetch",
+      "duration_ms": 30,
+      "error": null,
+      "usage": {},
+      "estimated_cost_usd": 0.0,
+      "public_source_cache_hits": [
+        true
+      ]
+    },
+    {
+      "tool": "model.draft",
+      "duration_ms": 73945,
+      "error": null,
+      "usage": {
+        "completion_tokens": 400,
+        "prompt_tokens": 1551,
+        "total_tokens": 1951,
+        "prompt_tokens_details": {
+          "cached_tokens": 113
+        }
+      },
+      "estimated_cost_usd": 0.0,
+      "public_source_cache_hits": null
+    },
+    {
+      "tool": "save_advisory_draft",
+      "duration_ms": 28,
+      "error": null,
+      "usage": {},
+      "estimated_cost_usd": 0.0,
+      "public_source_cache_hits": null
+    }
+  ],
+  "saved_status": "pending_review",
+  "evidence_count": 5,
+  "recommendations": [
+    {
+      "action": "Inspect the crop and record visible symptoms for officer review.",
+      "evidence_ids": [
+        "04e37cb7-cbd0-480f-81e1-88e69aa3c851",
+        "781de525-f4a5-45cd-a819-bd5389102b26",
+        "de64fab9-13ae-4d94-9136-45ed7ff404d2",
+        "3ee3717b-2fd0-4838-8ad2-6f84a8638698",
+        "4e3fdbd4-8d79-41dd-a694-0af89365df9d"
+      ],
+      "uncertainty": "This draft uses dated records and forecasts. Current field conditions still require confirmation by the extension officer.",
+      "proposed_date": "2026-10-15"
+    }
+  ]
+}

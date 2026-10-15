@@ -1,0 +1,269 @@
+{
+  "executed_at": "2026-10-15T16:13:06.043Z",
+  "kind": "real local model, real MCP, live weather, browser actions; synthetic households",
+  "scripted_review": true,
+  "agronomist_review": false,
+  "demo": true,
+  "checks": [
+    "Officer logs in through the real form",
+    "Cluster selection starts a persisted real agent run",
+    "Real open-weights run stops at pending review with visible tool activity",
+    "Officer can inspect five stored evidence snapshots",
+    "Approval requires a separate explicit release action",
+    "Officer explicitly releases the exact approved version",
+    "Farmer sees the exact released action and supporting evidence"
+  ],
+  "status": "passed",
+  "run_id": "1be106a3-ea97-48e7-9294-6660691a91e4",
+  "run": {
+    "id": "1be106a3-ea97-48e7-9294-6660691a91e4",
+    "office_id": "4026099e-a95d-45d4-a555-396082404def",
+    "officer_id": "39cf251d-b003-4d30-b82b-b004cb322886",
+    "cluster_id": "84087f6b-6645-4228-abe6-592e1f15b982",
+    "task": "Inspect current crop conditions and identify observations needed for officer review.",
+    "status": "pending_review",
+    "stage": "pending_review",
+    "warnings": [
+      {
+        "message": "Generated rationale is unverified and retained in private run logs only. Advisory actions and uncertainty use controlled text; inspect the evidence before approving."
+      }
+    ],
+    "error": null,
+    "attempt": 1,
+    "tool_calls": 4,
+    "advisory_id": "a2288a02-e7e8-45f0-9587-41bb09f34fbf",
+    "model_config": {
+      "provider": "local-llama.cpp",
+      "model": "qwen3-0.6b-q8",
+      "revision": "23749fefcc72300e3a2ad315e1317431b06b590a",
+      "temperature": 0,
+      "seed": 42,
+      "max_tokens": 1400,
+      "context_characters": 24000,
+      "cloud_fallback": false
+    },
+    "created_at": "2026-10-15T16:13:08.607665",
+    "updated_at": "2026-10-15T16:14:33.954862",
+    "calls": [
+      {
+        "run_id": "1be106a3-ea97-48e7-9294-6660691a91e4",
+        "tool_name": "get_cluster_plot_history",
+        "output": {
+          "plots": [
+            {
+              "name": "SYNTHETIC plot",
+              "household_id": "feee4b3d-3a38-4a32-b8d2-f394a69cb169",
+              "latitude": 9.03,
+              "longitude": 38.74,
+              "area": 1,
+              "area_unit": "ha",
+              "agroclimatic_zone": "Synthetic demonstration zone",
+              "id": "adb0e44d-616e-46fa-b6ff-985c5d4e2be0",
+              "synthetic": true,
+              "season_id": "edd9ee40-5794-47a0-94eb-e980405f30af",
+              "season": {
+                "plot_id": "adb0e44d-616e-46fa-b6ff-985c5d4e2be0",
+                "crop": "maize",
+                "planting_date": "2026-09-05",
+                "harvest_date": "2026-12-14",
+                "previous_yield": null,
+                "yield_unit": null
+              }
+            }
+          ],
+          "evidence_ids": [
+            "c9df5abe-5c92-468a-8b4d-9538823b8d94"
+          ]
+        },
+        "started_at": "2026-10-15T16:13:10.161260",
+        "duration_ms": 67,
+        "estimated_cost_usd": 0,
+        "attempt": 1,
+        "inputs": {},
+        "id": "fbea49ec-1a73-4d44-9fbf-76b2133f2d59",
+        "error": null,
+        "finished_at": "2026-10-15T16:13:10.195692",
+        "usage": {}
+      },
+      {
+        "run_id": "1be106a3-ea97-48e7-9294-6660691a91e4",
+        "tool_name": "model.plan",
+        "output": {
+          "rationale": "The most relevant tool to start with is 'get_crop_risk_context' as it provides context about the crop's current conditions and potential risks, which directly supports the inspection task.",
+          "first_tool": "get_crop_risk_context"
+        },
+        "started_at": "2026-10-15T16:13:10.230089",
+        "duration_ms": 4455,
+        "estimated_cost_usd": 0,
+        "attempt": 1,
+        "inputs": {
+          "schema": "Plan",
+          "context_characters": 811
+        },
+        "id": "c7102899-23b1-4603-b4c9-2eb1f9d842bb",
+        "error": null,
+        "finished_at": "2026-10-15T16:13:14.680996",
+        "usage": {
+          "completion_tokens": 61,
+          "prompt_tokens": 433,
+          "total_tokens": 494,
+          "prompt_tokens_details": {
+            "cached_tokens": 432
+          }
+        }
+      },
+      {
+        "run_id": "1be106a3-ea97-48e7-9294-6660691a91e4",
+        "tool_name": "get_crop_risk_context",
+        "output": {
+          "evidence_ids": [
+            "33021ba2-a569-49fc-b3bd-e518d62d8a6c",
+            "3df99da0-6063-44a8-9654-41fc2e0b827f"
+          ],
+          "warnings": []
+        },
+        "started_at": "2026-10-15T16:13:14.709253",
+        "duration_ms": 28,
+        "estimated_cost_usd": 0,
+        "attempt": 1,
+        "inputs": {},
+        "id": "fb338e9a-5bf7-49bc-bc41-415097f6a35c",
+        "error": null,
+        "finished_at": "2026-10-15T16:13:14.732289",
+        "usage": {}
+      },
+      {
+        "run_id": "1be106a3-ea97-48e7-9294-6660691a91e4",
+        "tool_name": "get_weather_evidence",
+        "output": {
+          "evidence_ids": [
+            "31c3d253-e494-49fa-b955-f6b780878588"
+          ]
+        },
+        "started_at": "2026-10-15T16:13:14.755660",
+        "duration_ms": 874,
+        "estimated_cost_usd": 0,
+        "attempt": 1,
+        "inputs": {},
+        "id": "16ac172d-8a51-4a3e-87cc-01c7c7906e98",
+        "error": null,
+        "finished_at": "2026-10-15T16:13:15.625031",
+        "usage": {}
+      },
+      {
+        "run_id": "1be106a3-ea97-48e7-9294-6660691a91e4",
+        "tool_name": "borrowed_mcp.fetch",
+        "output": {
+          "evidence_ids": [
+            "b0a3de28-a81d-4248-8828-1d806a7efe07"
+          ],
+          "server_version": "2026.10.10",
+          "cache_hits": [
+            true
+          ]
+        },
+        "started_at": "2026-10-15T16:13:15.645770",
+        "duration_ms": 23,
+        "estimated_cost_usd": 0,
+        "attempt": 1,
+        "inputs": {
+          "sources": [
+            "nrcs-soil-health"
+          ]
+        },
+        "id": "996b4ee5-839b-42e7-82f7-c3ff2bd98713",
+        "error": null,
+        "finished_at": "2026-10-15T16:13:15.665679",
+        "usage": {}
+      },
+      {
+        "run_id": "1be106a3-ea97-48e7-9294-6660691a91e4",
+        "tool_name": "model.draft",
+        "output": {
+          "title": "Inspection Recommendation for Plot ID: adb0e44d-616e-46fa-b6ff-985c5d4e2be0",
+          "recommendations": [
+            {
+              "plot_id": "adb0e44d-616e-46fa-b6ff-985c5d4e2be0",
+              "crop": "maize",
+              "action_code": "inspect_crop",
+              "proposed_date": "2026-10-15",
+              "evidence_ids": [
+                "3df99da0-6063-44a8-9654-41fc2e0b827f",
+                "33021ba2-a569-49fc-b3bd-e518d62d8a6c",
+                "31c3d253-e494-49fa-b955-f6b780878588",
+                "b0a3de28-a81d-4248-8828-1d806a7efe07",
+                "c9df5abe-5c92-468a-8b4d-9538823b8d94"
+              ],
+              "rationale": "The plot is in a synthetic demonstration zone, and the evidence shows that crops and drainage were inspected and verified. The current crop conditions are suitable for the local guidance.",
+              "uncertainty": "The evidence does not provide specific observations, so the recommendation is based on the available information."
+            }
+          ],
+          "missing_information": "No field inspections have been completed."
+        },
+        "started_at": "2026-10-15T16:13:15.689899",
+        "duration_ms": 78150,
+        "estimated_cost_usd": 0,
+        "attempt": 1,
+        "inputs": {
+          "schema": "Candidates",
+          "context_characters": 3691
+        },
+        "id": "d8d3a7e6-df09-4c4b-bc7f-3a0f2c10ecb5",
+        "error": null,
+        "finished_at": "2026-10-15T16:14:33.838317",
+        "usage": {
+          "completion_tokens": 399,
+          "prompt_tokens": 1539,
+          "total_tokens": 1938,
+          "prompt_tokens_details": {
+            "cached_tokens": 113
+          }
+        }
+      },
+      {
+        "run_id": "1be106a3-ea97-48e7-9294-6660691a91e4",
+        "tool_name": "save_advisory_draft",
+        "output": {
+          "advisory_id": "a2288a02-e7e8-45f0-9587-41bb09f34fbf",
+          "version": 1,
+          "status": "draft"
+        },
+        "started_at": "2026-10-15T16:14:33.881331",
+        "duration_ms": 46,
+        "estimated_cost_usd": 0,
+        "attempt": 1,
+        "inputs": {
+          "title": "Inspection Recommendation for Plot ID: adb0e44d-616e-46fa-b6ff-985c5d4e2be0",
+          "recommendations": [
+            {
+              "plot_id": "adb0e44d-616e-46fa-b6ff-985c5d4e2be0",
+              "crop": "maize",
+              "action_code": "inspect_crop",
+              "proposed_date": "2026-10-15",
+              "evidence_ids": [
+                "3df99da0-6063-44a8-9654-41fc2e0b827f",
+                "33021ba2-a569-49fc-b3bd-e518d62d8a6c",
+                "31c3d253-e494-49fa-b955-f6b780878588",
+                "b0a3de28-a81d-4248-8828-1d806a7efe07",
+                "c9df5abe-5c92-468a-8b4d-9538823b8d94"
+              ],
+              "rationale": "The plot is in a synthetic demonstration zone, and the evidence shows that crops and drainage were inspected and verified. The current crop conditions are suitable for the local guidance.",
+              "uncertainty": "The evidence does not provide specific observations, so the recommendation is based on the available information."
+            }
+          ],
+          "missing_information": "No field inspections have been completed."
+        },
+        "id": "7df280ca-81df-4698-bc8e-be1a82df2509",
+        "error": null,
+        "finished_at": "2026-10-15T16:14:33.923024",
+        "usage": {}
+      }
+    ]
+  },
+  "elapsed_seconds": 91.895,
+  "page_errors": [],
+  "video": null,
+  "under_three_minutes": true,
+  "original_video_duration_seconds": 92.04,
+  "video_note": "Initial continuous take replaced by a later continuous run with readable review pauses. This report retains its actual run and timing."
+}

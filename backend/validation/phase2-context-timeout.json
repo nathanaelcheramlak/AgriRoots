@@ -1,0 +1,83 @@
+{
+  "executed_at": "2026-10-15T15:45:06.670228+00:00",
+  "data": "labelled synthetic households",
+  "host": {
+    "system": "Linux",
+    "architecture": "x86_64",
+    "processor": ""
+  },
+  "run_id": "c968ff1c-666e-4378-9430-4f2a4fb3f29e",
+  "status": "failed",
+  "stage": "get_public_guidance",
+  "error": {
+    "code": "upstream_failure",
+    "message": "Execution interrupted; retry after resolving the issue",
+    "retryable": true
+  },
+  "model": {
+    "provider": "local-llama.cpp",
+    "model": "qwen3-0.6b-q8",
+    "revision": "23749fefcc72300e3a2ad315e1317431b06b590a",
+    "temperature": 0,
+    "seed": 42,
+    "max_tokens": 1400,
+    "context_characters": 24000,
+    "cloud_fallback": false
+  },
+  "elapsed_seconds": 192.43,
+  "advisory_id": null,
+  "calls": [
+    {
+      "tool": "get_cluster_plot_history",
+      "duration_ms": 72,
+      "error": null,
+      "usage": {},
+      "estimated_cost_usd": 0.0
+    },
+    {
+      "tool": "model.plan",
+      "duration_ms": 5806,
+      "error": null,
+      "usage": {
+        "completion_tokens": 62,
+        "prompt_tokens": 440,
+        "total_tokens": 502,
+        "prompt_tokens_details": {
+          "cached_tokens": 394
+        }
+      },
+      "estimated_cost_usd": 0.0
+    },
+    {
+      "tool": "get_crop_risk_context",
+      "duration_ms": 25,
+      "error": null,
+      "usage": {},
+      "estimated_cost_usd": 0.0
+    },
+    {
+      "tool": "get_weather_evidence",
+      "duration_ms": 1025,
+      "error": null,
+      "usage": {},
+      "estimated_cost_usd": 0.0
+    },
+    {
+      "tool": "borrowed_mcp.fetch",
+      "duration_ms": 3412,
+      "error": null,
+      "usage": {},
+      "estimated_cost_usd": 0.0
+    },
+    {
+      "tool": "model.draft",
+      "duration_ms": 180129,
+      "error": {
+        "code": "model_failure",
+        "message": "Local structured inference failed"
+      },
+      "usage": {},
+      "estimated_cost_usd": 0.0
+    }
+  ]
+}

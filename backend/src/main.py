@@ -12,11 +12,11 @@ from src.api.routes.health import router as health_router
 from src.api.routes.profile import router as profile_router
 from src.api.routes.recommendation import router as recommendation_router
 from src.api.routes.voice import router as voice_router
+from src.api.routes.workspace import router as workspace_router
+from src.api.routes.advisory_run import router as advisory_run_router
 from src.config.settings import get_settings
-from src.db.base import Base
-from src.db.schema_migrations import ensure_chat_message_storage_columns
+from src.db.schema_migrations import migrate
 from src.db.session import engine
-from src.db import models 
 
 
 settings = get_settings()
@@ -24,8 +24,7 @@ settings = get_settings()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    Base.metadata.create_all(bind=engine)
-    ensure_chat_message_storage_columns(engine)
+    migrate(engine)
     yield
 
 
@@ -48,3 +47,7 @@ app.include_router(diagnosis_router)
 app.include_router(recommendation_router)
 app.include_router(voice_router)
 app.include_router(debug_router)
+
+app.include_router(workspace_router)
+
+app.include_router(advisory_run_router)

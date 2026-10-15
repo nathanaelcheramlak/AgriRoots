@@ -1,0 +1,12 @@
+{
+  "executed_at": "2026-10-15T16:07:26.017Z",
+  "kind": "real local model, real MCP, live weather, browser actions; synthetic households",
+  "scripted_review": true,
+  "agronomist_review": false,
+  "demo": false,
+  "checks": [],
+  "status": "failed",
+  "error": "page.waitForURL: Timeout 15000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation to \"**/main-page\" until \"load\"\n============================================================\n    at login (/home/natcher/Projects/AgriRoots/scripts/browser/workflow.mjs:32:14)\n    at async file:///home/natcher/Projects/AgriRoots/scripts/browser/workflow.mjs:35:3",
+  "elapsed_seconds": 16.223,
+  "page_errors": []
+}

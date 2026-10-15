@@ -1,4 +1,6 @@
 from functools import lru_cache
+from pathlib import Path
+from typing import Literal
 
 from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -71,6 +73,17 @@ class Settings(BaseSettings):
     hasab_timeout_seconds: int = 60
     hasab_amharic_language_code: str = "amh"
     hasab_tts_amharic_speaker_name: str = "Selam"
+
+    advisory_model_url: str = "http://127.0.0.1:8081"
+    advisory_model_id: str = "qwen3-0.6b-q8"
+    advisory_model_key_file: str = str(Path(__file__).resolve().parents[2] / "runtime" / "model-api-key")
+    advisory_model_revision: str = "23749fefcc72300e3a2ad315e1317431b06b590a"
+    advisory_model_timeout: int = Field(default=180, ge=5, le=300)
+    advisory_run_timeout: int = Field(default=600, ge=30, le=900)
+    advisory_tool_timeout: int = Field(default=45, ge=5, le=90)
+    advisory_max_tool_calls: int = Field(default=32, ge=4, le=64)
+    advisory_compute_cost_per_hour: float = Field(default=0, ge=0)
+    advisory_audio_provider: Literal["local", "cloud"] = "local"
 
     debug_reset_token: str | None = None
 

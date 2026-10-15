@@ -1,0 +1,52 @@
+{
+  "executed_at": "2026-10-15T15:40:47.785030+00:00",
+  "data": "labelled synthetic households",
+  "host": {
+    "system": "Linux",
+    "architecture": "x86_64",
+    "processor": ""
+  },
+  "run_id": "1f690ff0-5499-4b98-9ae6-d046f74c7aa8",
+  "status": "needs_information",
+  "stage": "history",
+  "error": {
+    "code": "insufficient_evidence",
+    "message": "Model plan did not include each required evidence tool exactly once",
+    "retryable": false
+  },
+  "model": {
+    "provider": "local-llama.cpp",
+    "model": "qwen3-0.6b-q8",
+    "revision": "23749fefcc72300e3a2ad315e1317431b06b590a",
+    "temperature": 0,
+    "seed": 42,
+    "max_tokens": 1400,
+    "context_characters": 24000,
+    "cloud_fallback": false
+  },
+  "elapsed_seconds": 13.74,
+  "advisory_id": null,
+  "calls": [
+    {
+      "tool": "get_cluster_plot_history",
+      "duration_ms": 55,
+      "error": null,
+      "usage": {},
+      "estimated_cost_usd": 0.0
+    },
+    {
+      "tool": "model.plan",
+      "duration_ms": 12256,
+      "error": null,
+      "usage": {
+        "completion_tokens": 79,
+        "prompt_tokens": 419,
+        "total_tokens": 498,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "estimated_cost_usd": 0.0
+    }
+  ]
+}

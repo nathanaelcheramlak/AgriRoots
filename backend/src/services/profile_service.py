@@ -105,6 +105,13 @@ class ProfileService:
         if not verify_password(payload.current_password, current_user.password_hash):
             raise ServiceError(401, "Current password is incorrect")
 
+        from sqlalchemy import select
+        from src.db.models.workspace import Membership, Administrator, WorkspaceEvent
+        if (self.db.scalar(select(Membership).where(Membership.user_id == current_user.user_id))
+                or self.db.get(Administrator, current_user.user_id)
+                or self.db.scalar(select(WorkspaceEvent.id).where(WorkspaceEvent.actor_id == current_user.user_id).limit(1))):
+            raise ServiceError(409, "This account has office records; contact the administrator to retain audit history")
+
         self.phone_changes.delete_by_user(current_user.user_id)
         self.otp.delete_by_phone(current_user.phone_number)
         self.password_resets.delete_by_phone(current_user.phone_number)

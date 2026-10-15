@@ -1,0 +1,7 @@
+{
+  "name": "agriroots-browser-checks",
+  "private": true,
+  "type": "module",
+  "scripts": {"test": "node workflow.mjs", "demo": "node workflow.mjs --demo"},
+  "devDependencies": {"playwright": "1.55.1"}
+}

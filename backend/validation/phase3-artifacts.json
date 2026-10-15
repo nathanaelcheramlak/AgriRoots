@@ -1,0 +1,8 @@
+{
+  "checked_at": "2026-10-15T16:58:41.852981+00:00",
+  "text_files_scanned": 258,
+  "passed": true,
+  "findings": [],
+  "scope": "heuristic scan of Git-visible text and forbidden runtime paths; does not prove absence of every secret or personal record",
+  "rights": "owner confirmed redistribution rights; original code Apache-2.0; third-party terms retained"
+}

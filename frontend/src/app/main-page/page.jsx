@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { getVoiceLanguageCode, useLanguage } from "@/contexts/LanguageContext";
 import { api } from "@/lib/api";
-import { alertsApi } from "@/lib/alerts";
 import { chatApi } from "@/lib/chat";
 import { voiceApi } from "@/lib/voice";
 import { ChatSidebar } from "@/components/chat/ChatSidebar";
@@ -40,21 +39,12 @@ export default function MainPage() {
   const [sessions, setSessions] = useState([]);
   const [activeSessionId, setActiveSessionId] = useState(null);
   const [messages, setMessages] = useState([]);
-  const [urgentAlerts, setUrgentAlerts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [speakingMessageId, setSpeakingMessageId] = useState(null);
-  const audioElementRef = useRef(null);
-  const audioUrlRef = useRef(null);
-  const audioRequestIdRef = useRef(0);
   const imagePreviewUrlsRef = useRef(new Set());
 
   useEffect(() => {
     return () => {
-      audioElementRef.current?.pause();
-      if (audioUrlRef.current) {
-        URL.revokeObjectURL(audioUrlRef.current);
-      }
       imagePreviewUrlsRef.current.forEach((url) => URL.revokeObjectURL(url));
       imagePreviewUrlsRef.current.clear();
     };
@@ -85,7 +75,6 @@ export default function MainPage() {
   useEffect(() => {
     if (checkingOnboarding) return;
     fetchSessions();
-    fetchUrgentAlerts();
   }, [checkingOnboarding]);
 
   const fetchSessions = async ({ syncMessages = true } = {}) => {
@@ -110,23 +99,6 @@ export default function MainPage() {
       }
     } catch (err) {
       console.error("Failed to fetch sessions", err);
-    }
-  };
-
-  const fetchUrgentAlerts = async () => {
-    try {
-      const { data } = await alertsApi.listAlerts(20, 0);
-      const severityRank = { high: 0, medium: 1, low: 2 };
-      const alerts = data
-        .filter((alert) => {
-          const isActive = (alert.status || "active") === "active";
-          return isActive && !alert.is_read && ["high", "medium"].includes(alert.severity);
-        })
-        .sort((a, b) => (severityRank[a.severity] ?? 9) - (severityRank[b.severity] ?? 9))
-        .slice(0, 2);
-      setUrgentAlerts(alerts);
-    } catch (err) {
-      console.error("Failed to fetch urgent alerts", err);
     }
   };
 
@@ -184,61 +156,6 @@ export default function MainPage() {
     },
     []
   );
-
-  const stopAssistantAudio = () => {
-    audioRequestIdRef.current += 1;
-    audioElementRef.current?.pause();
-    if (audioUrlRef.current) {
-      URL.revokeObjectURL(audioUrlRef.current);
-      audioUrlRef.current = null;
-    }
-    audioElementRef.current = null;
-    setSpeakingMessageId(null);
-  };
-
-  const playAssistantAudio = async (message) => {
-    if (!message?.content) return;
-
-    if (speakingMessageId === message.message_id) {
-      stopAssistantAudio();
-      return;
-    }
-
-    stopAssistantAudio();
-    const requestId = audioRequestIdRef.current;
-    const voiceLanguageCode = getVoiceLanguageCode(language);
-
-    setSpeakingMessageId(message.message_id);
-    try {
-      const { data } = await voiceApi.synthesize(message.content, voiceLanguageCode);
-      if (audioRequestIdRef.current !== requestId) {
-        return;
-      }
-      const audioUrl = URL.createObjectURL(data);
-      const audio = new Audio(audioUrl);
-
-      audioUrlRef.current = audioUrl;
-      audioElementRef.current = audio;
-
-      const resetAudioState = () => {
-        if (audioUrlRef.current === audioUrl) {
-          URL.revokeObjectURL(audioUrl);
-          audioUrlRef.current = null;
-        }
-        if (audioElementRef.current === audio) {
-          audioElementRef.current = null;
-        }
-        setSpeakingMessageId(null);
-      };
-
-      audio.onended = resetAudioState;
-      audio.onerror = resetAudioState;
-      await audio.play();
-    } catch (err) {
-      console.error("Failed to play assistant audio", err);
-      stopAssistantAudio();
-    }
-  };
 
   const createImagePreviewUrl = (imageFile) => {
     if (!imageFile) return "";
@@ -343,11 +260,6 @@ export default function MainPage() {
         console.error("Failed to refresh sessions after message", err);
       });
 
-      if (audio && assistant_message?.content) {
-        window.setTimeout(() => {
-          playAssistantAudio(assistant_message);
-        }, 0);
-      }
     } catch (err) {
       console.error("Failed to send message", err);
       if (tempMessageId) {
@@ -382,12 +294,9 @@ export default function MainPage() {
       />
       <ChatArea
         messages={messages}
-        urgentAlerts={urgentAlerts}
         onSendMessage={handleSendMessage}
         isLoading={isLoading}
         onOpenSidebar={() => setIsSidebarOpen(true)}
-        onSpeakMessage={playAssistantAudio}
-        speakingMessageId={speakingMessageId}
         language={language}
         setLanguage={setLanguage}
       />

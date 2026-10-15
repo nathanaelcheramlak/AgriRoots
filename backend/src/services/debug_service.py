@@ -16,6 +16,13 @@ def reset_all_data(x_debug_token: str | None) -> dict:
     if x_debug_token != settings.debug_reset_token:
         raise ServiceError(401, "Invalid debug token")
 
+    from sqlalchemy import select
+    from src.db.session import SessionLocal
+    from src.db.models.workspace import WorkspaceEvent
+    with SessionLocal() as db:
+        if db.scalar(select(WorkspaceEvent.id).limit(1)):
+            raise ServiceError(409, "Workspace audit history exists; reset is disabled")
+
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
 

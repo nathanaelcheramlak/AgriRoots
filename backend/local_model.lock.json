@@ -1,0 +1,27 @@
+{
+  "model": {
+    "repository": "Qwen/Qwen3-0.6B-GGUF",
+    "revision": "23749fefcc72300e3a2ad315e1317431b06b590a",
+    "file": "Qwen3-0.6B-Q8_0.gguf",
+    "sha256": "9465e63a22add5354d9bb4b99e90117043c7124007664907259bd16d043bb031",
+    "license": "Apache-2.0",
+    "alias": "qwen3-0.6b-q8"
+  },
+  "runtime": {
+    "repository": "ggml-org/llama.cpp",
+    "tag": "b11429",
+    "file": "llama-b11429-bin-ubuntu-x64.tar.gz",
+    "url": "https://github.com/ggml-org/llama.cpp/releases/download/b11429/llama-b11429-bin-ubuntu-x64.tar.gz",
+    "sha256": "f6d25dde8f51133143d1453da4fd5f73b145127177612a283bf7995957af3392",
+    "license": "MIT"
+  },
+  "inference": {
+    "context_tokens": 8192,
+    "threads": 4,
+    "parallel": 1,
+    "temperature": 0,
+    "seed": 42,
+    "max_output_tokens": 1400,
+    "thinking": false
+  }
+}

@@ -1,0 +1,12 @@
+AgriRoots extension-office advisory workspace
+Copyright 2026 AgriRoots contributors
+
+Original project code is licensed under the Apache License, Version 2.0.
+The project owner confirmed ownership or redistribution rights for the
+existing code, photographs and crop-model files on 15 October 2026, and
+authorized Apache-2.0 for original code.
+
+Third-party packages, pretrained weights and upstream assets retain their
+own terms. The original-code licence does not relicense third-party
+materials or grant rights to their training datasets. See
+THIRD_PARTY_NOTICES.md for component provenance and scope.

@@ -1,0 +1,122 @@
+{
+  "executed_at": "2026-10-15T15:53:11.928592+00:00",
+  "data": "labelled synthetic households",
+  "host": {
+    "system": "Linux",
+    "architecture": "x86_64",
+    "processor": ""
+  },
+  "run_id": "148a4693-a8d4-45d8-9f67-5c6c2ad474da",
+  "status": "needs_information",
+  "stage": "get_public_guidance",
+  "error": {
+    "code": "insufficient_evidence",
+    "message": "No completed field inspection is recorded. State that a field inspection is still needed.",
+    "retryable": false
+  },
+  "model": {
+    "provider": "local-llama.cpp",
+    "model": "qwen3-0.6b-q8",
+    "revision": "23749fefcc72300e3a2ad315e1317431b06b590a",
+    "temperature": 0,
+    "seed": 42,
+    "max_tokens": 1400,
+    "context_characters": 24000,
+    "cloud_fallback": false
+  },
+  "elapsed_seconds": 155.57,
+  "advisory_id": null,
+  "calls": [
+    {
+      "tool": "get_cluster_plot_history",
+      "duration_ms": 76,
+      "error": null,
+      "usage": {},
+      "estimated_cost_usd": 0.0,
+      "public_source_cache_hits": null
+    },
+    {
+      "tool": "model.plan",
+      "duration_ms": 4573,
+      "error": null,
+      "usage": {
+        "completion_tokens": 62,
+        "prompt_tokens": 440,
+        "total_tokens": 502,
+        "prompt_tokens_details": {
+          "cached_tokens": 439
+        }
+      },
+      "estimated_cost_usd": 0.0,
+      "public_source_cache_hits": null
+    },
+    {
+      "tool": "get_crop_risk_context",
+      "duration_ms": 31,
+      "error": null,
+      "usage": {},
+      "estimated_cost_usd": 0.0,
+      "public_source_cache_hits": null
+    },
+    {
+      "tool": "get_weather_evidence",
+      "duration_ms": 15288,
+      "error": {
+        "code": "upstream_unavailable",
+        "message": "Weather service unavailable or timed out",
+        "retryable": true
+      },
+      "usage": {},
+      "estimated_cost_usd": 0.0,
+      "public_source_cache_hits": null
+    },
+    {
+      "tool": "get_weather_evidence",
+      "duration_ms": 939,
+      "error": null,
+      "usage": {},
+      "estimated_cost_usd": 0.0,
+      "public_source_cache_hits": null
+    },
+    {
+      "tool": "borrowed_mcp.fetch",
+      "duration_ms": 3608,
+      "error": null,
+      "usage": {},
+      "estimated_cost_usd": 0.0,
+      "public_source_cache_hits": [
+        false
+      ]
+    },
+    {
+      "tool": "model.draft",
+      "duration_ms": 75600,
+      "error": null,
+      "usage": {
+        "completion_tokens": 403,
+        "prompt_tokens": 1558,
+        "total_tokens": 1961,
+        "prompt_tokens_details": {
+          "cached_tokens": 113
+        }
+      },
+      "estimated_cost_usd": 0.0,
+      "public_source_cache_hits": null
+    },
+    {
+      "tool": "model.repair",
+      "duration_ms": 53851,
+      "error": null,
+      "usage": {
+        "completion_tokens": 405,
+        "prompt_tokens": 1579,
+        "total_tokens": 1984,
+        "prompt_tokens_details": {
+          "cached_tokens": 1547
+        }
+      },
+      "estimated_cost_usd": 0.0,
+      "public_source_cache_hits": null
+    }
+  ]
+}

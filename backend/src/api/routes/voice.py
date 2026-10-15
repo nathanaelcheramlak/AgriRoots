@@ -1,3 +1,4 @@
+from src.services.delivery_policy import require_review_workflow
 from fastapi import APIRouter, Depends, File, Form, Response, UploadFile
 
 from src.api.errors import raise_http_error
@@ -23,7 +24,7 @@ async def transcribe_voice(
         raise_http_error(exc)
 
 
-@router.post("/synthesize", response_class=Response)
+@router.post("/synthesize", response_class=Response, dependencies=[Depends(require_review_workflow)])
 def synthesize_voice(
     payload: VoiceSynthesisRequest,
     current_user: User = Depends(get_current_user),

@@ -1,3 +1,4 @@
+from src.services.delivery_policy import require_review_workflow
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
@@ -14,7 +15,7 @@ from src.services.exceptions import ServiceError
 from src.services.recommendation_service import RecommendationService
 
 
-router = APIRouter(prefix="/api/recommendations", tags=["Recommendations"])
+router = APIRouter(prefix="/api/recommendations", tags=["Recommendations"], dependencies=[Depends(require_review_workflow)])
 
 
 def _service(db: Session) -> RecommendationService:

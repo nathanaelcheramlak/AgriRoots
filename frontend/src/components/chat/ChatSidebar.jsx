@@ -17,7 +17,7 @@ const COPY = {
     rename: "Rename",
     delete: "Delete",
     noChats: "No previous chats.",
-    alerts: "Alerts",
+    alerts: "Released advisories",
     settings: "Settings",
   },
   am: {
@@ -26,7 +26,7 @@ const COPY = {
     rename: "ስም ቀይር",
     delete: "አጥፋ",
     noChats: "ቀደም ያሉ ውይይቶች የሉም።",
-    alerts: "አስጠንቅቂያዎች",
+    alerts: "የተለቀቁ ምክሮች",
     settings: "ቅንብሮች",
   },
 };
@@ -191,6 +191,7 @@ export function ChatSidebar({
 
         <div className="border-t border-border p-3">
           <div className="grid gap-1">
+            <Link to="/workspace" className="p-3">Extension workspace</Link>
             <Link
               to="/alerts"
               onClick={() => setIsOpen(false)}
