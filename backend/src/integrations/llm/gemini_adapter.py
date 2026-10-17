@@ -8,6 +8,8 @@ from time import perf_counter
 import httpx
 
 from src.config.settings import get_settings
+from src.agent.prompts import (build_chat_system_prompt, build_intent_prompt,
+                              build_crop_image_prompt)
 
 
 settings = get_settings()
@@ -39,26 +41,6 @@ def _post_gemini(url: str, payload: dict, operation: str) -> httpx.Response:
                 sleep(0.4 * attempt)
 
     raise RuntimeError(f"Gemini {operation} request failed after retries: {last_error}") from last_error
-
-
-def _build_system_instruction(profile_context: dict[str, str]) -> str:
-    profile_lines = []
-    for key, value in profile_context.items():
-        if value:
-            profile_lines.append(f"- {key}: {value}")
-
-    profile_block = "\n".join(profile_lines) if profile_lines else "- profile: not provided"
-    return (
-        "You are AgriRoots, an agricultural assistant for Ethiopian smallholder farmers.\n"
-        "Give practical, clear, and simple advice suitable for the farmer's context.\n"
-        "Prefer agriculture-focused answers. If off-topic, gently redirect to farming help.\n"
-        "Keep the answer short and easy to understand for non-technical farmers.\n"
-        "Use 3 to 6 short lines and avoid complex words.\n\n"
-        "If the farmer asks to identify or diagnose a crop disease without a photo, "
-        "ask for a clear photo of the affected leaf, stem, head, or fruit instead of guessing.\n\n"
-        "Farmer profile context:\n"
-        f"{profile_block}"
-    )
 
 
 def _build_contents(recent_messages: list[dict[str, str]], latest_user_message: str) -> list[dict]:
@@ -107,7 +89,7 @@ def generate_reply(
 
     payload = {
         "system_instruction": {
-            "parts": [{"text": _build_system_instruction(profile_context)}],
+            "parts": [{"text": build_chat_system_prompt(profile_context)}],
         },
         "contents": _build_contents(recent_messages, latest_user_message),
         "generationConfig": {
@@ -165,29 +147,8 @@ def classify_chat_intent(
     if not settings.gemini_model:
         raise RuntimeError("GEMINI_MODEL is not configured")
 
-    prompt = (
-        "You are AgriRoots' tool-selection agent.\n"
-        "Choose exactly one tool for the latest farmer request.\n"
-        "Do not answer the farmer. Only select the best tool.\n\n"
-        "Available tools:\n"
-        f"{json.dumps(tool_catalog, ensure_ascii=False)}\n\n"
-        "Farmer profile context:\n"
-        f"{json.dumps(profile_context, ensure_ascii=False)}\n\n"
-        "Recent conversation:\n"
-        f"{json.dumps(recent_messages[-5:], ensure_ascii=False)}\n\n"
-        "Latest request metadata:\n"
-        f"{json.dumps({'has_image_upload': has_image}, ensure_ascii=False)}\n\n"
-        "Latest farmer message:\n"
-        f"{json.dumps(latest_user_message or '', ensure_ascii=False)}\n\n"
-        "Return ONLY valid JSON with this exact shape:\n"
-        '{"intent":"general","confidence":0.75,"reason":"short reason"}\n'
-        "Rules:\n"
-        "- intent must exactly match one available tool intent.\n"
-        "- If an image is uploaded for crop diagnosis, choose disease_diagnosis.\n"
-        "- If the farmer wants to identify, confirm, or investigate a crop disease, choose disease_diagnosis even when no image is uploaded.\n"
-        "- Use recent conversation to understand follow-up questions like asking how identification works.\n"
-        "- Use general only when no specialized tool is appropriate.\n"
-        "- confidence must be a number from 0 to 1."
+    prompt = build_intent_prompt(
+        latest_user_message, has_image, recent_messages, profile_context, tool_catalog,
     )
 
     url = (
@@ -260,40 +221,7 @@ def classify_crop_image(
     if not settings.gemini_model:
         raise RuntimeError("GEMINI_MODEL is not configured")
 
-    supported_crop_text = ", ".join(sorted(set(supported_crops)))
-    prompt = (
-        "You are AgriRoots' crop image triage system.\n"
-        "Look at the uploaded image and decide if it is a plant/crop image.\n"
-        "If it is a plant, identify the most likely crop.\n"
-        "Use English crop names and scientific names when possible, even if the crop is known in another language.\n"
-        "Sorghum (Sorghum bicolor) must be routed to AgriRoots' local sorghum disease model.\n"
-        "Enset (Ensete ventricosum), also called false banana or Ethiopian banana, must be routed to AgriRoots' local enset disease model. "
-        "Enset looks similar to a banana plant but is NOT a banana — it is a staple crop in Ethiopia. "
-        "If the image shows enset, set is_enset=true and decision=enset_model.\n"
-        "Non-sorghum, non-enset crops can be routed to Kindwise Crop.health only if they match this supported crop list:\n"
-        f"{supported_crop_text}\n\n"
-        "Return ONLY valid JSON with this exact shape:\n"
-        "{\n"
-        '  "is_plant": true,\n'
-        '  "crop_name": "enset",\n'
-        '  "scientific_name": "Ensete ventricosum",\n'
-        '  "common_names": ["enset", "false banana"],\n'
-        '  "confidence": 0.85,\n'
-        '  "is_sorghum": false,\n'
-        '  "is_enset": true,\n'
-        '  "is_kindwise_supported": false,\n'
-        '  "supported_crop_match": "",\n'
-        '  "decision": "enset_model",\n'
-        '  "reason": "short reason"\n'
-        "}\n\n"
-        "Rules:\n"
-        '- decision must be one of: "not_plant", "uncertain", "sorghum_model", "enset_model", '
-        '"kindwise_crop_health", "unsupported_crop".\n'
-        "- confidence must be a number from 0 to 1.\n"
-        "- If this is not clearly a plant/crop image, set is_plant=false and decision=not_plant.\n"
-        "- If the image is too unclear to identify the crop, set decision=uncertain.\n"
-        "- Do not diagnose disease here. Only classify/reroute the image."
-    )
+    prompt = build_crop_image_prompt(supported_crops)
 
     url = (
         "https://generativelanguage.googleapis.com/v1beta/models/"

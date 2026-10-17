@@ -9,6 +9,7 @@ from urllib.parse import urljoin
 import httpx
 
 from src.config.settings import get_settings
+from src.agent.prompts import build_translation_prompt
 from src.services.language import is_amharic
 
 
@@ -179,12 +180,8 @@ def translate_text_with_hasab(
 
     source_name = "Amharic" if source_is_amharic else "English"
     target_name = "Amharic" if target_is_amharic else "English"
-    prompt = (
-        f"Translate the following {source_name} farming message into {target_name}. "
-        "Return only the translation, with no explanation, labels, quotes, or markdown. "
-        "Preserve crop names, disease names, fertilizer names, numbers, and units accurately.\n\n"
-        f"{text.strip()}"
-    )
+    prompt = build_translation_prompt(text, source_name, target_name)
+
     payload = {
         "message": prompt,
         "model": HASAB_CHAT_TRANSLATION_MODEL,

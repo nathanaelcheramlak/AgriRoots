@@ -4,6 +4,9 @@ import re
 
 from src.api.schemas.diagnosis import DiagnosisResponse
 from src.config.settings import get_settings
+from src.agent.prompts import (CROP_RECOMMENDATION_PROMPT, FERTILIZER_RECOMMENDATION_PROMPT,
+                              WEATHER_RECOMMENDATION_PROMPT, build_diagnosis_rewrite_prompt,
+                              build_diagnosis_advice_prompt)
 from src.db.models.user import UserProfile
 from src.integrations.crop_health.kindwise_client import diagnose_with_kindwise
 from src.integrations.crop_health.sorghum_labels import display_sorghum_class
@@ -462,11 +465,7 @@ def _build_sorghum_advice(
 
     try:
         text = generate_reply(
-            latest_user_message=(
-                "Rewrite this sorghum diagnosis into short farmer-friendly advice. "
-                "The first sentence must mention sorghum by name. "
-                "Keep the disease meaning and practical action from the base advice."
-            ),
+            latest_user_message=build_diagnosis_rewrite_prompt("sorghum"),
             recent_messages=recent_messages or [],
             profile_context=profile_context,
         )
@@ -572,11 +571,7 @@ def _build_enset_advice(
 
     try:
         text = generate_reply(
-            latest_user_message=(
-                "Rewrite this enset diagnosis into short farmer-friendly advice. "
-                "The first sentence must mention enset by name. "
-                "Keep the disease meaning and practical action from the base advice."
-            ),
+            latest_user_message=build_diagnosis_rewrite_prompt("enset"),
             recent_messages=recent_messages or [],
             profile_context=profile_context,
         )
@@ -685,10 +680,7 @@ def run_crop_recommendation(profile: UserProfile, recent_messages: list[dict[str
     used_fallback = False
     try:
         text = generate_reply(
-            latest_user_message=(
-                "Give crop recommendation for this farmer based on profile, soil, and weather context. "
-                "Return short practical advice suitable for smallholder farmers."
-            ),
+            latest_user_message=CROP_RECOMMENDATION_PROMPT,
             recent_messages=recent_messages or [],
             profile_context=profile_context,
         )
@@ -720,10 +712,7 @@ def run_fertilizer_recommendation(
     used_fallback = False
     try:
         text = generate_reply(
-            latest_user_message=(
-                "Give fertilizer recommendation for this farmer based on profile, soil, weather, and target crop context. "
-                "Return short practical advice with timing and simple dosage guidance."
-            ),
+            latest_user_message=FERTILIZER_RECOMMENDATION_PROMPT,
             recent_messages=recent_messages or [],
             profile_context=profile_context,
         )
@@ -762,10 +751,7 @@ def run_weather_recommendation(
     used_fallback = False
     try:
         recommendation_text = generate_reply(
-            latest_user_message=(
-                "Based on this 5-day weather forecast, give actionable farming advice for the next few days. "
-                "Keep it simple and short for farmers, including warnings and what to do."
-            ),
+            latest_user_message=WEATHER_RECOMMENDATION_PROMPT,
             recent_messages=recent_messages or [],
             profile_context=profile_context,
         )
@@ -921,12 +907,7 @@ def run_diagnosis(
     used_fallback = False
     try:
         advice_text = generate_reply(
-            latest_user_message=(
-                "Provide short farmer-friendly diagnosis advice based on this crop health result. "
-                f"The first sentence must mention the identified crop by name: {advice_crop_name}. "
-                "Do not start with generic phrases like 'your plant'. "
-                "Include what to do now and one prevention tip."
-            ),
+            latest_user_message=build_diagnosis_advice_prompt(advice_crop_name),
             recent_messages=recent_messages or [],
             profile_context=profile_context,
         )

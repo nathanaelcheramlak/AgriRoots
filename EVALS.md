@@ -1,5 +1,7 @@
 # Recorded evaluations
 
+Historical record: the root `demo/` media folder has been removed. Video/audio paths below identify artifacts used during the original evaluations and are no longer included. JSON reports remain unchanged. New optional recordings are saved under ignored `backend/runtime/browser-recordings/`; see [testing](docs/testing.md).
+
 Results are from 15 October 2026. Final checks are recorded below; Phase 2/3 results are retained as historical measurements. Households, plots, crop history and office guidance are explicitly synthetic. Tests verify software behavior and evidence controls; they do not establish agronomic accuracy, farmer benefit or real-office adoption.
 
 ## Deterministic integration suite
@@ -36,7 +38,7 @@ No model test double or intercepted API is used for saved real runs. Configurati
 | Phase 2 final controlled-text run | Pending review; five citations | 81.52 s; [`phase2-live-run.json`](backend/validation/phase2-live-run.json) |
 | Phase 3 browser correction workflow | Real draft; evidence inspection, rejection, version-two correction, approval, release and recipient view pass | 101.734 s end to end, including scripted officer actions; [`phase3-browser.json`](backend/validation/phase3-browser.json) |
 | Phase 3 initial continuous take | Real draft; evidence inspection, approval, release and recipient view pass | 91.895 s; [`phase3-demo-initial.json`](backend/validation/phase3-demo-initial.json); video superseded by the readable final take |
-| Phase 3 final continuous take | Real weather timeout and recovery; draft, evidence inspection, approval, release and exact recipient-version check pass | 132.489 s browser workflow; 132.36 s video; [`phase3-demo.json`](backend/validation/phase3-demo.json), [`demo/phase3-inspection.webm`](demo/phase3-inspection.webm) |
+| Phase 3 final continuous take | Real weather timeout and recovery; draft, evidence inspection, approval, release and exact recipient-version check pass | 132.489 s browser workflow; 132.36 s video; [`phase3-demo.json`](backend/validation/phase3-demo.json), `demo/phase3-inspection.webm` (legacy media) |
 
 The browser run spent 11.129 s planning and 77.477 s drafting, with 492 and 1,946 total tokens respectively. It retrieved weather live; public guidance was a valid cache hit. The public cache was populated by a genuine Fetch MCP call during startup. A separate fresh live retrieval with the restricted pure-Python parser is recorded in [`phase3-borrowed-fetch.json`](backend/validation/phase3-borrowed-fetch.json): 4,000 characters, attributed source and SHA-256 digest, no household input.
 
@@ -86,6 +88,6 @@ Planting thresholds in the demonstration are **synthetic software fixtures, not 
 The React chat route is now loaded on demand: the main frontend bundle fell from approximately **563 kB to 375 kB**, with a separate approximately 187 kB chat chunk. Frontend lint/build pass without the prior large-chunk warning. CI is pinned to immutable action commits, runs both database suites and frontend checks, and offers an explicit full-download/model/browser job. Remote CI execution is not claimed.
 
 
-The final **85.56-second continuous demo** (`demo/officer-to-farmer.webm`, `final-demo.json`) shows a real planting/hold task, a **15.242-second weather failure followed by a 1.162-second successful retry**, evidence inspection, explicit approval/release and real local audio playback. Browser workflow time was **85.304 seconds**, including readable pauses. No frames were edited or accelerated. The earlier 132.36-second inspection demo remains in `demo/phase3-inspection.webm`.
+The final **85.56-second continuous demo** (`demo/officer-to-farmer.webm`, `final-demo.json`) shows a real planting/hold task, a **15.242-second weather failure followed by a 1.162-second successful retry**, evidence inspection, explicit approval/release and real local audio playback. Browser workflow time was **85.304 seconds**, including readable pauses. No frames were edited or accelerated. The earlier 132.36-second inspection recording used the legacy path `demo/phase3-inspection.webm`.
 
 `final-audio.json` separately verifies actual released-only endpoint synthesis, exact-version/language/actor audit metadata, and a decodable 54.857-second English WAV (`demo/released-example.wav`). It is a synthetic demonstration artifact, not a claim of validated pronunciation or real officer endorsement.

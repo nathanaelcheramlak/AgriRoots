@@ -15,5 +15,5 @@ The demonstration uses CPU inference and requires no cloud language-model key. S
 - Real office name, contact and permission: pending owner input.
 - Interviews / officer feedback / resulting changes: the owner confirms no feedback has been collected; none is claimed.
 - Licence: original code is Apache-2.0; owner confirmed redistribution rights for included code/assets. Third-party terms remain applicable; see `THIRD_PARTY_NOTICES.md`.
-- Demo: `demo/officer-to-farmer.webm` contains a 85.56-second unedited planting/hold run, weather recovery, scripted review/release and real local audio playback. No public URL has been configured.
+- Demo media: the legacy root `demo/` folder has been removed. Historical run details remain in `EVALS.md` and `backend/validation/`; create a new local recording if needed. No public URL has been configured.
 - In-country hosting and competition eligibility: unconfirmed.

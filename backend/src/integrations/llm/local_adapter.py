@@ -7,6 +7,7 @@ from urllib.parse import urlsplit
 import httpx
 from pydantic import BaseModel
 from src.config.settings import get_settings
+from src.agent.prompts import LOCAL_MODEL_SUFFIX
 
 
 class StructuredModel(Protocol):
@@ -57,7 +58,7 @@ class LocalModel:
                 raise ValueError("Served model identity does not match the configured pinned model")
             response = await client.post(self.url + "/v1/chat/completions", json={
                 "model": self.settings.advisory_model_id,
-                "messages": [{"role": "system", "content": system + " /no_think"},
+                "messages": [{"role": "system", "content": system + LOCAL_MODEL_SUFFIX},
                              {"role": "user", "content": encoded}],
                 "response_format": {"type": "json_schema", "json_schema": {"name": schema.__name__,
                     "strict": True, "schema": output_schema}},

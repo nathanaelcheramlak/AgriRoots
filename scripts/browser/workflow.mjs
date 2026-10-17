@@ -9,12 +9,14 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..")
 const demo = process.argv.includes("--demo");
 const base = "http://127.0.0.1:4173";
 const output = path.join(root, "backend/validation");
+const recordingDir = path.join(root, "backend/runtime/browser-recordings");
+if (demo) await fs.mkdir(recordingDir, { recursive: true });
 const reportPrefix = process.env.VALIDATION_PREFIX || "phase3";
 await fs.mkdir(output, { recursive: true });
 const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH || "/opt/google/chrome/chrome",
   headless: true, args: ["--no-sandbox", "--autoplay-policy=no-user-gesture-required"] });
 const context = await browser.newContext({ viewport: { width: 1280, height: 900 },
-  ...(demo ? { recordVideo: { dir: path.join(root, "demo"), size: { width: 1280, height: 900 } } } : {}) });
+  ...(demo ? { recordVideo: { dir: recordingDir, size: { width: 1280, height: 900 } } } : {}) });
 const page = await context.newPage();
 page.setDefaultTimeout(15000);
 const errors = [];
@@ -139,9 +141,9 @@ try {
   const video = page.video();
   await context.close();
   if (video) {
-    await video.saveAs(path.join(root, "demo/officer-to-farmer.webm"));
+    await video.saveAs(path.join(recordingDir, "officer-to-farmer.webm"));
     await video.delete();
-    report.video = "demo/officer-to-farmer.webm";
+    report.video = "backend/runtime/browser-recordings/officer-to-farmer.webm";
     report.under_three_minutes = report.elapsed_seconds < 180;
     if (!report.under_three_minutes) {
       report.workflow_status = report.status;
