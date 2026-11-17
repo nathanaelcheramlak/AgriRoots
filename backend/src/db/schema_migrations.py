@@ -4,14 +4,17 @@ Run one migration process before starting multiple production workers.
 """
 from sqlalchemy import Column, Integer, Table, select
 from src.db.base import Base
-from src.db.migrations import v001_legacy, v002_workspace, v003_advisory_runs
+from src.db.migrations import v001_legacy, v002_workspace, v003_advisory_runs, v004_connectors, v005_image_assets
 
 revisions = Table("schema_revisions", Base.metadata, Column("version", Integer, primary_key=True))
-MIGRATIONS = ((1, v001_legacy), (2, v002_workspace), (3, v003_advisory_runs))
+MIGRATIONS = ((1, v001_legacy), (2, v002_workspace), (3, v003_advisory_runs), (4, v004_connectors), (5, v005_image_assets))
 
 
 def migrate(engine):
     with engine.begin() as connection:
+        if engine.dialect.name == "postgresql":
+            from sqlalchemy import text
+            connection.execute(text("SELECT pg_advisory_xact_lock(18472004)"))
         revisions.create(connection, checkfirst=True)
         applied = set(connection.scalars(select(revisions.c.version)))
         for version, migration in MIGRATIONS:

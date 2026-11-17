@@ -23,13 +23,18 @@ TOOL_SCHEMAS = {"get_cluster_plot_history": EmptyInput, "get_weather_evidence": 
 
 
 class AdvisoryTools:
-    def __init__(self, run_id, capability):
+    def __init__(self, run_id, capability, *, http=None):
         self.run_id, self.capability = run_id, capability
+        self.http = http
 
     def authorized(self, db):
         return authorize_capability(db, self.run_id, self.capability)
 
     async def call(self, name, arguments):
+        from src.tools.executor import ToolExecutor
+        return await ToolExecutor().execute_legacy(name, arguments, self.run_id, self.capability)
+
+    async def _call_reviewed(self, name, arguments):
         started = perf_counter()
         call_id = None
         try:
@@ -147,7 +152,9 @@ class AdvisoryTools:
                     and utc(datetime.fromisoformat(r.data["valid_until"])) > now
                     and 0 <= (now - utc(datetime.fromisoformat(r.data["retrieved_at"]))).total_seconds() < 21600]
             locations = {(p["latitude"], p["longitude"]) for p in plots if not sources[p["id"]]}
-            async with httpx.AsyncClient(timeout=15, follow_redirects=False, trust_env=False) as client:
+            if not self.http:
+                raise ValueError("A controlled HTTP client is required for reviewed weather retrieval")
+            async with self.http.client("https://api.open-meteo.com/v1/forecast") as client:
                 async def fetch(location):
                     response = await client.get("https://api.open-meteo.com/v1/forecast", params={
                         "latitude": location[0], "longitude": location[1], "timezone": "UTC", "forecast_days": 4,

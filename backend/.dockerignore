@@ -1,0 +1,11 @@
+.venv
+.env
+private-data
+runtime
+model
+validation
+__pycache__
+.pytest_cache
+tests
+reports/*
+!reports/provider_inventory.json

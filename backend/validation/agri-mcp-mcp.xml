@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="1.649" timestamp="2026-11-16T11:15:13.915563+03:00" hostname="Fraol-PC"><testcase classname="tests.test_connectors_mcp" name="test_sdk_discovery_paginates_and_invokes_real_protocol" time="1.263"><failure message="AssertionError: {'id': 'f2e6a3d3-621f-42d6-a810-bd91d56a46db', 'kind': 'discovery', 'target_id': 'bcc1cea8-f56a-46a2-bc60-309735468de4', 'status': 'failed', ...}&#10;assert 'failed' == 'succeeded'&#10;  &#10;  - succeeded&#10;  + failed">tests\test_connectors_mcp.py:117: in test_sdk_discovery_paginates_and_invokes_real_protocol
+    assert result["status"] == "succeeded", result
+E   AssertionError: {'id': 'f2e6a3d3-621f-42d6-a810-bd91d56a46db', 'kind': 'discovery', 'target_id': 'bcc1cea8-f56a-46a2-bc60-309735468de4', 'status': 'failed', ...}
+E   assert 'failed' == 'succeeded'
+E     
+E     - succeeded
+E     + failed</failure></testcase></testsuite></testsuites>

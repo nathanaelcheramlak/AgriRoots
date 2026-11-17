@@ -86,6 +86,11 @@ def claim_run(run_id):
 
 
 async def public_guidance(run_id, token):
+    from src.tools.executor import ToolExecutor
+    return await ToolExecutor().execute_legacy("get_public_guidance", {}, run_id, token)
+
+
+async def _public_guidance_reviewed(run_id, token):
     started = perf_counter(); log_id = None
     try:
         with SessionLocal() as db:

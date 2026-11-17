@@ -15,3 +15,6 @@ __all__ = [
 from src.db.models.workspace import (Administrator, Office, Membership, WorkspaceRecord,
                                      Advisory, AdvisoryVersion, WorkspaceEvent)
 from src.db.models.advisory_run import AdvisoryRun, RunCall, RunEvidence
+from src.db.models import connectors
+
+from src.db.models.image_asset import ImageAsset, DiagnosisReceipt

@@ -159,7 +159,7 @@ class WorkspaceService:
                 evidence = self.record(office_id, evidence_id, "evidence")
                 if evidence.data.get("plot_id") and evidence.data["plot_id"] not in payload.plot_ids:
                     fail(422, "Evidence plot must be targeted")
-                if evidence.data["classification"] == "synthetic" and any(not h.data["synthetic"] for h in households):
+                if evidence.data["classification"] in ("synthetic", "fixture") and any(not h.data["synthetic"] for h in households):
                     fail(422, "Synthetic evidence requires labelled synthetic households")
                 snapshots[evidence_id] = evidence.data
         if payload.replaces_advisory_id:

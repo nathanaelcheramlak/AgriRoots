@@ -87,6 +87,43 @@ class Settings(BaseSettings):
 
     debug_reset_token: str | None = None
 
+    app_env: Literal["development", "test", "production"] = "development"
+    cors_allowed_origins: list[str] = ["http://localhost:5173", "http://localhost:3000"]
+    secret_encryption_key: str | None = None
+    secret_previous_encryption_keys: list[str] = []
+    redis_url: str | None = None
+    llm_provider: Literal["gemini", "local"] = "gemini"
+    cloud_model_data_policy: Literal["synthetic_only", "approved_context"] = "synthetic_only"
+    live_tests_enabled: bool = False
+    live_model_tests_enabled: bool = False
+    live_diagnosis_tests_enabled: bool = False
+    external_actions_enabled: bool = False
+    outbound_allowed_hosts: list[str] = ["api.open-meteo.com", "power.larc.nasa.gov", "api.isda-africa.com",
+        "climateserv.servirglobal.net", "fpma.fao.org", "www.arcgis.com", "services5.arcgis.com",
+        "api.eppo.int", "hapi.humdata.org", "api.heigit.org", "crop.kindwise.com", "storage.googleapis.com",
+        "data.apps.fao.org", "asis-esri.fao.org", "earthengine.googleapis.com", "oauth2.googleapis.com"]
+    outbound_hosts_policy_file: str | None = None
+    connector_fixture_origins: list[str] = []
+    connector_http_timeout: float = Field(default=15, ge=1, le=60)
+    connector_max_response_bytes: int = Field(default=4194304, ge=1024, le=4194304)
+    connector_run_seconds: int = Field(default=240, ge=5, le=600)
+    connector_max_tool_calls: int = Field(default=24, ge=1, le=100)
+    connector_max_provider_requests: int = Field(default=80, ge=1, le=200)
+    connector_max_concurrency: int = Field(default=4, ge=1, le=16)
+    connector_max_model_tools: int = Field(default=12, ge=1, le=32)
+    connector_max_followups: int = Field(default=2, ge=0, le=4)
+    connector_artifact_root: str = "private-data/connectors"
+    provider_test_results_path: str | None = None
+    internal_mcp_url: str | None = None
+    connector_checkpoint_prepared: bool = False
+
+    @field_validator("connector_fixture_origins")
+    @classmethod
+    def fixture_origins_are_explicit(cls, value, info):
+        if value and info.data.get("app_env") == "production":
+            raise ValueError("Fixture network exceptions are forbidden in production")
+        return value
+
     @field_validator("google_tts_voice_name", mode="before")
     @classmethod
     def default_tts_voice(cls, value):

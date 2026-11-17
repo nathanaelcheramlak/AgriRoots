@@ -1,0 +1,41 @@
+{
+  "executed_at_utc": "2026-11-16T12:14:44.949200+00:00",
+  "type": "FIRST_WAVE_ACTUAL_PROVIDER_ACTIVATION",
+  "office_id": "da25ffd4-7ab3-4d6c-ac68-d38e1294ba9e",
+  "plot_id": "91378aaf-b284-4703-bc6d-4b369eb0bec5",
+  "context_note": "Explicit synthetic validation records; provider evidence is separately classified by the executor",
+  "providers": [
+    {
+      "provider_id": "chirps",
+      "job_id": "33ee59fb-c7a4-4c1b-b42a-c6888503c182",
+      "tool_version_id": "b10380a5-b359-4096-86d1-8f5f6fb2142a",
+      "job_status": "failed",
+      "execution_outcome": "TIMEOUT",
+      "data_outcome": "INVALID",
+      "classification": null,
+      "evidence_ids": [],
+      "retrieved_at": null,
+      "source": null,
+      "data": null,
+      "limitations": [],
+      "error": {
+        "code": "TIMEOUT",
+        "message": "Provider timeout; remote completion may be ambiguous",
+        "retryable": true
+      },
+      "status": "NOT_ENABLED"
+    }
+  ],
+  "skills": [],
+  "http_attempts": [
+    {
+      "method": "GET",
+      "endpoint": "https://climateserv.servirglobal.net/api/submitDataRequest/",
+      "http_status": null,
+      "outcome": "AMBIGUOUS_TRANSPORT"
+    }
+  ],
+  "model_requests": 0,
+  "diagnosis_requests": 0,
+  "delivery_performed": false
+}

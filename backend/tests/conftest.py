@@ -1,4 +1,5 @@
 import os
+import asyncio
 import sys
 import tempfile
 from pathlib import Path
@@ -14,8 +15,14 @@ if str(BACKEND_ROOT) not in sys.path:
 TEST_DB_PATH = Path(tempfile.gettempdir()) / "agriroots_pytest.db"
 
 test_database_url = os.environ.get("AGRIROOTS_TEST_DATABASE_URL", f"sqlite:///{TEST_DB_PATH.as_posix()}")
+if os.name == "nt" and test_database_url.startswith("postgresql"):
+    # Psycopg async checkpoints require selector events on Windows. Deployment
+    # runs on Linux; this policy is only for the native integration-test runner.
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 # An explicit test database is disposable; never fall back to an operator's DATABASE_URL.
 os.environ["DATABASE_URL"] = test_database_url
+if os.environ.get("AGRIROOTS_TEST_REDIS_URL"):
+    os.environ["REDIS_URL"] = os.environ["AGRIROOTS_TEST_REDIS_URL"]
 os.environ["JWT_SECRET_KEY"] = "agriroots_test_secret_key_for_pytest_only"
 os.environ["JWT_ALGORITHM"] = "HS256"
 os.environ["ACCESS_TOKEN_EXPIRE_MINUTES"] = "10080"

@@ -1,0 +1,232 @@
+{
+  "migration": 5,
+  "skills": [
+    {
+      "id": "341a4ec0-8449-4ce4-8853-705edfa79c1b",
+      "name": "fieldops_weather_forecast",
+      "enabled": true,
+      "tool_count": 1,
+      "missing_optional": []
+    },
+    {
+      "id": "fcd275bf-bbe0-46db-b540-3efe1360d08a",
+      "name": "fieldops_agricultural_context",
+      "enabled": true,
+      "tool_count": 3,
+      "missing_optional": []
+    },
+    {
+      "id": "8489d7ec-731c-49a7-9024-fd3b18eb29d7",
+      "name": "fieldops_soil_profile",
+      "enabled": true,
+      "tool_count": 1,
+      "missing_optional": []
+    },
+    {
+      "id": "9de5f7d1-3e78-46c3-8664-1c59b4d7042a",
+      "name": "fieldops_climate_history",
+      "enabled": true,
+      "tool_count": 1,
+      "missing_optional": []
+    },
+    {
+      "id": "cae52278-ffb2-4576-a8fa-f06755507666",
+      "name": "fieldops_rainfall_history",
+      "enabled": true,
+      "tool_count": 1,
+      "missing_optional": []
+    },
+    {
+      "id": "0a75f728-6e6a-4897-9841-aa74302bb6d3",
+      "name": "fieldops_fpma_market_prices",
+      "enabled": true,
+      "tool_count": 1,
+      "missing_optional": []
+    },
+    {
+      "id": "8b9268d4-d95e-46e7-8e81-72c923f8a41f",
+      "name": "fieldops_wfp_market_prices",
+      "enabled": true,
+      "tool_count": 1,
+      "missing_optional": []
+    },
+    {
+      "id": "188c765a-3eea-4a36-8124-bda95aeb436f",
+      "name": "fieldops_pest_taxonomy",
+      "enabled": true,
+      "tool_count": 1,
+      "missing_optional": []
+    },
+    {
+      "id": "6fa45ac9-69c5-4d86-9128-6564619fb855",
+      "name": "fieldops_locust_observations",
+      "enabled": true,
+      "tool_count": 1,
+      "missing_optional": []
+    },
+    {
+      "id": "7e3dbe96-f91e-4d31-8aa4-33c91836ff69",
+      "name": "fieldops_water_use",
+      "enabled": true,
+      "tool_count": 1,
+      "missing_optional": []
+    },
+    {
+      "id": "dd5c4dcd-56b8-4aee-a3e2-e45ab71e18f7",
+      "name": "fieldops_maize_suitability",
+      "enabled": true,
+      "tool_count": 1,
+      "missing_optional": []
+    },
+    {
+      "id": "25ad20d8-47cc-41c6-ab95-49fd0aff0495",
+      "name": "fieldops_vegetation_condition",
+      "enabled": true,
+      "tool_count": 1,
+      "missing_optional": []
+    },
+    {
+      "id": "1e1d2ce8-7a22-48a7-b090-a180a0ab97b8",
+      "name": "fieldops_vegetation_greenness",
+      "enabled": true,
+      "tool_count": 1,
+      "missing_optional": []
+    },
+    {
+      "id": "efaf3518-6af3-410d-9fc7-9dfd8e75c379",
+      "name": "fieldops_crop_photo_assessment",
+      "enabled": false
+    },
+    {
+      "id": "9d1753a9-bec3-4d24-8399-6fa90c34d5f8",
+      "name": "fieldops_driving_route",
+      "enabled": true,
+      "tool_count": 1,
+      "missing_optional": []
+    }
+  ],
+  "provider_checks": [
+    {
+      "job_id": "a89c8fce-8393-4a3e-aa4b-9963040ae512",
+      "operation": "gee_modis_ndvi",
+      "status": "succeeded",
+      "data_outcome": "VALID",
+      "attempt_count": 7
+    },
+    {
+      "job_id": "ca1c5305-e066-453f-ac2d-e8fa0ce8b748",
+      "operation": "gaez_maize_suitability",
+      "status": "succeeded",
+      "data_outcome": "VALID",
+      "attempt_count": 1
+    },
+    {
+      "job_id": "aa5325a4-e3e2-41e1-a46e-c57f7bd6640b",
+      "operation": "wapor_evapotranspiration",
+      "status": "succeeded",
+      "data_outcome": "VALID",
+      "attempt_count": 12
+    },
+    {
+      "job_id": "a622aeae-a4ef-41ae-8843-dfdec9327768",
+      "operation": "ors_driving_route",
+      "status": "succeeded",
+      "data_outcome": "VALID",
+      "attempt_count": 1
+    },
+    {
+      "job_id": "3700d619-eda3-4623-afe8-74a64c8ea244",
+      "operation": "gee_modis_ndvi",
+      "status": "failed",
+      "data_outcome": "INVALID",
+      "attempt_count": 1
+    },
+    {
+      "job_id": "0ee388a7-52b9-4be6-8b49-1767b1bd7b40",
+      "operation": "asis_vegetation_condition",
+      "status": "succeeded",
+      "data_outcome": "VALID",
+      "attempt_count": 4
+    },
+    {
+      "job_id": "d74eaf51-b94a-4417-a45b-6b08ebc85ba9",
+      "operation": "gaez_maize_suitability",
+      "status": "failed",
+      "data_outcome": "INVALID",
+      "attempt_count": 0
+    },
+    {
+      "job_id": "12506a96-5c44-4d54-952e-31081fab409a",
+      "operation": "wapor_evapotranspiration",
+      "status": "failed",
+      "data_outcome": "INVALID",
+      "attempt_count": 1
+    },
+    {
+      "job_id": "aeb145f1-7cca-4476-8549-3b05446cce38",
+      "operation": "fao_locust_observations",
+      "status": "succeeded",
+      "data_outcome": "VALID",
+      "attempt_count": 4
+    },
+    {
+      "job_id": "ab0429dc-5b25-4692-9a25-f3e8b8d8a5fc",
+      "operation": "eppo_names",
+      "status": "succeeded",
+      "data_outcome": "VALID",
+      "attempt_count": 1
+    },
+    {
+      "job_id": "24056aca-aca1-42f5-b490-6412f51f631a",
+      "operation": "hapi_ethiopia_prices",
+      "status": "succeeded",
+      "data_outcome": "VALID",
+      "attempt_count": 1
+    },
+    {
+      "job_id": "2329ea7e-2378-44bc-b384-119962caf91d",
+      "operation": "fpma_ethiopia_prices",
+      "status": "succeeded",
+      "data_outcome": "VALID",
+      "attempt_count": 2
+    },
+    {
+      "job_id": "a880307f-30cb-4b28-b535-f0bcc6ed79fa",
+      "operation": "chirps_rainfall_history",
+      "status": "succeeded",
+      "data_outcome": "VALID",
+      "attempt_count": 4
+    },
+    {
+      "job_id": "7b66006b-30d5-42d6-8eab-e9473ed190d0",
+      "operation": "nasa_power_history",
+      "status": "succeeded",
+      "data_outcome": "VALID",
+      "attempt_count": 1
+    },
+    {
+      "job_id": "b4d51489-7018-49e3-83d4-4ffbca98e97b",
+      "operation": "isda_soil_profile",
+      "status": "succeeded",
+      "data_outcome": "VALID",
+      "attempt_count": 10
+    },
+    {
+      "job_id": "546641c4-8c3e-4b18-a2a2-c442b9b7bc23",
+      "operation": "open_meteo_forecast",
+      "status": "succeeded",
+      "data_outcome": "VALID",
+      "attempt_count": 1
+    }
+  ],
+  "checked_at": "2026-11-16T19:30:03.639582+00:00",
+  "readiness_http": 200,
+  "readiness": {
+    "status": "ready",
+    "dependencies": {
+      "database": "ready",
+      "redis": "ready"
+    },
+    "provider_requests": 0
+  }
+}

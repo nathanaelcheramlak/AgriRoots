@@ -4,6 +4,8 @@ AgriRoots helps Ethiopian extension officers prepare farming advice from plot re
 
 **Status:** local prototype with synthetic demonstration records. Field validation with an extension office is pending.
 
+The `agri-mcp` branch adds a registry-driven Gemini companion with reviewed REST/MCP connectors, reusable skills, configuration-only plugin packs, and PostgreSQL/Redis deployment. Start with [connector support](docs/CONNECTOR_SUPPORT.md) and the [implementation report](backend/reports/CONNECTOR_TEST_REPORT.md). Existing farmer review and release rules still apply.
+
 ## Main features
 
 - Farm, household, plot, and crop-season records.

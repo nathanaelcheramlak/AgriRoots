@@ -1,0 +1,219 @@
+{
+  "generated_at": "2026-11-16T19:23:22.274250+00:00",
+  "providers": [
+    {
+      "provider_id": "open_meteo",
+      "connection_id": "f674e05a-4c7d-4727-949f-fb7d04ac2d3f",
+      "tool_id": "430255c6-18f8-436a-9938-cc256ed781d1",
+      "tool_version_id": "5eac9c06-7f33-4d30-b539-b8f3348783e1",
+      "skill_id": "341a4ec0-8449-4ce4-8853-705edfa79c1b",
+      "implemented": true,
+      "enabled": true,
+      "backend_live_test": "VALID",
+      "classification": "live",
+      "job_id": "546641c4-8c3e-4b18-a2a2-c442b9b7bc23",
+      "evidence_ids": [
+        "ca51b205-b1d2-433e-9781-6e17ab64f8b3"
+      ]
+    },
+    {
+      "provider_id": "isda_soil",
+      "connection_id": "2fc519a8-c4d9-4d19-b298-04ca5be7d2d6",
+      "tool_id": "6ae6fcc7-2890-4517-8d66-4b64df30cce0",
+      "tool_version_id": "08982e2c-7e3d-4a23-a758-aa1589df4837",
+      "skill_id": "8489d7ec-731c-49a7-9024-fd3b18eb29d7",
+      "implemented": true,
+      "enabled": true,
+      "backend_live_test": "VALID",
+      "classification": "live",
+      "job_id": "b4d51489-7018-49e3-83d4-4ffbca98e97b",
+      "evidence_ids": [
+        "2c2b44d0-b1ee-47d5-8c32-7d465bbe88a5"
+      ]
+    },
+    {
+      "provider_id": "nasa_power",
+      "connection_id": "44eae508-7a6c-40c1-88b1-127dcc7f16c1",
+      "tool_id": "f9bd61b8-a619-403e-be8d-bdb216400782",
+      "tool_version_id": "277e174e-227f-40d2-9ee0-8d1c0cc8703f",
+      "skill_id": "9de5f7d1-3e78-46c3-8664-1c59b4d7042a",
+      "implemented": true,
+      "enabled": true,
+      "backend_live_test": "VALID",
+      "classification": "live",
+      "job_id": "7b66006b-30d5-42d6-8eab-e9473ed190d0",
+      "evidence_ids": [
+        "4a81162a-fec5-4770-968d-44f974a5afa3"
+      ]
+    },
+    {
+      "provider_id": "chirps",
+      "connection_id": "0938087f-ea32-474a-b3d0-d01841a63ef2",
+      "tool_id": "90421581-a2f5-42bf-b2e2-addbd2bde7ad",
+      "tool_version_id": "90327a4b-b7b3-4a43-ba64-fd88727ca29d",
+      "skill_id": "cae52278-ffb2-4576-a8fa-f06755507666",
+      "implemented": true,
+      "enabled": true,
+      "backend_live_test": "VALID",
+      "classification": "live",
+      "job_id": "a880307f-30cb-4b28-b535-f0bcc6ed79fa",
+      "evidence_ids": [
+        "c9129ec6-2565-44cc-8e06-1add3a364c75"
+      ]
+    },
+    {
+      "provider_id": "fao_fpma",
+      "connection_id": "9889d83a-81b3-43e1-bdd5-ba3bd0c3988a",
+      "tool_id": "bc72b1f6-f024-4b19-90cc-501741c343e8",
+      "tool_version_id": "e58e719b-8547-49df-8fd4-3c677dfc50f9",
+      "skill_id": "0a75f728-6e6a-4897-9841-aa74302bb6d3",
+      "implemented": true,
+      "enabled": true,
+      "backend_live_test": "VALID",
+      "classification": "live",
+      "job_id": "2329ea7e-2378-44bc-b384-119962caf91d",
+      "evidence_ids": [
+        "303f1418-4710-4b72-931b-8a73ef594570"
+      ]
+    },
+    {
+      "provider_id": "wfp_prices",
+      "connection_id": "7710cfe2-d1a8-4954-a63c-eb57df2e912c",
+      "tool_id": "39d4057a-e5c4-4d65-992d-4926e9e96ded",
+      "tool_version_id": "0968635a-abab-452c-a23c-5115f5b0e51d",
+      "skill_id": "8b9268d4-d95e-46e7-8e81-72c923f8a41f",
+      "implemented": true,
+      "enabled": true,
+      "backend_live_test": "VALID",
+      "classification": "live",
+      "job_id": "24056aca-aca1-42f5-b490-6412f51f631a",
+      "evidence_ids": [
+        "11dc6331-20a3-42c8-ada9-e3d725689aa9"
+      ]
+    },
+    {
+      "provider_id": "eppo",
+      "connection_id": "b5877467-83b5-43a9-a7ea-63202d6e76a6",
+      "tool_id": "56f275fa-687c-448f-9f43-384cc56c4a82",
+      "tool_version_id": "e33dd6cb-6527-4951-9806-ed92cf483c63",
+      "skill_id": "188c765a-3eea-4a36-8124-bda95aeb436f",
+      "implemented": true,
+      "enabled": true,
+      "backend_live_test": "VALID",
+      "classification": "live",
+      "job_id": "ab0429dc-5b25-4692-9a25-f3e8b8d8a5fc",
+      "evidence_ids": [
+        "38668531-686c-4adc-84dc-ee18b1709b8a"
+      ]
+    },
+    {
+      "provider_id": "fao_locust",
+      "connection_id": "4e5b3d6f-16b1-4e2a-9325-b9f43123a83f",
+      "tool_id": "bdf0ebb2-500a-4d7a-b9e6-d3ec42676f45",
+      "tool_version_id": "af9dfc70-b369-4d25-b79c-606d98fd85c8",
+      "skill_id": "6fa45ac9-69c5-4d86-9128-6564619fb855",
+      "implemented": true,
+      "enabled": true,
+      "backend_live_test": "VALID",
+      "classification": "live",
+      "job_id": "aeb145f1-7cca-4476-8549-3b05446cce38",
+      "evidence_ids": [
+        "8dbdd3ee-332b-4400-8284-bff624016adb"
+      ]
+    },
+    {
+      "provider_id": "fao_wapor",
+      "connection_id": "0c8cba20-7c3e-4193-8d5f-8b6fa63ad3d9",
+      "tool_id": "022acdcd-dbb7-4f77-82d2-9020a0fe388e",
+      "tool_version_id": "aa069fcc-f277-446f-9947-9a8447a5104b",
+      "skill_id": "7e3dbe96-f91e-4d31-8aa4-33c91836ff69",
+      "implemented": true,
+      "enabled": true,
+      "backend_live_test": "VALID",
+      "classification": "live",
+      "job_id": "aa5325a4-e3e2-41e1-a46e-c57f7bd6640b",
+      "evidence_ids": [
+        "6b4df6b3-b976-4329-9e5e-abf930efff94"
+      ]
+    },
+    {
+      "provider_id": "fao_gaez",
+      "connection_id": "f912f7a4-ceca-489a-9d5a-d71a5430fb62",
+      "tool_id": "5dcef198-16f8-412c-bd6f-69a77bde2122",
+      "tool_version_id": "7cbd8e9e-84bb-4087-8e57-a5641e3e02f0",
+      "skill_id": "dd5c4dcd-56b8-4aee-a3e2-e45ab71e18f7",
+      "implemented": true,
+      "enabled": true,
+      "backend_live_test": "VALID",
+      "classification": "live",
+      "job_id": "ca1c5305-e066-453f-ac2d-e8fa0ce8b748",
+      "evidence_ids": [
+        "93da9393-0e00-45a2-a931-d5dcef6b0920"
+      ]
+    },
+    {
+      "provider_id": "fao_asis",
+      "connection_id": "5b3ddb22-0d84-4577-8cb9-a11acd490c5f",
+      "tool_id": "3c90bf0d-27e5-4f26-847c-f48be818869c",
+      "tool_version_id": "ff583e4a-9436-4461-9438-24bf98e56948",
+      "skill_id": "25ad20d8-47cc-41c6-ab95-49fd0aff0495",
+      "implemented": true,
+      "enabled": true,
+      "backend_live_test": "VALID",
+      "classification": "live",
+      "job_id": "0ee388a7-52b9-4be6-8b49-1767b1bd7b40",
+      "evidence_ids": [
+        "d65c82db-d4f5-420c-a1fa-dbc66d4d47e6"
+      ]
+    },
+    {
+      "provider_id": "google_earth_engine",
+      "connection_id": "1d9906ef-d44f-4b46-a076-44b8fdf7ab02",
+      "tool_id": "008d2568-b04a-47b6-a79f-c8f109b91caa",
+      "tool_version_id": "29a183fe-6d20-4259-a261-5d61bb345090",
+      "skill_id": "1e1d2ce8-7a22-48a7-b090-a180a0ab97b8",
+      "implemented": true,
+      "enabled": true,
+      "backend_live_test": "VALID",
+      "classification": "live",
+      "job_id": "a89c8fce-8393-4a3e-aa4b-9963040ae512",
+      "evidence_ids": [
+        "af11b771-7837-43b0-b7c5-4af6a0b8208a"
+      ]
+    },
+    {
+      "provider_id": "kindwise",
+      "connection_id": "3810e646-e887-4013-abec-d599a42d8c57",
+      "tool_id": "e98446eb-09bf-48e3-bbf7-2192f9109ca8",
+      "tool_version_id": "a3764eb9-7111-44b8-ad13-e463b4dae3b7",
+      "skill_id": "efaf3518-6af3-410d-9fc7-9dfd8e75c379",
+      "implemented": true,
+      "enabled": false,
+      "backend_live_test": "NOT_RUN_CREDIT_AUTHORIZATION_REQUIRED"
+    },
+    {
+      "provider_id": "openrouteservice",
+      "connection_id": "cee95155-fa95-48b1-9b1c-a32595dd88b2",
+      "tool_id": "680f238d-d963-4312-a36b-9477f40f1009",
+      "tool_version_id": "71019df7-56f4-44bc-9a7c-431c367f5e6b",
+      "skill_id": "9d1753a9-bec3-4d24-8399-6fa90c34d5f8",
+      "implemented": true,
+      "enabled": true,
+      "backend_live_test": "VALID",
+      "classification": "live",
+      "job_id": "a622aeae-a4ef-41ae-8843-dfdec9327768",
+      "evidence_ids": [
+        "e2628b7b-d88a-40bb-a652-67a7dc6dacef"
+      ]
+    }
+  ],
+  "combined_skill": {
+    "skill_id": "fcd275bf-bbe0-46db-b540-3efe1360d08a",
+    "enabled": true
+  },
+  "model_requests": 0,
+  "farmer_delivery_performed": false,
+  "model_key_present": false,
+  "live_model_test": "BLOCKED_MISSING_MODEL_KEY",
+  "kindwise_requests": 0
+}

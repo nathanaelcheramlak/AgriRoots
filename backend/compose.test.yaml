@@ -1,0 +1,7 @@
+services:
+  postgres:
+    ports: ["127.0.0.1:25432:5432"]
+    networks: [internal, outbound]
+  redis:
+    ports: ["127.0.0.1:26379:6379"]
+    networks: [internal, outbound]

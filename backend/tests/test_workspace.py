@@ -242,7 +242,9 @@ def test_migrations_fresh_and_legacy_copy(tmp_path):
         assert "advisory_versions" in inspect(engine).get_table_names()
         assert "language_used" in {c["name"] for c in inspect(engine).get_columns("chat_messages")}
         with engine.connect() as conn:
-            assert conn.execute(text("SELECT version FROM schema_revisions ORDER BY version")).scalars().all() == [1, 2, 3]
+            assert conn.execute(text("SELECT version FROM schema_revisions ORDER BY version")).scalars().all() == [1, 2, 3, 4, 5]
+            assert "connector_tool_versions" in inspect(engine).get_table_names()
+            assert "connector_credentials" in inspect(engine).get_table_names()
             if legacy:
                 assert conn.execute(text("SELECT phone_number FROM users WHERE user_id='legacy-user'")).scalar() == "+251999999999"
         engine.dispose()

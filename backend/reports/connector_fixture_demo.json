@@ -1,0 +1,129 @@
+{
+  "executed_at_utc": "2026-11-16T09:54:36.219429+00:00",
+  "command": "python scripts/demo_connectors.py",
+  "type": "EXPLICIT_FIXTURE_DEMO",
+  "identity_context": "synthetic office and Adama point",
+  "database": "C:\\Users\\fraol\\Documents\\Agri-roots\\AgriRoots\\backend\\private-data\\connector-fixture-1225e660ff8b4511bbc5ea352daca7dc.sqlite",
+  "registration": {
+    "connection_id": "ce72de09-3a31-41b8-8fe6-83d8bd401ea1",
+    "tool_id": "f1c9d311-35b4-49ce-89f8-078706f7c4de",
+    "job": {
+      "id": "f6423a46-9563-40f7-b5dc-786a02fa49bd",
+      "kind": "tool_test",
+      "target_id": "81481649-00cb-4753-99d2-cb5807f276b3",
+      "status": "succeeded",
+      "result": {
+        "execution_outcome": "SUCCESS",
+        "data_outcome": "VALID",
+        "invocation_id": "b943960e-c741-4f8c-911a-45a0ddacf11f",
+        "tool_version_id": "81481649-00cb-4753-99d2-cb5807f276b3",
+        "evidence_ids": [
+          "f837c0e7-d375-461f-ae6a-9d9b9d48937f"
+        ],
+        "data": {
+          "ph": 6.8,
+          "units": "pH",
+          "fixture": true
+        },
+        "large_result": false,
+        "payload_digest": "cd9bd7c51359f7edcb9e134fd57c69c14bd3aba5bbef5343f7c7a1f598f74f7a",
+        "source": {
+          "url": "http://127.0.0.1:49730/soil",
+          "semantics": {},
+          "raw_response_digest": "cd9bd7c51359f7edcb9e134fd57c69c14bd3aba5bbef5343f7c7a1f598f74f7a"
+        },
+        "retrieved_at": "2026-11-16T09:54:29.402386+00:00",
+        "limitations": [],
+        "cache_hit": false,
+        "classification": "fixture",
+        "actual_cost_usd": null,
+        "estimated_cost_usd": null
+      },
+      "error": null,
+      "attempts": 1,
+      "created_at": "2026-11-16T09:54:28.065946",
+      "updated_at": "2026-11-16T09:54:29.435997",
+      "status_url": "/api/v1/connector-jobs/f6423a46-9563-40f7-b5dc-786a02fa49bd"
+    }
+  },
+  "skill_run": {
+    "id": "d1766c1a-292d-4733-836a-8836079cc0e1",
+    "kind": "skill_run",
+    "target_id": "089d7cf0-e2ca-49b4-8d5c-e58358a11b7b",
+    "status": "succeeded",
+    "result": {
+      "status": "completed",
+      "answer": "Synthetic fixture pH is 6.8. No field measurement was made. Evidence: c1d8bc77-d028-492f-8d2b-13291f7187ac",
+      "evidence_ids": [
+        "c1d8bc77-d028-492f-8d2b-13291f7187ac"
+      ],
+      "outcomes": [
+        {
+          "execution_outcome": "SUCCESS",
+          "data_outcome": "VALID",
+          "invocation_id": "9c081cb4-90d6-4e51-9a56-2e1e9ab9435e",
+          "tool_version_id": "81481649-00cb-4753-99d2-cb5807f276b3",
+          "evidence_ids": [
+            "c1d8bc77-d028-492f-8d2b-13291f7187ac"
+          ],
+          "data": {
+            "ph": 6.8,
+            "units": "pH",
+            "fixture": true
+          },
+          "large_result": false,
+          "payload_digest": "cd9bd7c51359f7edcb9e134fd57c69c14bd3aba5bbef5343f7c7a1f598f74f7a",
+          "source": {
+            "url": "http://127.0.0.1:49730/soil",
+            "semantics": {},
+            "raw_response_digest": "cd9bd7c51359f7edcb9e134fd57c69c14bd3aba5bbef5343f7c7a1f598f74f7a"
+          },
+          "retrieved_at": "2026-11-16T09:54:35.944471+00:00",
+          "limitations": [],
+          "cache_hit": false,
+          "classification": "fixture",
+          "actual_cost_usd": null,
+          "estimated_cost_usd": null
+        }
+      ],
+      "registry_generation": 8,
+      "skill_version": 1,
+      "model": {
+        "provider": "explicit-test-fixture",
+        "model_request_executed": false
+      },
+      "model_usage": [
+        {},
+        {}
+      ],
+      "actual_cost_usd": null,
+      "missing_optional_capabilities": [],
+      "delivery_performed": false,
+      "input_provenance": {
+        "plot_context": "synthetic",
+        "provider_result_classes": [
+          "fixture"
+        ],
+        "mixed_synthetic_context_live_evidence": false
+      }
+    },
+    "error": null,
+    "attempts": 1,
+    "created_at": "2026-11-16T09:54:29.814038",
+    "updated_at": "2026-11-16T09:54:36.057235",
+    "status_url": "/api/v1/connector-jobs/d1766c1a-292d-4733-836a-8836079cc0e1"
+  },
+  "after_revocation": {
+    "http_status": 409,
+    "body": {
+      "error": {
+        "code": "AUTH_REQUIRED",
+        "message": "No approved enabled tool for required capabilities: soil.profile",
+        "retryable": false,
+        "correlation_id": "dbde67d0-e864-4d8a-8b74-858009b0751c"
+      }
+    }
+  },
+  "external_provider_calls": 0,
+  "real_model_calls": 0
+}

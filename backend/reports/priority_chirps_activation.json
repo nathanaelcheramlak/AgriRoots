@@ -1,0 +1,41 @@
+{
+  "executed_at_utc": "2026-11-16T12:08:41.571075+00:00",
+  "type": "FIRST_WAVE_ACTUAL_PROVIDER_ACTIVATION",
+  "office_id": "da25ffd4-7ab3-4d6c-ac68-d38e1294ba9e",
+  "plot_id": "91378aaf-b284-4703-bc6d-4b369eb0bec5",
+  "context_note": "Explicit synthetic validation records; provider evidence is separately classified by the executor",
+  "providers": [
+    {
+      "provider_id": "chirps",
+      "job_id": "210cc5e1-8dd1-41ee-bc6b-5ad261ee1f4e",
+      "tool_version_id": "47996f24-4446-4c15-a1a5-44f663d67125",
+      "job_status": "failed",
+      "execution_outcome": "OUTPUT_VALIDATION_FAILED",
+      "data_outcome": "INVALID",
+      "classification": null,
+      "evidence_ids": [],
+      "retrieved_at": null,
+      "source": null,
+      "data": null,
+      "limitations": [],
+      "error": {
+        "code": "OUTPUT_VALIDATION_FAILED",
+        "message": "Expected JSON; received another content type",
+        "retryable": false
+      },
+      "status": "NOT_ENABLED"
+    }
+  ],
+  "skills": [],
+  "http_attempts": [
+    {
+      "method": "GET",
+      "endpoint": "https://climateserv.servirglobal.net/api/submitDataRequest/",
+      "http_status": 200,
+      "outcome": "HTTP_RESPONSE"
+    }
+  ],
+  "model_requests": 0,
+  "diagnosis_requests": 0,
+  "delivery_performed": false
+}

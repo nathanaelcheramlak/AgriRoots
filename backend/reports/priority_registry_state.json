@@ -1,0 +1,142 @@
+{
+  "connections": [
+    {
+      "id": "f674e05a-4c7d-4727-949f-fb7d04ac2d3f",
+      "name": "provided_agri_apis v1: open_meteo.forecast",
+      "enabled": true,
+      "health": "VALID",
+      "revision": 2,
+      "credential_configured": false
+    },
+    {
+      "id": "44eae508-7a6c-40c1-88b1-127dcc7f16c1",
+      "name": "provided_agri_apis v1: nasa_power.history",
+      "enabled": true,
+      "health": "VALID",
+      "revision": 2,
+      "credential_configured": false
+    },
+    {
+      "id": "0938087f-ea32-474a-b3d0-d01841a63ef2",
+      "name": "provided_agri_apis v1: chirps.rainfall_history",
+      "enabled": false,
+      "health": "TIMEOUT",
+      "revision": 1,
+      "credential_configured": false
+    },
+    {
+      "id": "2fc519a8-c4d9-4d19-b298-04ca5be7d2d6",
+      "name": "provided_agri_apis v1: isda.soil_profile",
+      "enabled": true,
+      "health": "VALID",
+      "revision": 3,
+      "credential_configured": true
+    },
+    {
+      "id": "9889d83a-81b3-43e1-bdd5-ba3bd0c3988a",
+      "name": "provided_agri_apis v1: fpma.ethiopia_prices",
+      "enabled": false,
+      "health": "NOT_TESTED",
+      "revision": 1,
+      "credential_configured": false
+    },
+    {
+      "id": "4e5b3d6f-16b1-4e2a-9325-b9f43123a83f",
+      "name": "provided_agri_apis v1: fao.locust_observations",
+      "enabled": false,
+      "health": "NOT_TESTED",
+      "revision": 1,
+      "credential_configured": false
+    },
+    {
+      "id": "584457ff-8ad4-4312-b335-9eb204012606",
+      "name": "provided_agri_apis v1: NASA POWER public MCP",
+      "enabled": false,
+      "health": "NOT_TESTED",
+      "revision": 1,
+      "credential_configured": false
+    },
+    {
+      "id": "502fa747-50b4-4736-857c-e05f131dd2a8",
+      "name": "provided_agri_apis v1: FAO WaPOR; raster transport pending",
+      "enabled": false,
+      "health": "NOT_TESTED",
+      "revision": 1,
+      "credential_configured": false
+    },
+    {
+      "id": "247ca9f9-73a5-40af-b8b6-b93d8d1b5d87",
+      "name": "provided_agri_apis v1: Kindwise Crop.health; image workflow pending",
+      "enabled": false,
+      "health": "AUTH_REQUIRED",
+      "revision": 2,
+      "credential_configured": true
+    }
+  ],
+  "skills": [
+    {
+      "id": "b3ea28d4-f54d-4aee-87d1-2fc593c388aa",
+      "name": "provided_agri_apis_v1_climate_history",
+      "enabled": true,
+      "approved": true,
+      "revision": 2
+    },
+    {
+      "id": "a79d926e-a20d-4ac9-ab98-ca8cd038fa89",
+      "name": "provided_agri_apis_v1_crop_health",
+      "enabled": false,
+      "approved": false,
+      "revision": 1
+    },
+    {
+      "id": "49cd5323-85f8-4934-818a-7939156e6647",
+      "name": "provided_agri_apis_v1_locust_context",
+      "enabled": false,
+      "approved": false,
+      "revision": 1
+    },
+    {
+      "id": "af324c7e-d16b-4f59-85e1-c262f2d6799f",
+      "name": "provided_agri_apis_v1_market_context",
+      "enabled": false,
+      "approved": false,
+      "revision": 1
+    },
+    {
+      "id": "9bed71ea-f1f2-4c8f-ac37-cdceebd54899",
+      "name": "provided_agri_apis_v1_rainfall_history",
+      "enabled": false,
+      "approved": false,
+      "revision": 1
+    },
+    {
+      "id": "0f5045a6-9aed-455f-ab92-02bfef343ca5",
+      "name": "provided_agri_apis_v1_soil_profile",
+      "enabled": true,
+      "approved": true,
+      "revision": 2
+    },
+    {
+      "id": "02ec73b4-8adb-4a37-b3bf-f848c33da979",
+      "name": "provided_agri_apis_v1_water_productivity",
+      "enabled": false,
+      "approved": false,
+      "revision": 1
+    },
+    {
+      "id": "f7823385-8097-487f-ae4f-d444fbd1c823",
+      "name": "provided_agri_apis_v1_weather_forecast",
+      "enabled": true,
+      "approved": true,
+      "revision": 2
+    }
+  ],
+  "readiness": {
+    "status": "ready",
+    "dependencies": {
+      "database": "ready",
+      "redis": "ready"
+    },
+    "provider_requests": 0
+  }
+}

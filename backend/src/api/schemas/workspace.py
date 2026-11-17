@@ -14,7 +14,7 @@ class Named(StrictModel):
 
 class MemberInput(StrictModel):
     user_id: str
-    role: Literal["administrator", "officer", "farmer"]
+    role: Literal["administrator", "officer", "farmer", "viewer"]
 
 
 class Cluster(Named):

@@ -1,0 +1,692 @@
+{
+  "name": "provided_agri_apis",
+  "version": 1,
+  "description": "The nine historically verified API entries previously supplied by the user: seven key-free entries including NASA REST/MCP, iSDA login and Kindwise Crop.health. Creates disabled drafts; no tests, discovery, model or paid calls are executed. WaPOR raster and Kindwise image operations remain unavailable.",
+  "connections": [
+    {
+      "template_id": "open_meteo",
+      "configuration": {
+        "name": "open_meteo.forecast",
+        "adapter_type": "builtin",
+        "base_url": "https://api.open-meteo.com",
+        "authentication": {
+          "type": "none",
+          "header_name": null,
+          "credential_ref": null
+        },
+        "handler_id": "open_meteo.forecast",
+        "priority": 100,
+        "egress_data_classes": [
+          "plot_coordinates"
+        ]
+      },
+      "tools": [
+        {
+          "name": "open_meteo_forecast",
+          "description": "Reviewed agricultural operation: open_meteo.forecast",
+          "capability_tags": [
+            "weather.forecast"
+          ],
+          "effect_classification": "READ_ONLY",
+          "allowed_roles": [
+            "office_admin",
+            "extension_officer"
+          ],
+          "input_json_schema": {
+            "type": "object",
+            "properties": {
+              "latitude": {
+                "type": "number",
+                "minimum": -90,
+                "maximum": 90
+              },
+              "longitude": {
+                "type": "number",
+                "minimum": -180,
+                "maximum": 180
+              }
+            },
+            "required": [
+              "latitude",
+              "longitude"
+            ],
+            "additionalProperties": false
+          },
+          "request": {
+            "method": "GET",
+            "path": "/",
+            "query": {},
+            "body": null
+          },
+          "response": {
+            "format": "json",
+            "field_mapping": {},
+            "normalized_output_json_schema": {
+              "type": "object"
+            },
+            "provider_output_json_schema": null,
+            "no_data_pointer": null,
+            "no_data_value": null
+          },
+          "evidence_semantics": {
+            "value_kind": "weather.forecast"
+          },
+          "policy": {
+            "timeout_seconds": 15.0,
+            "max_attempts": 1,
+            "max_response_bytes": 1048576,
+            "cache_ttl_seconds": 0
+          },
+          "upstream_tool_name": null,
+          "discovery_digest": null,
+          "context_bindings": {
+            "latitude": "plot.latitude",
+            "longitude": "plot.longitude"
+          },
+          "required_data_classes": [
+            "plot_coordinates"
+          ]
+        }
+      ]
+    },
+    {
+      "template_id": "nasa_power",
+      "configuration": {
+        "name": "nasa_power.history",
+        "adapter_type": "builtin",
+        "base_url": "https://power.larc.nasa.gov",
+        "authentication": {
+          "type": "none",
+          "header_name": null,
+          "credential_ref": null
+        },
+        "handler_id": "nasa_power.history",
+        "priority": 100,
+        "egress_data_classes": [
+          "plot_coordinates"
+        ]
+      },
+      "tools": [
+        {
+          "name": "nasa_power_history",
+          "description": "Reviewed agricultural operation: nasa_power.history",
+          "capability_tags": [
+            "climate.history"
+          ],
+          "effect_classification": "READ_ONLY",
+          "allowed_roles": [
+            "office_admin",
+            "extension_officer"
+          ],
+          "input_json_schema": {
+            "type": "object",
+            "properties": {
+              "latitude": {
+                "type": "number",
+                "minimum": -90,
+                "maximum": 90
+              },
+              "longitude": {
+                "type": "number",
+                "minimum": -180,
+                "maximum": 180
+              },
+              "start": {
+                "type": "string",
+                "format": "date",
+                "maxLength": 10
+              },
+              "end": {
+                "type": "string",
+                "format": "date",
+                "maxLength": 10
+              }
+            },
+            "required": [
+              "latitude",
+              "longitude",
+              "start",
+              "end"
+            ],
+            "additionalProperties": false
+          },
+          "request": {
+            "method": "GET",
+            "path": "/",
+            "query": {},
+            "body": null
+          },
+          "response": {
+            "format": "json",
+            "field_mapping": {},
+            "normalized_output_json_schema": {
+              "type": "object"
+            },
+            "provider_output_json_schema": null,
+            "no_data_pointer": null,
+            "no_data_value": null
+          },
+          "evidence_semantics": {
+            "value_kind": "climate.history"
+          },
+          "policy": {
+            "timeout_seconds": 15.0,
+            "max_attempts": 1,
+            "max_response_bytes": 1048576,
+            "cache_ttl_seconds": 0
+          },
+          "upstream_tool_name": null,
+          "discovery_digest": null,
+          "context_bindings": {
+            "latitude": "plot.latitude",
+            "longitude": "plot.longitude"
+          },
+          "required_data_classes": [
+            "plot_coordinates"
+          ]
+        }
+      ]
+    },
+    {
+      "template_id": "chirps",
+      "configuration": {
+        "name": "chirps.rainfall_history",
+        "adapter_type": "builtin",
+        "base_url": "https://climateserv.servirglobal.net",
+        "authentication": {
+          "type": "none",
+          "header_name": null,
+          "credential_ref": null
+        },
+        "handler_id": "chirps.rainfall_history",
+        "priority": 100,
+        "egress_data_classes": [
+          "plot_coordinates"
+        ]
+      },
+      "tools": [
+        {
+          "name": "chirps_rainfall_history",
+          "description": "Reviewed agricultural operation: chirps.rainfall_history",
+          "capability_tags": [
+            "rainfall.history"
+          ],
+          "effect_classification": "READ_ONLY",
+          "allowed_roles": [
+            "office_admin",
+            "extension_officer"
+          ],
+          "input_json_schema": {
+            "type": "object",
+            "properties": {
+              "latitude": {
+                "type": "number",
+                "minimum": -90,
+                "maximum": 90
+              },
+              "longitude": {
+                "type": "number",
+                "minimum": -180,
+                "maximum": 180
+              },
+              "start": {
+                "type": "string",
+                "format": "date",
+                "maxLength": 10
+              },
+              "end": {
+                "type": "string",
+                "format": "date",
+                "maxLength": 10
+              }
+            },
+            "required": [
+              "latitude",
+              "longitude",
+              "start",
+              "end"
+            ],
+            "additionalProperties": false
+          },
+          "request": {
+            "method": "GET",
+            "path": "/",
+            "query": {},
+            "body": null
+          },
+          "response": {
+            "format": "json",
+            "field_mapping": {},
+            "normalized_output_json_schema": {
+              "type": "object"
+            },
+            "provider_output_json_schema": null,
+            "no_data_pointer": null,
+            "no_data_value": null
+          },
+          "evidence_semantics": {
+            "value_kind": "rainfall.history"
+          },
+          "policy": {
+            "timeout_seconds": 15.0,
+            "max_attempts": 1,
+            "max_response_bytes": 1048576,
+            "cache_ttl_seconds": 0
+          },
+          "upstream_tool_name": null,
+          "discovery_digest": null,
+          "context_bindings": {
+            "latitude": "plot.latitude",
+            "longitude": "plot.longitude"
+          },
+          "required_data_classes": [
+            "plot_coordinates"
+          ]
+        }
+      ]
+    },
+    {
+      "template_id": "isda_soil",
+      "configuration": {
+        "name": "isda.soil_profile",
+        "adapter_type": "builtin",
+        "base_url": "https://api.isda-africa.com",
+        "authentication": {
+          "type": "provider",
+          "header_name": null,
+          "credential_ref": null
+        },
+        "handler_id": "isda.soil_profile",
+        "priority": 100,
+        "egress_data_classes": [
+          "plot_coordinates"
+        ]
+      },
+      "tools": [
+        {
+          "name": "isda_soil_profile",
+          "description": "Reviewed agricultural operation: isda.soil_profile",
+          "capability_tags": [
+            "soil.profile"
+          ],
+          "effect_classification": "READ_ONLY",
+          "allowed_roles": [
+            "office_admin",
+            "extension_officer"
+          ],
+          "input_json_schema": {
+            "type": "object",
+            "properties": {
+              "latitude": {
+                "type": "number",
+                "minimum": -90,
+                "maximum": 90
+              },
+              "longitude": {
+                "type": "number",
+                "minimum": -180,
+                "maximum": 180
+              }
+            },
+            "required": [
+              "latitude",
+              "longitude"
+            ],
+            "additionalProperties": false
+          },
+          "request": {
+            "method": "GET",
+            "path": "/",
+            "query": {},
+            "body": null
+          },
+          "response": {
+            "format": "json",
+            "field_mapping": {},
+            "normalized_output_json_schema": {
+              "type": "object"
+            },
+            "provider_output_json_schema": null,
+            "no_data_pointer": null,
+            "no_data_value": null
+          },
+          "evidence_semantics": {
+            "value_kind": "soil.profile"
+          },
+          "policy": {
+            "timeout_seconds": 15.0,
+            "max_attempts": 1,
+            "max_response_bytes": 1048576,
+            "cache_ttl_seconds": 0
+          },
+          "upstream_tool_name": null,
+          "discovery_digest": null,
+          "context_bindings": {
+            "latitude": "plot.latitude",
+            "longitude": "plot.longitude"
+          },
+          "required_data_classes": [
+            "plot_coordinates"
+          ]
+        }
+      ]
+    },
+    {
+      "template_id": "fao_fpma",
+      "configuration": {
+        "name": "fpma.ethiopia_prices",
+        "adapter_type": "builtin",
+        "base_url": "https://fpma.fao.org",
+        "authentication": {
+          "type": "none",
+          "header_name": null,
+          "credential_ref": null
+        },
+        "handler_id": "fpma.ethiopia_prices",
+        "priority": 100,
+        "egress_data_classes": [
+          "public_environment"
+        ]
+      },
+      "tools": [
+        {
+          "name": "fpma_ethiopia_prices",
+          "description": "Reviewed agricultural operation: fpma.ethiopia_prices",
+          "capability_tags": [
+            "market.prices"
+          ],
+          "effect_classification": "READ_ONLY",
+          "allowed_roles": [
+            "office_admin",
+            "extension_officer"
+          ],
+          "input_json_schema": {
+            "type": "object",
+            "properties": {},
+            "required": [],
+            "additionalProperties": false
+          },
+          "request": {
+            "method": "GET",
+            "path": "/",
+            "query": {},
+            "body": null
+          },
+          "response": {
+            "format": "json",
+            "field_mapping": {},
+            "normalized_output_json_schema": {
+              "type": "object"
+            },
+            "provider_output_json_schema": null,
+            "no_data_pointer": null,
+            "no_data_value": null
+          },
+          "evidence_semantics": {
+            "value_kind": "market.prices"
+          },
+          "policy": {
+            "timeout_seconds": 15.0,
+            "max_attempts": 1,
+            "max_response_bytes": 1048576,
+            "cache_ttl_seconds": 0
+          },
+          "upstream_tool_name": null,
+          "discovery_digest": null,
+          "context_bindings": {},
+          "required_data_classes": [
+            "public_environment"
+          ]
+        }
+      ]
+    },
+    {
+      "template_id": "fao_locust",
+      "configuration": {
+        "name": "fao.locust_observations",
+        "adapter_type": "builtin",
+        "base_url": "https://www.arcgis.com",
+        "authentication": {
+          "type": "none",
+          "header_name": null,
+          "credential_ref": null
+        },
+        "handler_id": "fao.locust_observations",
+        "priority": 100,
+        "egress_data_classes": [
+          "public_environment"
+        ]
+      },
+      "tools": [
+        {
+          "name": "fao_locust_observations",
+          "description": "Reviewed agricultural operation: fao.locust_observations",
+          "capability_tags": [
+            "pests.regional_reports"
+          ],
+          "effect_classification": "READ_ONLY",
+          "allowed_roles": [
+            "office_admin",
+            "extension_officer"
+          ],
+          "input_json_schema": {
+            "type": "object",
+            "properties": {},
+            "required": [],
+            "additionalProperties": false
+          },
+          "request": {
+            "method": "GET",
+            "path": "/",
+            "query": {},
+            "body": null
+          },
+          "response": {
+            "format": "json",
+            "field_mapping": {},
+            "normalized_output_json_schema": {
+              "type": "object"
+            },
+            "provider_output_json_schema": null,
+            "no_data_pointer": null,
+            "no_data_value": null
+          },
+          "evidence_semantics": {
+            "value_kind": "pests.regional_reports"
+          },
+          "policy": {
+            "timeout_seconds": 15.0,
+            "max_attempts": 1,
+            "max_response_bytes": 1048576,
+            "cache_ttl_seconds": 0
+          },
+          "upstream_tool_name": null,
+          "discovery_digest": null,
+          "context_bindings": {},
+          "required_data_classes": [
+            "public_environment"
+          ]
+        }
+      ]
+    },
+    {
+      "template_id": "nasa_power_mcp",
+      "configuration": {
+        "name": "NASA POWER public MCP",
+        "adapter_type": "mcp",
+        "base_url": "https://power.larc.nasa.gov/mcp/",
+        "authentication": {
+          "type": "none",
+          "header_name": null,
+          "credential_ref": null
+        },
+        "handler_id": null,
+        "priority": 110,
+        "egress_data_classes": [
+          "plot_coordinates",
+          "public_environment"
+        ]
+      },
+      "tools": []
+    },
+    {
+      "template_id": "fao_wapor",
+      "configuration": {
+        "name": "FAO WaPOR; raster transport pending",
+        "adapter_type": "rest",
+        "base_url": "https://data.apps.fao.org",
+        "authentication": {
+          "type": "none",
+          "header_name": null,
+          "credential_ref": null
+        },
+        "handler_id": null,
+        "priority": 100,
+        "egress_data_classes": [
+          "plot_coordinates",
+          "public_environment"
+        ]
+      },
+      "tools": []
+    },
+    {
+      "template_id": "kindwise",
+      "configuration": {
+        "name": "Kindwise Crop.health; image workflow pending",
+        "adapter_type": "rest",
+        "base_url": "https://crop.kindwise.com",
+        "authentication": {
+          "type": "api_key_header",
+          "header_name": "Api-Key",
+          "credential_ref": null
+        },
+        "handler_id": null,
+        "priority": 100,
+        "egress_data_classes": [
+          "image"
+        ]
+      },
+      "tools": []
+    }
+  ],
+  "skills": [
+    {
+      "name": "weather_forecast",
+      "description": "weather forecast",
+      "instructions": "Explain the actual dated forecast, returned units and missing metadata. Use evidence IDs. Modelled forecasts are not field measurements.",
+      "required_capabilities": [
+        "weather.forecast"
+      ],
+      "optional_capabilities": [
+        "soil.profile"
+      ],
+      "allowed_internal_actions": [],
+      "max_followup_rounds": 2,
+      "triggers": [
+        "explicit_chat_request"
+      ]
+    },
+    {
+      "name": "climate_history",
+      "description": "climate history",
+      "instructions": "Explain dated historical NASA POWER agroclimate records and time standard. A reviewed REST or MCP provider can supply this capability; historical climate is not a forecast.",
+      "required_capabilities": [
+        "climate.history"
+      ],
+      "optional_capabilities": [],
+      "allowed_internal_actions": [],
+      "max_followup_rounds": 2,
+      "triggers": [
+        "explicit_chat_request"
+      ]
+    },
+    {
+      "name": "rainfall_history",
+      "description": "rainfall history",
+      "instructions": "Explain CHIRPS historical rainfall with source dates, area and units. The current handler supports only the previously tested synthetic Adama polygon; do not invent a farm boundary.",
+      "required_capabilities": [
+        "rainfall.history"
+      ],
+      "optional_capabilities": [
+        "climate.history"
+      ],
+      "allowed_internal_actions": [],
+      "max_followup_rounds": 2,
+      "triggers": [
+        "explicit_chat_request"
+      ]
+    },
+    {
+      "name": "soil_profile",
+      "description": "soil profile",
+      "instructions": "Explain iSDA mapped soil estimates, depth, units, uncertainty and missing layers. Use the approved connection credential and authorized plot coordinates. These are not laboratory measurements.",
+      "required_capabilities": [
+        "soil.profile"
+      ],
+      "optional_capabilities": [
+        "weather.forecast"
+      ],
+      "allowed_internal_actions": [],
+      "max_followup_rounds": 2,
+      "triggers": [
+        "explicit_chat_request"
+      ]
+    },
+    {
+      "name": "water_productivity",
+      "description": "water productivity",
+      "instructions": "Explain WaPOR water-productivity or evapotranspiration observations only when a reviewed instrumented raster operation supplies numerical evidence. Until then report that raster transport is unavailable; catalogue metadata is not a plot measurement.",
+      "required_capabilities": [
+        "water.productivity"
+      ],
+      "optional_capabilities": [],
+      "allowed_internal_actions": [],
+      "max_followup_rounds": 2,
+      "triggers": [
+        "explicit_chat_request"
+      ]
+    },
+    {
+      "name": "market_context",
+      "description": "market context",
+      "instructions": "Explain historical Ethiopian FPMA prices with market, commodity, currency, unit and observation date. Do not claim binding buyer offers.",
+      "required_capabilities": [
+        "market.prices"
+      ],
+      "optional_capabilities": [],
+      "allowed_internal_actions": [],
+      "max_followup_rounds": 2,
+      "triggers": [
+        "explicit_chat_request"
+      ]
+    },
+    {
+      "name": "locust_context",
+      "description": "locust context",
+      "instructions": "Explain dated FAO-reported regional locust observations. Missing or old reports do not prove current low pest risk.",
+      "required_capabilities": [
+        "pests.regional_reports"
+      ],
+      "optional_capabilities": [],
+      "allowed_internal_actions": [],
+      "max_followup_rounds": 2,
+      "triggers": [
+        "explicit_chat_request"
+      ]
+    },
+    {
+      "name": "crop_health",
+      "description": "crop health",
+      "instructions": "Require an authorized real crop image and an approved image-asset/diagnosis workflow. A stored Kindwise credential alone does not enable diagnosis. Never invent diagnoses, treatments, probabilities or image contents.",
+      "required_capabilities": [
+        "crop.diagnosis"
+      ],
+      "optional_capabilities": [],
+      "allowed_internal_actions": [],
+      "max_followup_rounds": 2,
+      "triggers": [
+        "explicit_chat_request"
+      ]
+    }
+  ]
+}

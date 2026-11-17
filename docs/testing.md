@@ -2,6 +2,23 @@
 
 [Documentation index](README.md)
 
+For the `agri-mcp` connector platform, run from `backend/`:
+
+```powershell
+uv sync --frozen
+.\.venv\Scripts\python.exe -m pytest -q --junitxml=validation/agri-mcp-final.xml
+.\.venv\Scripts\python.exe scripts/demo_connectors.py
+```
+
+To exercise real local PostgreSQL/Redis, start the dedicated test project and use the fixed disposable database helper. The helper never substitutes the operational `agrilo` database; its test fixtures drop application tables in `agrilo_test`.
+
+```powershell
+docker compose -p agrilo-connectors-test -f compose.yaml -f compose.test.yaml --env-file private-data/compose.env up -d postgres redis
+.\.venv\Scripts\python.exe scripts/test_connectors_postgres.py
+```
+
+The tests do not invoke external providers or a real model. `scripts/demo_connectors.py --live` is a separate explicit public-provider probe. See [the observed connector report](../backend/reports/CONNECTOR_TEST_REPORT.md), [support/deployment](CONNECTOR_SUPPORT.md), and [security limits](TOOL_SECURITY.md). The original launcher checks below remain applicable to the existing local-Qwen workflow.
+
 After demo setup, run these from the repository root on the supported Linux environment:
 
 ```bash
