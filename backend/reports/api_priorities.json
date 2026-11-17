@@ -1,0 +1,241 @@
+{
+  "ranked_at_utc": "2026-11-16T12:03:36.741961+00:00",
+  "basis": "Project-specific engineering priority: main FieldOps journeys, existing verified adapters, credentials already supplied, and remaining implementation work. This is not a scientific ranking of provider accuracy.",
+  "first_wave": [
+    "open_meteo",
+    "isda_soil",
+    "nasa_power",
+    "chirps"
+  ],
+  "priorities": [
+    {
+      "rank": 1,
+      "provider_id": "open_meteo",
+      "name": "Open-Meteo",
+      "phase": "now",
+      "reason": "Forecast weather for planting timing, inspection and short-term planning.",
+      "historical_status": "VERIFIED_LIVE",
+      "documentation": "https://open-meteo.com/en/docs",
+      "current_state": "ENABLED"
+    },
+    {
+      "rank": 2,
+      "provider_id": "isda_soil",
+      "name": "iSDAsoil",
+      "phase": "now",
+      "reason": "Mapped soil properties, depth and uncertainty for plot context; user credential is already stored.",
+      "historical_status": "VERIFIED_LIVE",
+      "documentation": "https://www.isda-africa.com/isdasoil/developer/",
+      "current_state": "ENABLED"
+    },
+    {
+      "rank": 3,
+      "provider_id": "nasa_power",
+      "name": "NASA POWER",
+      "phase": "now",
+      "reason": "Historical temperature, radiation, humidity, wind and precipitation context through the existing REST adapter.",
+      "historical_status": "VERIFIED_LIVE",
+      "documentation": "https://power.larc.nasa.gov/docs/services/api/temporal/daily/",
+      "current_state": "ENABLED"
+    },
+    {
+      "rank": 4,
+      "provider_id": "chirps",
+      "name": "CHIRPS / ClimateSERV",
+      "phase": "now",
+      "reason": "Historical rainfall complements forecasts; current adapter remains restricted to the synthetic Adama polygon.",
+      "historical_status": "VERIFIED_LIVE",
+      "documentation": "https://climateserv.readthedocs.io/en/latest/api.html",
+      "current_state": "NOT_ENABLED"
+    },
+    {
+      "rank": 5,
+      "provider_id": "fao_fpma",
+      "name": "FAO FPMA",
+      "phase": "next",
+      "reason": "Economic context for crop planning after agricultural evidence; preserve market, currency, units and dates.",
+      "historical_status": "VERIFIED_LIVE",
+      "documentation": "https://fpma-documentation.web.app/docs/api-docs/series-price/",
+      "current_state": "REGISTERED_DISABLED"
+    },
+    {
+      "rank": 6,
+      "provider_id": "kindwise",
+      "name": "Kindwise Crop.health",
+      "phase": "next",
+      "reason": "Supports the crop-photo case and has a stored key; finish the authorized image workflow before any credit-consuming call.",
+      "historical_status": "VERIFIED_LIVE",
+      "documentation": "https://github.com/flowerchecker/crop-health-examples",
+      "current_state": "REGISTERED_DISABLED"
+    },
+    {
+      "rank": 7,
+      "provider_id": "copernicus",
+      "name": "Copernicus Sentinel Hub",
+      "phase": "next",
+      "reason": "Vegetation statistics for registered polygons and map-based follow-up; credentials and polygon/no-data handling are pending.",
+      "historical_status": "AUTH_REQUIRED",
+      "documentation": "https://documentation.dataspace.copernicus.eu/APIs/SentinelHub/Statistical.html",
+      "current_state": "INVENTORY_ONLY"
+    },
+    {
+      "rank": 8,
+      "provider_id": "fao_wapor",
+      "name": "FAO WaPOR",
+      "phase": "next",
+      "reason": "Water and evapotranspiration evidence; add the controlled raster/range transport first.",
+      "historical_status": "VERIFIED_LIVE",
+      "documentation": "https://www.fao.org/in-action/remote-sensing-for-water-productivity/wapor-data-access/en",
+      "current_state": "REGISTERED_DISABLED"
+    },
+    {
+      "rank": 9,
+      "provider_id": "fao_locust",
+      "name": "FAO Locust Hub",
+      "phase": "next",
+      "reason": "Regional pest surveillance supplements field checks; reported observations are not plot diagnoses.",
+      "historical_status": "VERIFIED_LIVE",
+      "documentation": "https://locust-hub-hqfao.hub.arcgis.com/",
+      "current_state": "REGISTERED_DISABLED"
+    },
+    {
+      "rank": 10,
+      "provider_id": "nasa_power_mcp",
+      "name": "NASA POWER public MCP",
+      "phase": "alternative",
+      "reason": "Alternative interface to NASA POWER data and an MCP integration demonstration; not an independent corroborating dataset.",
+      "historical_status": "VERIFIED_LIVE",
+      "documentation": "https://power.larc.nasa.gov/docs/services/super-intelligence/mcp/",
+      "current_state": "REGISTERED_DISABLED"
+    },
+    {
+      "rank": 11,
+      "provider_id": "cabi",
+      "name": "CABI PMDG",
+      "phase": "later",
+      "reason": "Reviewed crop/pest management knowledge once licensed access and provenance are available.",
+      "historical_status": "AUTH_REQUIRED",
+      "documentation": "https://docs-aws.cabi.org/pmdg/",
+      "current_state": "INVENTORY_ONLY"
+    },
+    {
+      "rank": 12,
+      "provider_id": "eppo",
+      "name": "EPPO Global Database",
+      "phase": "later",
+      "reason": "Pest taxonomy and reference enrichment after the core field-evidence flow works.",
+      "historical_status": "AUTH_REQUIRED",
+      "documentation": "https://data.eppo.int/apis/",
+      "current_state": "INVENTORY_ONLY"
+    },
+    {
+      "rank": 13,
+      "provider_id": "fao_gaez",
+      "name": "FAO GAEZ",
+      "phase": "later",
+      "reason": "Potential crop-suitability context, but numerical extraction was not established by the prior tests.",
+      "historical_status": "PARTIAL",
+      "documentation": "https://gaez.fao.org/api/search/definition/",
+      "current_state": "INVENTORY_ONLY"
+    },
+    {
+      "rank": 14,
+      "provider_id": "fao_asis",
+      "name": "FAO ASIS",
+      "phase": "later",
+      "reason": "Regional agricultural stress context; previously blocked raster retrieval must be resolved.",
+      "historical_status": "PARTIAL",
+      "documentation": "https://www.fao.org/giews/earthobservation/access.jsp",
+      "current_state": "INVENTORY_ONLY"
+    },
+    {
+      "rank": 15,
+      "provider_id": "google_earth_engine",
+      "name": "Google Earth Engine",
+      "phase": "later",
+      "reason": "Broader geospatial processing platform; introduces setup and overlaps the narrower satellite integrations.",
+      "historical_status": "AUTH_REQUIRED",
+      "documentation": "https://developers.google.com/earth-engine/guides/auth",
+      "current_state": "INVENTORY_ONLY"
+    },
+    {
+      "rank": 16,
+      "provider_id": "wfp_prices",
+      "name": "WFP / HDX HAPI",
+      "phase": "alternative",
+      "reason": "Additional price context after the first FPMA market skill is validated.",
+      "historical_status": "AUTH_REQUIRED",
+      "documentation": "https://hdx-hapi.readthedocs.io/en/latest/getting-started/",
+      "current_state": "INVENTORY_ONLY"
+    },
+    {
+      "rank": 17,
+      "provider_id": "plantix",
+      "name": "Plantix Intelligence",
+      "phase": "alternative",
+      "reason": "Alternative diagnosis provider; API access is pending and Kindwise is already available for the image workflow.",
+      "historical_status": "AUTH_REQUIRED",
+      "documentation": "https://plantix.net/en/plantix-intelligence/api-toolkit/",
+      "current_state": "INVENTORY_ONLY"
+    },
+    {
+      "rank": 18,
+      "provider_id": "deepleaf",
+      "name": "DeepLeaf",
+      "phase": "alternative",
+      "reason": "Additional diagnosis provider; issued access and a verified operation schema are missing.",
+      "historical_status": "AUTH_REQUIRED",
+      "documentation": "https://deepleaf.org/en/platform/api",
+      "current_state": "INVENTORY_ONLY"
+    },
+    {
+      "rank": 19,
+      "provider_id": "kobotoolbox",
+      "name": "KoboToolbox",
+      "phase": "later",
+      "reason": "External field-data synchronization after the existing workspace plot/household records are in use.",
+      "historical_status": "AUTH_REQUIRED",
+      "documentation": "https://support.kobotoolbox.org/api.html",
+      "current_state": "INVENTORY_ONLY"
+    },
+    {
+      "rank": 20,
+      "provider_id": "odk_central",
+      "name": "ODK Central",
+      "phase": "later",
+      "reason": "External field-data synchronization requires an actual configured Central server.",
+      "historical_status": "NOT_TESTED",
+      "documentation": "https://docs.getodk.org/central-api-project-management/",
+      "current_state": "INVENTORY_ONLY"
+    },
+    {
+      "rank": 21,
+      "provider_id": "openrouteservice",
+      "name": "OpenRouteService",
+      "phase": "later",
+      "reason": "Travel/logistics is outside the first agricultural-evidence workflow.",
+      "historical_status": "AUTH_REQUIRED",
+      "documentation": "https://giscience.github.io/openrouteservice/api-reference/endpoints/directions/",
+      "current_state": "INVENTORY_ONLY"
+    },
+    {
+      "rank": 22,
+      "provider_id": "africas_talking",
+      "name": "Africa's Talking",
+      "phase": "out_of_scope",
+      "reason": "Outbound messaging remains outside the authorized companion capabilities.",
+      "historical_status": "AUTH_REQUIRED",
+      "documentation": "https://github.com/AfricasTalkingLtd/africastalking-python",
+      "current_state": "INVENTORY_ONLY"
+    }
+  ],
+  "notes": [
+    "NASA REST and MCP are alternative access paths to the same provider, not independent scientific corroboration.",
+    "Forecast, historical climate, rainfall estimates and mapped soil properties remain distinct evidence types.",
+    "The CHIRPS implementation currently supports only the synthetic Adama validation polygon.",
+    "Crop assessment also requires reviewed local crop/calendar rules and registered farm context.",
+    "No new external reranking service or Gemini model is required to order these integrations."
+  ],
+  "current_activation_report": "priority_skill_activation.current.json",
+  "note": "The ordering accounts for readiness: NASA historical climate is active; CHIRPS remains the next core requirement but is disabled after a live timeout."
+}

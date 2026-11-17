@@ -18,6 +18,20 @@ BACKEND = str(Path(__file__).resolve().parents[2])
 @asynccontextmanager
 async def farmly_client(run_id, capability):
     settings = get_settings()
+    if settings.internal_mcp_url:
+        import httpx
+        from urllib.parse import urlsplit
+        from mcp.client.streamable_http import streamable_http_client
+        url = urlsplit(settings.internal_mcp_url)
+        if url.scheme not in ("http", "https") or url.username or url.password or url.query or url.fragment:
+            raise ValueError("Internal MCP URL must be an operator-configured HTTP endpoint")
+        async with httpx.AsyncClient(timeout=settings.advisory_tool_timeout, trust_env=False, follow_redirects=False,
+            headers={"Authorization": "Bearer " + capability, "X-Agrilo-Run-Id": run_id}) as client:
+            async with streamable_http_client(settings.internal_mcp_url, http_client=client) as (read, write, _):
+                async with ClientSession(read, write) as session:
+                    await session.initialize()
+                    yield session
+        return
     env = {"PATH": os.environ.get("PATH", ""), "PYTHONUNBUFFERED": "1",
            "DATABASE_URL": settings.database_url, "JWT_SECRET_KEY": "mcp-not-an-authentication-server",
            "FARMLY_RUN_ID": run_id, "FARMLY_RUN_CAPABILITY": capability,

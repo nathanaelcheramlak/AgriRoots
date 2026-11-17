@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="60" time="90.577" timestamp="2026-11-16T10:59:33.077257+03:00" hostname="Fraol-PC"><testcase classname="tests.test_advisory_alert_voice" name="test_legacy_delivery_requires_review[post-/api/recommendations/crops-body0]" time="1.010" /><testcase classname="tests.test_advisory_alert_voice" name="test_legacy_delivery_requires_review[post-/api/recommendations/fertilizer-body1]" time="1.709" /><testcase classname="tests.test_advisory_alert_voice" name="test_legacy_delivery_requires_review[post-/api/recommendations/weather-body2]" time="1.164" /><testcase classname="tests.test_advisory_alert_voice" name="test_legacy_delivery_requires_review[post-/api/alerts/weather/generate-body3]" time="1.391" /><testcase classname="tests.test_advisory_alert_voice" name="test_legacy_delivery_requires_review[get-/api/alerts-None]" time="1.030" /><testcase classname="tests.test_advisory_alert_voice" name="test_legacy_delivery_requires_review[patch-/api/alerts/example/read-body5]" time="1.090" /><testcase classname="tests.test_advisory_alert_voice" name="test_legacy_delivery_requires_review[delete-/api/alerts/example-None]" time="0.937" /><testcase classname="tests.test_advisory_alert_voice" name="test_legacy_delivery_requires_review[post-/api/voice/synthesize-body7]" time="0.920" /><testcase classname="tests.test_advisory_alert_voice" name="test_diagnosis_requires_review" time="1.107" /><testcase classname="tests.test_advisory_alert_voice" name="test_voice_transcription_and_synthesis_are_mocked" time="0.853" /><testcase classname="tests.test_advisory_runs" name="test_real_mcp_graph_stops_at_review_and_is_idempotent" time="2.975" /><testcase classname="tests.test_advisory_runs" name="test_run_scope_and_capability_are_enforced" time="1.858" /><testcase classname="tests.test_advisory_runs" name="test_missing_history_blocks_draft" time="2.059" /><testcase classname="tests.test_advisory_runs" name="test_weather_timeout_is_structured_logged_and_bounded" time="1.163" /><testcase classname="tests.test_advisory_runs" name="test_local_model_rejects_cloud_and_proxy_hosts" time="0.624" /><testcase classname="tests.test_advisory_runs" name="test_public_egress_rejects_private_destinations[127.0.0.1]" time="0.533" /><testcase classname="tests.test_advisory_runs" name="test_public_egress_rejects_private_destinations[10.1.1.1]" time="0.633" /><testcase classname="tests.test_advisory_runs" name="test_public_egress_rejects_private_destinations[169.254.169.254]" time="0.679" /><testcase classname="tests.test_advisory_runs" name="test_public_egress_rejects_private_destinations[100.100.100.200]" time="0.606" /><testcase classname="tests.test_advisory_runs" name="test_public_egress_rejects_private_destinations[::1]" time="0.773" /><testcase classname="tests.test_advisory_runs" name="test_public_egress_rejects_private_destinations[::ffff:127.0.0.1]" time="0.613" /><testcase classname="tests.test_advisory_runs" name="test_public_egress_rejects_private_destinations[224.0.0.1]" time="0.432" /><testcase classname="tests.test_advisory_runs" name="test_candidate_validation_rejects_stale_invented_and_inapplicable_support" time="2.686" /><testcase classname="tests.test_advisory_runs" name="test_interrupted_save_resumes_without_another_draft" time="3.595" /><testcase classname="tests.test_advisory_runs" name="test_untrusted_output_cannot_add_approval_or_recipient_fields" time="2.354" /><testcase classname="tests.test_advisory_runs" name="test_dns_rebinding_and_mixed_dns_answers_are_rejected" time="0.717" /><testcase classname="tests.test_advisory_runs" name="test_graph_weather_retries_are_bounded" time="2.179" /><testcase classname="tests.test_advisory_runs" name="test_expired_final_attempt_becomes_failed" time="0.818" /><testcase classname="tests.test_advisory_runs" name="test_generated_claims_are_retained_privately_and_excluded_from_advisory" time="2.350" /><testcase classname="tests.test_advisory_runs" name="test_conflicting_pest_reports_require_field_visit" time="2.365" /><testcase classname="tests.test_advisory_runs" name="test_reviewed_planting_rules_drive_sourced_decisions[rule_change0-plant_crop]" time="2.449" /><testcase classname="tests.test_advisory_runs" name="test_reviewed_planting_rules_drive_sourced_decisions[rule_change1-hold_planting]" time="2.643" /><testcase classname="tests.test_advisory_runs" name="test_reviewed_planting_rules_drive_sourced_decisions[rule_change2-hold_planting]" time="2.472" /><testcase classname="tests.test_advisory_runs" name="test_reviewed_planting_rules_drive_sourced_decisions[rule_change3-hold_planting]" time="2.390" /><testcase classname="tests.test_advisory_runs" name="test_reviewed_planting_rules_drive_sourced_decisions[rule_change4-hold_planting]" time="2.579" /><testcase classname="tests.test_advisory_runs" name="test_five_plots_have_independent_citations_and_resumable_drafts" time="3.688" /><testcase classname="tests.test_advisory_runs" name="test_planting_rules_are_required_and_weather_window_is_complete" time="1.027" /><testcase classname="tests.test_api_error_cases" name="test_auth_security_and_onboarding_error_cases" time="1.190" /><testcase classname="tests.test_api_error_cases" name="test_recommendations_diagnosis_and_alerts_documented_error_cases" time="1.003" /><testcase classname="tests.test_api_error_cases" name="test_chat_documented_error_cases" time="1.352" /><testcase classname="tests.test_auth_profile" name="test_registration_login_onboarding_and_profile_update" time="1.434" /><testcase classname="tests.test_auth_profile" name="test_password_reset_phone_change_and_account_delete" time="2.880" /><testcase classname="tests.test_chat" name="test_chat_session_lifecycle_and_message_send" time="1.196" /><testcase classname="tests.test_local_speech" name="test_real_local_speech_produces_decodable_pcm[en-Inspect the crop. Officer confirmation is required.]" time="0.863"><failure message="subprocess.CalledProcessError: Command '['C:\\Users\\fraol\\Documents\\Agri-roots\\AgriRoots\\backend\\.venv\\Scripts\\python.exe', 'C:\\Users\\fraol\\Documents\\Agri-roots\\AgriRoots\\backend\\src\\integrations\\voice\\speech_process.py']' returned non-zero exit status 1.">language = 'en', text = 'Inspect the crop. Officer confirmation is required.'
+
+    @pytest.mark.parametrize("language,text", [("en", "Inspect the crop. Officer confirmation is required."), ("am", "ለማሳያ ብቻ።")])
+    def test_real_local_speech_produces_decodable_pcm(language, text):
+&gt;       audio = synthesize_speech(text, language_code=language)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_local_speech.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\integrations\voice\local_speech.py:15: in synthesize_speech
+    result = subprocess.run([sys.executable, str(Path(__file__).with_name("speech_process.py"))],
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+input = b'{"text": "Inspect the crop. Officer confirmation is required.", "language": "en"}'
+capture_output = False, timeout = 20, check = True
+popenargs = (['C:\\Users\\fraol\\Documents\\Agri-roots\\AgriRoots\\backend\\.venv\\Scripts\\python.exe', 'C:\\Users\\fraol\\Documents\\Agri-roots\\AgriRoots\\backend\\src\\integrations\\voice\\speech_process.py'],)
+kwargs = {'stdout': -1, 'stderr': -1, 'stdin': -1}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output &amp; stderr attributes if those streams
+        were captured.
+    
+        If timeout (seconds) is given and the process takes too long,
+         a TimeoutExpired exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+&gt;               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['C:\\Users\\fraol\\Documents\\Agri-roots\\AgriRoots\\backend\\.venv\\Scripts\\python.exe', 'C:\\Users\\fraol\\Documents\\Agri-roots\\AgriRoots\\backend\\src\\integrations\\voice\\speech_process.py']' returned non-zero exit status 1.
+
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\subprocess.py:571: CalledProcessError</failure></testcase><testcase classname="tests.test_local_speech" name="test_real_local_speech_produces_decodable_pcm[am-\u1208\u121b\u1233\u12eb \u1265\u127b\u1362]" time="0.987"><failure message="subprocess.CalledProcessError: Command '['C:\\Users\\fraol\\Documents\\Agri-roots\\AgriRoots\\backend\\.venv\\Scripts\\python.exe', 'C:\\Users\\fraol\\Documents\\Agri-roots\\AgriRoots\\backend\\src\\integrations\\voice\\speech_process.py']' returned non-zero exit status 1.">language = 'am', text = 'ለማሳያ ብቻ።'
+
+    @pytest.mark.parametrize("language,text", [("en", "Inspect the crop. Officer confirmation is required."), ("am", "ለማሳያ ብቻ።")])
+    def test_real_local_speech_produces_decodable_pcm(language, text):
+&gt;       audio = synthesize_speech(text, language_code=language)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_local_speech.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\integrations\voice\local_speech.py:15: in synthesize_speech
+    result = subprocess.run([sys.executable, str(Path(__file__).with_name("speech_process.py"))],
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+input = b'{"text": "\\u1208\\u121b\\u1233\\u12eb \\u1265\\u127b\\u1362", "language": "am"}'
+capture_output = False, timeout = 20, check = True
+popenargs = (['C:\\Users\\fraol\\Documents\\Agri-roots\\AgriRoots\\backend\\.venv\\Scripts\\python.exe', 'C:\\Users\\fraol\\Documents\\Agri-roots\\AgriRoots\\backend\\src\\integrations\\voice\\speech_process.py'],)
+kwargs = {'stdout': -1, 'stderr': -1, 'stdin': -1}
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output &amp; stderr attributes if those streams
+        were captured.
+    
+        If timeout (seconds) is given and the process takes too long,
+         a TimeoutExpired exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+&gt;               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['C:\\Users\\fraol\\Documents\\Agri-roots\\AgriRoots\\backend\\.venv\\Scripts\\python.exe', 'C:\\Users\\fraol\\Documents\\Agri-roots\\AgriRoots\\backend\\src\\integrations\\voice\\speech_process.py']' returned non-zero exit status 1.
+
+..\..\..\..\AppData\Local\Programs\Python\Python312\Lib\subprocess.py:571: CalledProcessError</failure></testcase><testcase classname="tests.test_local_speech" name="test_local_speech_rejects_unreviewed_languages_and_oversized_text" time="0.815" /><testcase classname="tests.test_readiness" name="test_weather_readiness_recovers_once_or_fails_explicitly[True]" time="0.787" /><testcase classname="tests.test_readiness" name="test_weather_readiness_recovers_once_or_fails_explicitly[False]" time="0.620" /><testcase classname="tests.test_workspace" name="test_review_approval_release_and_exact_audio" time="1.033" /><testcase classname="tests.test_workspace" name="test_new_version_invalidates_approval_and_preserves_history" time="1.304" /><testcase classname="tests.test_workspace" name="test_scope_and_privilege_escalation" time="1.065" /><testcase classname="tests.test_workspace" name="test_unsourced_and_invalid_records_are_blocked" time="0.868" /><testcase classname="tests.test_workspace" name="test_reject_cancel_replace_and_record_audits" time="1.244" /><testcase classname="tests.test_workspace" name="test_concurrent_release_publishes_once" time="1.310" /><testcase classname="tests.test_workspace" name="test_migrations_fresh_and_legacy_copy" time="1.011"><failure message="assert [1, 2, 3, 4] == [1, 2, 3]&#10;  &#10;  Left contains one more item: 4&#10;  Use -v to get more diff">tmp_path = WindowsPath('C:/Users/fraol/AppData/Local/Temp/pytest-of-fraol/pytest-25/test_migrations_fresh_and_lega0')
+
+    def test_migrations_fresh_and_legacy_copy(tmp_path):
+        from src.db.session import engine as configured_engine
+        from sqlalchemy.schema import CreateSchema, DropSchema
+        schemas = []
+        targets = [(create_engine(f'sqlite:///{tmp_path / ("legacy.db" if legacy else "fresh.db")}'), legacy)
+                   for legacy in (False, True)]
+        if configured_engine.dialect.name == "postgresql":
+            for legacy in (False, True):
+                name = "migration_" + uuid4().hex
+                with configured_engine.begin() as conn: conn.execute(CreateSchema(name))
+                schemas.append(name)
+                targets.append((create_engine(configured_engine.url, connect_args={"options": f"-csearch_path={name}"}), legacy))
+        for engine, legacy in targets:
+            if legacy:
+                # Reconstruct the legacy schema and copy a real-format row into it.
+                from src.db.migrations.v001_legacy import TABLES
+                Base.metadata.create_all(engine, tables=[Base.metadata.tables[n] for n in TABLES])
+                with engine.begin() as conn:
+                    for name in ("content_type", "message_content_english", "media_url", "language_used"):
+                        conn.execute(text(f"ALTER TABLE chat_messages DROP COLUMN {name}"))
+                    conn.execute(text("INSERT INTO users (user_id, phone_number, password_hash, is_active, created_at, updated_at) VALUES ('legacy-user', '+251999999999', 'hash', TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)"))
+            migrate(engine); migrate(engine)
+            assert "advisory_versions" in inspect(engine).get_table_names()
+            assert "language_used" in {c["name"] for c in inspect(engine).get_columns("chat_messages")}
+            with engine.connect() as conn:
+&gt;               assert conn.execute(text("SELECT version FROM schema_revisions ORDER BY version")).scalars().all() == [1, 2, 3]
+E               assert [1, 2, 3, 4] == [1, 2, 3]
+E                 
+E                 Left contains one more item: 4
+E                 Use -v to get more diff
+
+tests\test_workspace.py:245: AssertionError</failure></testcase><testcase classname="tests.test_workspace" name="test_chat_education_requests_and_legacy_history" time="1.037" /><testcase classname="tests.test_workspace" name="test_controlled_initial_administrator_provisioning" time="1.070" /><testcase classname="tests.test_workspace" name="test_synthetic_seed_is_usable_and_refuses_existing_data" time="4.883" /><testcase classname="tests.test_workspace" name="test_amharic_education_uses_fixed_catalogue" time="1.107" /><testcase classname="tests.test_workspace" name="test_release_rolls_back_if_auditing_fails" time="1.163" /></testsuite></testsuites>

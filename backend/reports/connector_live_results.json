@@ -1,0 +1,368 @@
+{
+  "executed_at_utc": "2026-11-16T08:59:11.789112+00:00",
+  "command": "python scripts/demo_connectors.py --live",
+  "type": "LIVE_PUBLIC_CONNECTOR_VERIFICATION",
+  "identity_context": "explicitly synthetic Adama office/point",
+  "implementation": "agrilo-backend 0.4.0",
+  "database": "isolated SQLite; PostgreSQL tested separately",
+  "checks": [
+    {
+      "id": "LIVE-01",
+      "provider": "Open-Meteo",
+      "connection_id": "9b038e57-2f82-4558-a784-cd86da273c87",
+      "tool_id": "ed5dcd9a-8b89-448e-9144-85ce7c4fa158",
+      "job": {
+        "id": "7eeb4c1a-4b16-43b3-b451-5b2933612a7e",
+        "kind": "tool_test",
+        "target_id": "30a9645e-6e55-4732-814e-660adb9a6317",
+        "status": "succeeded",
+        "result": {
+          "execution_outcome": "SUCCESS",
+          "data_outcome": "VALID",
+          "invocation_id": "cfabb9bf-4167-48fe-945f-1463b96da849",
+          "tool_version_id": "30a9645e-6e55-4732-814e-660adb9a6317",
+          "evidence_ids": [
+            "e8ce0fed-1f48-4dd9-b4b9-c9d74ff58f0a"
+          ],
+          "data": {
+            "daily": {
+              "time": [
+                "2026-11-16",
+                "2026-11-17",
+                "2026-11-18"
+              ],
+              "temperature_2m_max": [
+                26.3,
+                27.4,
+                28.1
+              ],
+              "precipitation_sum": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "et0_fao_evapotranspiration": [
+                5.92,
+                5.96,
+                6.04
+              ],
+              "wind_speed_10m_max": [
+                21.1,
+                19.3,
+                19.3
+              ]
+            },
+            "units": {
+              "time": "iso8601",
+              "temperature_2m_max": "°C",
+              "precipitation_sum": "mm",
+              "et0_fao_evapotranspiration": "mm",
+              "wind_speed_10m_max": "km/h"
+            },
+            "source_coordinates": [
+              39.23474,
+              8.541301
+            ]
+          },
+          "large_result": false,
+          "payload_digest": "51245f49145dc61559b1b83d4aa8cb42cfa0443ca0ddacd03cc2e8817f59fd5c",
+          "source": {
+            "provider": "Open-Meteo",
+            "url": "https://api.open-meteo.com/v1/forecast",
+            "value_kind": "modelled_forecast",
+            "valid_time_range": {
+              "from": "2026-11-16",
+              "to": "2026-11-18"
+            },
+            "units": {
+              "time": "iso8601",
+              "temperature_2m_max": "°C",
+              "precipitation_sum": "mm",
+              "et0_fao_evapotranspiration": "mm",
+              "wind_speed_10m_max": "km/h"
+            },
+            "attribution": "https://open-meteo.com/en/licence"
+          },
+          "retrieved_at": "2026-11-16T08:59:15.595847+00:00",
+          "limitations": [
+            "Gridded model forecast; not a plot sensor reading. Forecast issue time was not supplied."
+          ],
+          "cache_hit": false,
+          "classification": "live",
+          "actual_cost_usd": null,
+          "estimated_cost_usd": null
+        },
+        "error": null,
+        "attempts": 1,
+        "created_at": "2026-11-16T08:59:12.712140",
+        "updated_at": "2026-11-16T08:59:15.658719",
+        "status_url": "/api/v1/connector-jobs/7eeb4c1a-4b16-43b3-b451-5b2933612a7e"
+      },
+      "outcome": "VERIFIED_LIVE"
+    },
+    {
+      "id": "LIVE-02",
+      "provider": "NASA POWER MCP",
+      "outcome": "VERIFIED_LIVE",
+      "discovery": {
+        "id": "5d24dcd1-360d-42df-8c97-8a6c6f34483e",
+        "kind": "discovery",
+        "target_id": "7a32ba09-d222-44ca-830e-f71078c022fe",
+        "status": "succeeded",
+        "result": {
+          "snapshot_id": "25712673-b5b0-4c83-8e51-2cadbe36109b",
+          "complete": true,
+          "diff": {
+            "added": [
+              "build_api_url",
+              "build_pruve_url",
+              "build_report_url",
+              "build_visualization_url",
+              "build_zones_url",
+              "get_climatology_data",
+              "get_daily_data",
+              "get_doc_summaries",
+              "get_hourly_data",
+              "get_last_available",
+              "get_monthly_data",
+              "get_parameter",
+              "get_parameters",
+              "get_point_statistics",
+              "get_story_summaries",
+              "search_docs",
+              "search_stories",
+              "write_zarr_access"
+            ],
+            "changed": [],
+            "unchanged": [],
+            "removed": [],
+            "unsupported": []
+          },
+          "diagnostics": {
+            "sdk": "mcp",
+            "sdk_version": "1.29.0",
+            "transport": "streamable-http",
+            "protocol_version": "2025-03-26",
+            "server": {
+              "name": "NASA POWER MCP Server",
+              "title": null,
+              "version": "v1.1.0-beta",
+              "websiteUrl": null,
+              "icons": null
+            }
+          },
+          "tool_count": 18,
+          "automatic_enablement": false
+        },
+        "error": null,
+        "attempts": 1,
+        "created_at": "2026-11-16T08:59:15.888663",
+        "updated_at": "2026-11-16T08:59:23.385744",
+        "status_url": "/api/v1/connector-jobs/5d24dcd1-360d-42df-8c97-8a6c6f34483e"
+      },
+      "connection_id": "7a32ba09-d222-44ca-830e-f71078c022fe",
+      "tool_id": "22752a5d-5613-4107-ae39-d3aa227f5dd6",
+      "job": {
+        "id": "412bde2f-3885-49f1-856f-8a4597a5381d",
+        "kind": "tool_test",
+        "target_id": "be66499b-0297-40dc-8ebb-c9b614cf0c36",
+        "status": "succeeded",
+        "result": {
+          "execution_outcome": "SUCCESS",
+          "data_outcome": "VALID",
+          "invocation_id": "61e2a63e-b120-401e-9c78-a66f0d3b6cbc",
+          "tool_version_id": "be66499b-0297-40dc-8ebb-c9b614cf0c36",
+          "evidence_ids": [
+            "7627f7cd-a04e-4d19-a3b6-cfea49e4d062"
+          ],
+          "data": {
+            "location": {
+              "type": "Point",
+              "coordinates": [
+                39.27,
+                8.54,
+                1729.74
+              ]
+            },
+            "properties": {
+              "parameter": {
+                "T2M": {
+                  "20250701": 23.23
+                },
+                "PRECTOTCORR": {
+                  "20250701": 1.46
+                },
+                "RH2M": {
+                  "20250701": 59.42
+                },
+                "WS2M": {
+                  "20250701": 1.34
+                },
+                "ALLSKY_SFC_SW_DWN": {
+                  "20250701": 22.63
+                }
+              }
+            },
+            "parameters": {
+              "T2M": {
+                "units": "C",
+                "longname": "Temperature at 2 Meters"
+              },
+              "PRECTOTCORR": {
+                "units": "mm/day",
+                "longname": "Precipitation Corrected"
+              },
+              "RH2M": {
+                "units": "%",
+                "longname": "Relative Humidity at 2 Meters"
+              },
+              "WS2M": {
+                "units": "m/s",
+                "longname": "Wind Speed at 2 Meters"
+              },
+              "ALLSKY_SFC_SW_DWN": {
+                "units": "MJ/m^2/day",
+                "longname": "All Sky Surface Shortwave Downward Irradiance"
+              }
+            },
+            "meta": {
+              "title": "NASA/POWER Source Native Resolution Daily Data",
+              "api": {
+                "version": "v2.10.3",
+                "name": "POWER Daily API"
+              },
+              "sources": [
+                "MERRA2",
+                "SYN1DEG",
+                "POWER"
+              ],
+              "fill_value": -999.0,
+              "time_standard": "LST",
+              "start": "20250701",
+              "end": "20250701"
+            },
+            "api_url": "https://power.larc.nasa.gov/api/temporal/daily/point?latitude=8.54&longitude=39.27&start=20250701&end=20250701&parameters=T2M%2CPRECTOTCORR%2CRH2M%2CWS2M%2CALLSKY_SFC_SW_DWN&community=ag&format=json&user=mcpserver"
+          },
+          "large_result": false,
+          "payload_digest": "3c2db6a596b2b11d0a74c5689eda35147ef12c068db408fa042dc26af8722874",
+          "source": {
+            "url": "https://power.larc.nasa.gov/mcp/",
+            "upstream_tool": "get_daily_data",
+            "sdk": "mcp",
+            "sdk_version": "1.29.0",
+            "transport": "streamable-http",
+            "protocol_version": "2025-03-26",
+            "server": {
+              "name": "NASA POWER MCP Server",
+              "title": null,
+              "version": "v1.1.0-beta",
+              "websiteUrl": null,
+              "icons": null
+            }
+          },
+          "retrieved_at": "2026-11-16T08:59:36.851531+00:00",
+          "limitations": [],
+          "cache_hit": false,
+          "classification": "live",
+          "actual_cost_usd": null,
+          "estimated_cost_usd": null
+        },
+        "error": null,
+        "attempts": 1,
+        "created_at": "2026-11-16T08:59:23.706909",
+        "updated_at": "2026-11-16T08:59:36.908726",
+        "status_url": "/api/v1/connector-jobs/412bde2f-3885-49f1-856f-8a4597a5381d"
+      },
+      "agricultural_payload_validation": {
+        "outcome": "PASSED",
+        "type": "OFFLINE_VALIDATION_OF_SAVED_REAL_RESPONSE",
+        "fields_checked": [
+          "T2M",
+          "PRECTOTCORR",
+          "RH2M",
+          "WS2M",
+          "ALLSKY_SFC_SW_DWN"
+        ],
+        "time_standard": "LST",
+        "checks": [
+          "date coverage",
+          "numeric values and fill values",
+          "exact units",
+          "returned coordinates"
+        ]
+      }
+    },
+    {
+      "id": "MODEL-01",
+      "provider": "Gemini",
+      "outcome": "BLOCKED",
+      "reason": "GEMINI_API_KEY is not configured; model ID/access must be verified"
+    }
+  ],
+  "attempts": [
+    {
+      "method": "GET",
+      "endpoint": "https://api.open-meteo.com/v1/forecast",
+      "http_status": 200,
+      "outcome": "HTTP_RESPONSE",
+      "elapsed_ms": 922.0000000022992,
+      "started_at": "2026-11-16T08:59:14.637059"
+    },
+    {
+      "method": "POST",
+      "endpoint": "https://power.larc.nasa.gov/mcp/",
+      "http_status": 200,
+      "outcome": "HTTP_RESPONSE",
+      "elapsed_ms": 2407.0000000028813,
+      "started_at": "2026-11-16T08:59:17.784600"
+    },
+    {
+      "method": "POST",
+      "endpoint": "https://power.larc.nasa.gov/mcp/",
+      "http_status": 202,
+      "outcome": "HTTP_RESPONSE",
+      "elapsed_ms": 875.0,
+      "started_at": "2026-11-16T08:59:20.233315"
+    },
+    {
+      "method": "POST",
+      "endpoint": "https://power.larc.nasa.gov/mcp/",
+      "http_status": 200,
+      "outcome": "HTTP_RESPONSE",
+      "elapsed_ms": 1233.9999999967404,
+      "started_at": "2026-11-16T08:59:21.184907"
+    },
+    {
+      "method": "POST",
+      "endpoint": "https://power.larc.nasa.gov/mcp/",
+      "http_status": 200,
+      "outcome": "HTTP_RESPONSE",
+      "elapsed_ms": 1030.9999999990396,
+      "started_at": "2026-11-16T08:59:24.460787"
+    },
+    {
+      "method": "POST",
+      "endpoint": "https://power.larc.nasa.gov/mcp/",
+      "http_status": 202,
+      "outcome": "HTTP_RESPONSE",
+      "elapsed_ms": 686.9999999980791,
+      "started_at": "2026-11-16T08:59:25.591456"
+    },
+    {
+      "method": "POST",
+      "endpoint": "https://power.larc.nasa.gov/mcp/",
+      "http_status": 200,
+      "outcome": "HTTP_RESPONSE",
+      "elapsed_ms": 9265.999999999622,
+      "started_at": "2026-11-16T08:59:26.329138"
+    },
+    {
+      "method": "POST",
+      "endpoint": "https://power.larc.nasa.gov/mcp/",
+      "http_status": 200,
+      "outcome": "HTTP_RESPONSE",
+      "elapsed_ms": 1157.0000000028813,
+      "started_at": "2026-11-16T08:59:35.663050"
+    }
+  ]
+}

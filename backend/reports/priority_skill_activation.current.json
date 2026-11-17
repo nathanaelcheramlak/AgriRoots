@@ -1,0 +1,721 @@
+{
+  "executed_at_utc": "2026-11-16T12:02:56.234422+00:00",
+  "type": "FIRST_WAVE_ACTUAL_PROVIDER_ACTIVATION",
+  "office_id": "da25ffd4-7ab3-4d6c-ac68-d38e1294ba9e",
+  "plot_id": "91378aaf-b284-4703-bc6d-4b369eb0bec5",
+  "context_note": "Explicit synthetic validation records; provider evidence is separately classified by the executor",
+  "providers": [
+    {
+      "provider_id": "open_meteo",
+      "job_id": "566d8c21-4233-445a-b581-f445264d5c56",
+      "tool_version_id": "5eac9c06-7f33-4d30-b539-b8f3348783e1",
+      "job_status": "succeeded",
+      "execution_outcome": "SUCCESS",
+      "data_outcome": "VALID",
+      "classification": "live",
+      "evidence_ids": [
+        "2703c372-3961-41c1-a923-8cb7b34f31a9"
+      ],
+      "retrieved_at": "2026-11-16T12:02:37.737704+00:00",
+      "source": {
+        "provider": "Open-Meteo",
+        "url": "https://api.open-meteo.com/v1/forecast",
+        "value_kind": "modelled_forecast",
+        "valid_time_range": {
+          "from": "2026-11-16",
+          "to": "2026-11-18"
+        },
+        "units": {
+          "time": "iso8601",
+          "temperature_2m_max": "°C",
+          "precipitation_sum": "mm",
+          "et0_fao_evapotranspiration": "mm",
+          "wind_speed_10m_max": "km/h"
+        },
+        "attribution": "https://open-meteo.com/en/licence"
+      },
+      "data": {
+        "daily": {
+          "time": [
+            "2026-11-16",
+            "2026-11-17",
+            "2026-11-18"
+          ],
+          "temperature_2m_max": [
+            26.3,
+            27.4,
+            28.1
+          ],
+          "precipitation_sum": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "et0_fao_evapotranspiration": [
+            5.92,
+            5.96,
+            6.04
+          ],
+          "wind_speed_10m_max": [
+            21.1,
+            19.3,
+            19.3
+          ]
+        },
+        "units": {
+          "time": "iso8601",
+          "temperature_2m_max": "°C",
+          "precipitation_sum": "mm",
+          "et0_fao_evapotranspiration": "mm",
+          "wind_speed_10m_max": "km/h"
+        },
+        "source_coordinates": [
+          39.23474,
+          8.541301
+        ]
+      },
+      "limitations": [
+        "Gridded model forecast; not a plot sensor reading. Forecast issue time was not supplied."
+      ],
+      "error": null,
+      "status": "ENABLED",
+      "runtime_verified": true,
+      "runtime_cache_hit": true,
+      "coverage_limit": "Live verification at the synthetic Adama point; broader accuracy not established"
+    },
+    {
+      "provider_id": "isda_soil",
+      "job_id": "e4369228-d0b5-4240-aa09-10d83d1b23f1",
+      "tool_version_id": "f4b3ac14-803a-4939-8f66-b3386c0bf432",
+      "job_status": "succeeded",
+      "execution_outcome": "SUCCESS",
+      "data_outcome": "VALID",
+      "classification": "live",
+      "evidence_ids": [
+        "c9b0a49b-48e6-464a-9809-cbf2d2805201"
+      ],
+      "retrieved_at": "2026-11-16T12:02:50.157061+00:00",
+      "source": {
+        "provider": "iSDAsoil",
+        "url": "https://api.isda-africa.com/isdasoil/v2/soilproperty",
+        "value_kind": "mapped_soil_estimate",
+        "depth_cm": [
+          0,
+          20
+        ],
+        "attribution": "iSDAsoil; CC BY 4.0"
+      },
+      "data": {
+        "requested_coordinates": [
+          39.27,
+          8.54
+        ],
+        "depth_cm": [
+          0,
+          20
+        ],
+        "properties": {
+          "ph": [
+            {
+              "value": {
+                "unit": null,
+                "type": "float",
+                "value": 7.5
+              },
+              "depth": {
+                "value": "0-20",
+                "unit": "cm"
+              },
+              "uncertainty": [
+                {
+                  "confidence_interval": "50%",
+                  "lower_bound": 7.3,
+                  "upper_bound": 7.7
+                },
+                {
+                  "confidence_interval": "68%",
+                  "lower_bound": 7.2,
+                  "upper_bound": 7.8
+                },
+                {
+                  "confidence_interval": "90%",
+                  "lower_bound": 7.0,
+                  "upper_bound": 8.0
+                }
+              ]
+            }
+          ],
+          "carbon_organic": [
+            {
+              "value": {
+                "unit": "g/kg",
+                "type": "float",
+                "value": 10.0
+              },
+              "depth": {
+                "value": "0-20",
+                "unit": "cm"
+              },
+              "uncertainty": [
+                {
+                  "confidence_interval": "50%",
+                  "lower_bound": 9.3,
+                  "upper_bound": 10.8
+                },
+                {
+                  "confidence_interval": "68%",
+                  "lower_bound": 9.0,
+                  "upper_bound": 11.2
+                },
+                {
+                  "confidence_interval": "90%",
+                  "lower_bound": 8.4,
+                  "upper_bound": 12.0
+                }
+              ]
+            }
+          ],
+          "clay_content": [
+            {
+              "value": {
+                "unit": "%",
+                "type": "float",
+                "value": 23
+              },
+              "depth": {
+                "value": "0-20",
+                "unit": "cm"
+              },
+              "uncertainty": [
+                {
+                  "confidence_interval": "50%",
+                  "lower_bound": 21.0,
+                  "upper_bound": 25.0
+                },
+                {
+                  "confidence_interval": "68%",
+                  "lower_bound": 20.0,
+                  "upper_bound": 26.0
+                },
+                {
+                  "confidence_interval": "90%",
+                  "lower_bound": 18.1,
+                  "upper_bound": 27.9
+                }
+              ]
+            }
+          ],
+          "sand_content": [
+            {
+              "value": {
+                "unit": "%",
+                "type": "float",
+                "value": 44
+              },
+              "depth": {
+                "value": "0-20",
+                "unit": "cm"
+              },
+              "uncertainty": [
+                {
+                  "confidence_interval": "50%",
+                  "lower_bound": 42.0,
+                  "upper_bound": 46.0
+                },
+                {
+                  "confidence_interval": "68%",
+                  "lower_bound": 41.0,
+                  "upper_bound": 47.0
+                },
+                {
+                  "confidence_interval": "90%",
+                  "lower_bound": 39.1,
+                  "upper_bound": 48.9
+                }
+              ]
+            }
+          ],
+          "silt_content": [
+            {
+              "value": {
+                "unit": "%",
+                "type": "float",
+                "value": 26
+              },
+              "depth": {
+                "value": "0-20",
+                "unit": "cm"
+              },
+              "uncertainty": [
+                {
+                  "confidence_interval": "50%",
+                  "lower_bound": 23.3,
+                  "upper_bound": 28.7
+                },
+                {
+                  "confidence_interval": "68%",
+                  "lower_bound": 22.0,
+                  "upper_bound": 30.0
+                },
+                {
+                  "confidence_interval": "90%",
+                  "lower_bound": 19.4,
+                  "upper_bound": 32.6
+                }
+              ]
+            }
+          ],
+          "nitrogen_total": [
+            {
+              "value": {
+                "unit": "g/kg",
+                "type": "float",
+                "value": 1.1
+              },
+              "depth": {
+                "value": "0-20",
+                "unit": "cm"
+              },
+              "uncertainty": [
+                {
+                  "confidence_interval": "50%",
+                  "lower_bound": 1.0,
+                  "upper_bound": 1.2
+                },
+                {
+                  "confidence_interval": "68%",
+                  "lower_bound": 1.0,
+                  "upper_bound": 1.2
+                },
+                {
+                  "confidence_interval": "90%",
+                  "lower_bound": 0.9,
+                  "upper_bound": 1.4
+                }
+              ]
+            }
+          ],
+          "phosphorous_extractable": [
+            {
+              "value": {
+                "unit": "ppm",
+                "type": "float",
+                "value": 9.0
+              },
+              "depth": {
+                "value": "0-20",
+                "unit": "cm"
+              },
+              "uncertainty": [
+                {
+                  "confidence_interval": "50%",
+                  "lower_bound": 7.7,
+                  "upper_bound": 10.4
+                },
+                {
+                  "confidence_interval": "68%",
+                  "lower_bound": 7.2,
+                  "upper_bound": 11.2
+                },
+                {
+                  "confidence_interval": "90%",
+                  "lower_bound": 6.2,
+                  "upper_bound": 12.9
+                }
+              ]
+            }
+          ],
+          "potassium_extractable": [
+            {
+              "value": {
+                "unit": "ppm",
+                "type": "float",
+                "value": 444.9
+              },
+              "depth": {
+                "value": "0-20",
+                "unit": "cm"
+              },
+              "uncertainty": [
+                {
+                  "confidence_interval": "50%",
+                  "lower_bound": 317.2,
+                  "upper_bound": 623.7
+                },
+                {
+                  "confidence_interval": "68%",
+                  "lower_bound": 270.2,
+                  "upper_bound": 732.1
+                },
+                {
+                  "confidence_interval": "90%",
+                  "lower_bound": 194.9,
+                  "upper_bound": 1013.8
+                }
+              ]
+            }
+          ]
+        },
+        "metadata": {
+          "ph": {
+            "description": "pH",
+            "unit": null,
+            "depths": {
+              "unit": "cm",
+              "values": [
+                "0-20",
+                "20-50"
+              ]
+            },
+            "uncertainty": true
+          },
+          "carbon_organic": {
+            "description": "Carbon, organic",
+            "unit": "g/kg",
+            "depths": {
+              "unit": "cm",
+              "values": [
+                "0-20",
+                "20-50"
+              ]
+            },
+            "uncertainty": true
+          },
+          "clay_content": {
+            "description": "Clay content",
+            "unit": "%",
+            "depths": {
+              "unit": "cm",
+              "values": [
+                "0-20",
+                "20-50"
+              ]
+            },
+            "uncertainty": true
+          },
+          "sand_content": {
+            "description": "Sand content",
+            "unit": "%",
+            "depths": {
+              "unit": "cm",
+              "values": [
+                "0-20",
+                "20-50"
+              ]
+            },
+            "uncertainty": true
+          },
+          "silt_content": {
+            "description": "Silt content",
+            "unit": "%",
+            "depths": {
+              "unit": "cm",
+              "values": [
+                "0-20",
+                "20-50"
+              ]
+            },
+            "uncertainty": true
+          },
+          "nitrogen_total": {
+            "description": "Nitrogen, total",
+            "unit": "g/kg",
+            "depths": {
+              "unit": "cm",
+              "values": [
+                "0-20",
+                "20-50"
+              ]
+            },
+            "uncertainty": true
+          },
+          "phosphorous_extractable": {
+            "description": "Phosphorus, extractable",
+            "unit": "ppm",
+            "depths": {
+              "unit": "cm",
+              "values": [
+                "0-20",
+                "20-50"
+              ]
+            },
+            "uncertainty": true
+          },
+          "potassium_extractable": {
+            "description": "Potassium, extractable",
+            "unit": "ppm",
+            "depths": {
+              "unit": "cm",
+              "values": [
+                "0-20",
+                "20-50"
+              ]
+            },
+            "uncertainty": true
+          }
+        }
+      },
+      "limitations": [
+        "Mapped estimates, not laboratory samples. Response does not echo coordinates or supply observation dates."
+      ],
+      "error": null,
+      "status": "ENABLED",
+      "runtime_verified": true,
+      "runtime_cache_hit": true,
+      "coverage_limit": "Live verification at the synthetic Adama point; broader accuracy not established"
+    },
+    {
+      "provider_id": "nasa_power",
+      "job_id": "fd8bc4c0-cd64-41cc-a4c5-0643f4846301",
+      "tool_version_id": "277e174e-227f-40d2-9ee0-8d1c0cc8703f",
+      "job_status": "succeeded",
+      "execution_outcome": "SUCCESS",
+      "data_outcome": "VALID",
+      "classification": "live",
+      "evidence_ids": [
+        "739f1024-05c0-4279-ad7d-111b61823342"
+      ],
+      "retrieved_at": "2026-11-16T12:02:55.633036+00:00",
+      "source": {
+        "provider": "NASA POWER",
+        "url": "https://power.larc.nasa.gov/api/temporal/daily/point",
+        "value_kind": "historical_agroclimate",
+        "valid_time_range": {
+          "from": "2025-07-01",
+          "to": "2025-07-01"
+        },
+        "units": {
+          "T2M": {
+            "units": "C",
+            "longname": "Temperature at 2 Meters"
+          },
+          "PRECTOTCORR": {
+            "units": "mm/day",
+            "longname": "Precipitation Corrected"
+          },
+          "RH2M": {
+            "units": "%",
+            "longname": "Relative Humidity at 2 Meters"
+          },
+          "WS2M": {
+            "units": "m/s",
+            "longname": "Wind Speed at 2 Meters"
+          },
+          "ALLSKY_SFC_SW_DWN": {
+            "units": "MJ/m^2/day",
+            "longname": "All Sky Surface Shortwave Downward Irradiance"
+          }
+        }
+      },
+      "data": {
+        "daily_records": {
+          "T2M": {
+            "20250701": 23.15
+          },
+          "PRECTOTCORR": {
+            "20250701": 1.45
+          },
+          "RH2M": {
+            "20250701": 59.49
+          },
+          "WS2M": {
+            "20250701": 1.31
+          },
+          "ALLSKY_SFC_SW_DWN": {
+            "20250701": 22.63
+          }
+        },
+        "parameters": {
+          "T2M": {
+            "units": "C",
+            "longname": "Temperature at 2 Meters"
+          },
+          "PRECTOTCORR": {
+            "units": "mm/day",
+            "longname": "Precipitation Corrected"
+          },
+          "RH2M": {
+            "units": "%",
+            "longname": "Relative Humidity at 2 Meters"
+          },
+          "WS2M": {
+            "units": "m/s",
+            "longname": "Wind Speed at 2 Meters"
+          },
+          "ALLSKY_SFC_SW_DWN": {
+            "units": "MJ/m^2/day",
+            "longname": "All Sky Surface Shortwave Downward Irradiance"
+          }
+        },
+        "source_location": {
+          "type": "Point",
+          "coordinates": [
+            39.27,
+            8.54,
+            1729.74
+          ]
+        },
+        "time_standard": "UTC"
+      },
+      "limitations": [
+        "Gridded historical estimates; not a current forecast or field measurement."
+      ],
+      "error": null,
+      "status": "ENABLED",
+      "runtime_verified": true,
+      "runtime_cache_hit": true,
+      "coverage_limit": "Live verification at the synthetic Adama point; broader accuracy not established"
+    },
+    {
+      "provider_id": "chirps",
+      "job_id": "33ee59fb-c7a4-4c1b-b42a-c6888503c182",
+      "tool_version_id": "b10380a5-b359-4096-86d1-8f5f6fb2142a",
+      "job_status": "failed",
+      "execution_outcome": "TIMEOUT",
+      "data_outcome": "INVALID",
+      "classification": null,
+      "evidence_ids": [],
+      "retrieved_at": null,
+      "source": null,
+      "data": null,
+      "limitations": [],
+      "error": {
+        "code": "TIMEOUT",
+        "message": "Provider timeout; remote completion may be ambiguous",
+        "retryable": true
+      },
+      "status": "NOT_ENABLED"
+    }
+  ],
+  "skills": [
+    {
+      "name": "provided_agri_apis_v1_weather_forecast",
+      "id": "f7823385-8097-487f-ae4f-d444fbd1c823",
+      "enabled": true,
+      "approved": true,
+      "test_type": "configuration_validation_no_model_request"
+    },
+    {
+      "name": "provided_agri_apis_v1_soil_profile",
+      "id": "0f5045a6-9aed-455f-ab92-02bfef343ca5",
+      "enabled": true,
+      "approved": true,
+      "test_type": "configuration_validation_no_model_request"
+    },
+    {
+      "name": "provided_agri_apis_v1_climate_history",
+      "id": "b3ea28d4-f54d-4aee-87d1-2fc593c388aa",
+      "enabled": true,
+      "approved": true,
+      "test_type": "configuration_validation_no_model_request"
+    }
+  ],
+  "http_attempts": [
+    {
+      "method": "GET",
+      "endpoint": "https://api.open-meteo.com/v1/forecast",
+      "http_status": 200,
+      "outcome": "HTTP_RESPONSE"
+    },
+    {
+      "method": "POST",
+      "endpoint": "https://api.isda-africa.com/login",
+      "http_status": 200,
+      "outcome": "HTTP_RESPONSE"
+    },
+    {
+      "method": "GET",
+      "endpoint": "https://api.isda-africa.com/isdasoil/v2/layers",
+      "http_status": 200,
+      "outcome": "HTTP_RESPONSE"
+    },
+    {
+      "method": "GET",
+      "endpoint": "https://api.isda-africa.com/isdasoil/v2/soilproperty",
+      "http_status": 200,
+      "outcome": "HTTP_RESPONSE"
+    },
+    {
+      "method": "GET",
+      "endpoint": "https://api.isda-africa.com/isdasoil/v2/soilproperty",
+      "http_status": 200,
+      "outcome": "HTTP_RESPONSE"
+    },
+    {
+      "method": "GET",
+      "endpoint": "https://api.isda-africa.com/isdasoil/v2/soilproperty",
+      "http_status": 200,
+      "outcome": "HTTP_RESPONSE"
+    },
+    {
+      "method": "GET",
+      "endpoint": "https://api.isda-africa.com/isdasoil/v2/soilproperty",
+      "http_status": 200,
+      "outcome": "HTTP_RESPONSE"
+    },
+    {
+      "method": "GET",
+      "endpoint": "https://api.isda-africa.com/isdasoil/v2/soilproperty",
+      "http_status": 200,
+      "outcome": "HTTP_RESPONSE"
+    },
+    {
+      "method": "GET",
+      "endpoint": "https://api.isda-africa.com/isdasoil/v2/soilproperty",
+      "http_status": 200,
+      "outcome": "HTTP_RESPONSE"
+    },
+    {
+      "method": "GET",
+      "endpoint": "https://api.isda-africa.com/isdasoil/v2/soilproperty",
+      "http_status": 200,
+      "outcome": "HTTP_RESPONSE"
+    },
+    {
+      "method": "GET",
+      "endpoint": "https://api.isda-africa.com/isdasoil/v2/soilproperty",
+      "http_status": 200,
+      "outcome": "HTTP_RESPONSE"
+    },
+    {
+      "method": "GET",
+      "endpoint": "https://climateserv.servirglobal.net/chirps/submitDataRequest/",
+      "http_status": 200,
+      "outcome": "HTTP_RESPONSE"
+    },
+    {
+      "method": "GET",
+      "endpoint": "https://power.larc.nasa.gov/api/temporal/daily/point",
+      "http_status": 200,
+      "outcome": "HTTP_RESPONSE"
+    },
+    {
+      "method": "GET",
+      "endpoint": "https://climateserv.servirglobal.net/api/submitDataRequest/",
+      "http_status": 200,
+      "outcome": "HTTP_RESPONSE"
+    },
+    {
+      "method": "GET",
+      "endpoint": "https://climateserv.servirglobal.net/api/submitDataRequest/",
+      "http_status": null,
+      "outcome": "AMBIGUOUS_TRANSPORT"
+    }
+  ],
+  "model_requests": 0,
+  "diagnosis_requests": 0,
+  "delivery_performed": false,
+  "activation_history": [
+    "priority_skill_activation.json",
+    "priority_chirps_activation.json",
+    "priority_chirps_legacy_activation.json"
+  ],
+  "http_registry_verified": true,
+  "current_registry_report": "priority_registry_state.json",
+  "remaining_blocker": "CHIRPS live submission timed out; outcome may be ambiguous, so no further automatic submission was made.",
+  "fixture_checks": {
+    "artifact": "validation/priority-adapters.xml",
+    "passed": 48,
+    "failed": 0
+  }
+}

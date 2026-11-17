@@ -1,0 +1,843 @@
+{
+  "registered_at_utc": "2026-11-16T11:49:34.576595+00:00",
+  "type": "ACTUAL_LOCAL_DATABASE_REGISTRATION",
+  "office_id": "da25ffd4-7ab3-4d6c-ac68-d38e1294ba9e",
+  "principal_id": "bbe2f88c-d991-4c71-be7c-929fbb21b6aa",
+  "local_workspace_created": true,
+  "pack_id": "ad932535-70b3-4b8d-b36a-212ec0167925",
+  "pack_name": "provided_agri_apis",
+  "pack_version": 1,
+  "pack_digest": "7edee3bccce2a5e786a6e89ea014278118fd3ecf35d34ff40e38157feb4c0a74",
+  "installed": true,
+  "connections": [
+    {
+      "provider_id": "open_meteo",
+      "connection_id": "f674e05a-4c7d-4727-949f-fb7d04ac2d3f",
+      "adapter_type": "builtin",
+      "enabled": false,
+      "credential_stored": false,
+      "credential_changed": false,
+      "credential_revision": null,
+      "configuration_revision": 1,
+      "registration_state": "DISABLED_DRAFT",
+      "current_provider_verification": "NOT_TESTED_BY_REGISTRATION"
+    },
+    {
+      "provider_id": "nasa_power",
+      "connection_id": "44eae508-7a6c-40c1-88b1-127dcc7f16c1",
+      "adapter_type": "builtin",
+      "enabled": false,
+      "credential_stored": false,
+      "credential_changed": false,
+      "credential_revision": null,
+      "configuration_revision": 1,
+      "registration_state": "DISABLED_DRAFT",
+      "current_provider_verification": "NOT_TESTED_BY_REGISTRATION"
+    },
+    {
+      "provider_id": "chirps",
+      "connection_id": "0938087f-ea32-474a-b3d0-d01841a63ef2",
+      "adapter_type": "builtin",
+      "enabled": false,
+      "credential_stored": false,
+      "credential_changed": false,
+      "credential_revision": null,
+      "configuration_revision": 1,
+      "registration_state": "DISABLED_DRAFT",
+      "current_provider_verification": "NOT_TESTED_BY_REGISTRATION"
+    },
+    {
+      "provider_id": "isda_soil",
+      "connection_id": "2fc519a8-c4d9-4d19-b298-04ca5be7d2d6",
+      "adapter_type": "builtin",
+      "enabled": false,
+      "credential_stored": true,
+      "credential_changed": true,
+      "credential_revision": 1,
+      "configuration_revision": 1,
+      "registration_state": "DISABLED_DRAFT",
+      "current_provider_verification": "NOT_TESTED_BY_REGISTRATION"
+    },
+    {
+      "provider_id": "fao_fpma",
+      "connection_id": "9889d83a-81b3-43e1-bdd5-ba3bd0c3988a",
+      "adapter_type": "builtin",
+      "enabled": false,
+      "credential_stored": false,
+      "credential_changed": false,
+      "credential_revision": null,
+      "configuration_revision": 1,
+      "registration_state": "DISABLED_DRAFT",
+      "current_provider_verification": "NOT_TESTED_BY_REGISTRATION"
+    },
+    {
+      "provider_id": "fao_locust",
+      "connection_id": "4e5b3d6f-16b1-4e2a-9325-b9f43123a83f",
+      "adapter_type": "builtin",
+      "enabled": false,
+      "credential_stored": false,
+      "credential_changed": false,
+      "credential_revision": null,
+      "configuration_revision": 1,
+      "registration_state": "DISABLED_DRAFT",
+      "current_provider_verification": "NOT_TESTED_BY_REGISTRATION"
+    },
+    {
+      "provider_id": "nasa_power_mcp",
+      "connection_id": "584457ff-8ad4-4312-b335-9eb204012606",
+      "adapter_type": "mcp",
+      "enabled": false,
+      "credential_stored": false,
+      "credential_changed": false,
+      "credential_revision": null,
+      "configuration_revision": 1,
+      "registration_state": "DISABLED_DRAFT",
+      "current_provider_verification": "NOT_TESTED_BY_REGISTRATION"
+    },
+    {
+      "provider_id": "fao_wapor",
+      "connection_id": "502fa747-50b4-4736-857c-e05f131dd2a8",
+      "adapter_type": "rest",
+      "enabled": false,
+      "credential_stored": false,
+      "credential_changed": false,
+      "credential_revision": null,
+      "configuration_revision": 1,
+      "registration_state": "DISABLED_DRAFT",
+      "current_provider_verification": "NOT_TESTED_BY_REGISTRATION"
+    },
+    {
+      "provider_id": "kindwise",
+      "connection_id": "247ca9f9-73a5-40af-b8b6-b93d8d1b5d87",
+      "adapter_type": "rest",
+      "enabled": false,
+      "credential_stored": true,
+      "credential_changed": true,
+      "credential_revision": 1,
+      "configuration_revision": 1,
+      "registration_state": "DISABLED_DRAFT",
+      "current_provider_verification": "NOT_TESTED_BY_REGISTRATION"
+    }
+  ],
+  "skills": [
+    {
+      "skill_id": "f7823385-8097-487f-ae4f-d444fbd1c823",
+      "name": "provided_agri_apis_v1_weather_forecast",
+      "enabled": false,
+      "approved": false,
+      "required_capabilities": [
+        "weather.forecast"
+      ]
+    },
+    {
+      "skill_id": "b3ea28d4-f54d-4aee-87d1-2fc593c388aa",
+      "name": "provided_agri_apis_v1_climate_history",
+      "enabled": false,
+      "approved": false,
+      "required_capabilities": [
+        "climate.history"
+      ]
+    },
+    {
+      "skill_id": "9bed71ea-f1f2-4c8f-ac37-cdceebd54899",
+      "name": "provided_agri_apis_v1_rainfall_history",
+      "enabled": false,
+      "approved": false,
+      "required_capabilities": [
+        "rainfall.history"
+      ]
+    },
+    {
+      "skill_id": "0f5045a6-9aed-455f-ab92-02bfef343ca5",
+      "name": "provided_agri_apis_v1_soil_profile",
+      "enabled": false,
+      "approved": false,
+      "required_capabilities": [
+        "soil.profile"
+      ]
+    },
+    {
+      "skill_id": "02ec73b4-8adb-4a37-b3bf-f848c33da979",
+      "name": "provided_agri_apis_v1_water_productivity",
+      "enabled": false,
+      "approved": false,
+      "required_capabilities": [
+        "water.productivity"
+      ]
+    },
+    {
+      "skill_id": "af324c7e-d16b-4f59-85e1-c262f2d6799f",
+      "name": "provided_agri_apis_v1_market_context",
+      "enabled": false,
+      "approved": false,
+      "required_capabilities": [
+        "market.prices"
+      ]
+    },
+    {
+      "skill_id": "49cd5323-85f8-4934-818a-7939156e6647",
+      "name": "provided_agri_apis_v1_locust_context",
+      "enabled": false,
+      "approved": false,
+      "required_capabilities": [
+        "pests.regional_reports"
+      ]
+    },
+    {
+      "skill_id": "a79d926e-a20d-4ac9-ab98-ca8cd038fa89",
+      "name": "provided_agri_apis_v1_crop_health",
+      "enabled": false,
+      "approved": false,
+      "required_capabilities": [
+        "crop.diagnosis"
+      ]
+    }
+  ],
+  "tool_count": 6,
+  "provider_requests": 0,
+  "model_requests": 0,
+  "paid_requests": 0,
+  "automatic_approval": false,
+  "next_steps": "Exact-version tests, review and enablement are still required. MCP discovery, WaPOR raster transport and the private image workflow remain separate.",
+  "http_registry_verified": true,
+  "provider_inventory": [
+    {
+      "provider_id": "open_meteo",
+      "name": "Open-Meteo",
+      "credential_required": false,
+      "historical_verification": {
+        "status": "VERIFIED_LIVE",
+        "verified_at": "2026-11-15T20:21:23.745812+00:00",
+        "http_status": 200,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": true
+        },
+        "limitations": [
+          "Modelled forecast and modelled soil variables; not field sensor measurements."
+        ],
+        "result_digest": "ed3f68c56a9cf4aaae8d8162d069af2ebfafec811940c18d01c828fba60edef1"
+      },
+      "connection_id": "f674e05a-4c7d-4727-949f-fb7d04ac2d3f",
+      "credential_stored": false,
+      "skill": "provided_agri_apis_v1_weather_forecast",
+      "enabled": false,
+      "registration_status": "Draft registered; test/review/enable required"
+    },
+    {
+      "provider_id": "nasa_power",
+      "name": "NASA POWER",
+      "credential_required": false,
+      "historical_verification": {
+        "status": "VERIFIED_LIVE",
+        "verified_at": "2026-11-15T20:21:24.714167+00:00",
+        "http_status": 200,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": true
+        },
+        "limitations": [
+          "Gridded historical estimates; useful as climate background, not a plot-level rain gauge."
+        ],
+        "result_digest": "c2fcf29ae365bc77d4639022100cd0e0f48cb206bb6603a4474bbec546b15203"
+      },
+      "connection_id": "44eae508-7a6c-40c1-88b1-127dcc7f16c1",
+      "credential_stored": false,
+      "skill": "provided_agri_apis_v1_climate_history",
+      "enabled": false,
+      "registration_status": "Draft registered; test/review/enable required"
+    },
+    {
+      "provider_id": "chirps",
+      "name": "CHIRPS / ClimateSERV",
+      "credential_required": false,
+      "historical_verification": {
+        "status": "VERIFIED_LIVE",
+        "verified_at": "2026-11-15T20:21:26.791689+00:00",
+        "http_status": 200,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": true
+        },
+        "limitations": [
+          "Small synthetic polygon near Adama, regardless of --location; asynchronous CHIRPS daily spatial averages in mm."
+        ],
+        "result_digest": "72955981b9f5969218569361e132f920524dcab18c771da9b6a7c1d504bbc4f7"
+      },
+      "connection_id": "0938087f-ea32-474a-b3d0-d01841a63ef2",
+      "credential_stored": false,
+      "skill": "provided_agri_apis_v1_rainfall_history",
+      "enabled": false,
+      "registration_status": "Draft registered; test/review/enable required"
+    },
+    {
+      "provider_id": "isda_soil",
+      "name": "iSDAsoil",
+      "credential_required": true,
+      "historical_verification": {
+        "status": "VERIFIED_LIVE",
+        "verified_at": "2026-11-16T02:15:15.982430+00:00",
+        "http_status": 200,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": true
+        },
+        "limitations": [
+          "Returned clay, sand and silt sum to 93%; retained unchanged rather than normalized.",
+          "Mapped soil estimates and uncertainty, not a laboratory sample. Preserve provider units/transforms.",
+          "The property response does not echo coordinates or provide a measurement date; Ethiopian applicability is established by the exact requested coordinates, not independent geolocation or a current field observation."
+        ],
+        "result_digest": "8a412ea7d59ac3ea2fb46cad3e8fa41af8d7ad2625256ee332040cd33a83fab1"
+      },
+      "connection_id": "2fc519a8-c4d9-4d19-b298-04ca5be7d2d6",
+      "credential_stored": true,
+      "skill": "provided_agri_apis_v1_soil_profile",
+      "enabled": false,
+      "registration_status": "Draft registered; test/review/enable required"
+    },
+    {
+      "provider_id": "fao_wapor",
+      "name": "FAO WaPOR",
+      "credential_required": false,
+      "historical_verification": {
+        "status": "VERIFIED_LIVE",
+        "verified_at": "2026-11-15T20:21:35.507769+00:00",
+        "http_status": 200,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": true
+        },
+        "limitations": [
+          "COG point extraction requires rasterio/GDAL; only a pixel and required tiles/indexes are read. Catalogue page is not guaranteed to contain the globally latest raster."
+        ],
+        "result_digest": "d1075fc2407f0751fe9e5b137ef8ff8ba1ca9c310561fa9ac29f7f1a4e13a70d"
+      },
+      "connection_id": "502fa747-50b4-4736-857c-e05f131dd2a8",
+      "credential_stored": false,
+      "skill": "provided_agri_apis_v1_water_productivity",
+      "enabled": false,
+      "registration_status": "Draft connection; instrumented raster transport pending"
+    },
+    {
+      "provider_id": "copernicus",
+      "name": "Copernicus Sentinel Hub",
+      "credential_required": true,
+      "historical_verification": {
+        "status": "AUTH_REQUIRED",
+        "verified_at": "2026-11-15T20:21:44.694600+00:00",
+        "http_status": null,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": null
+        },
+        "limitations": [],
+        "result_digest": "03f885c92c220489622c4497ae76ba4bd569af117cb2bcc298f016d2a1b3683c"
+      },
+      "connection_id": null,
+      "credential_stored": false,
+      "skill": null,
+      "enabled": false,
+      "registration_status": "Not configured: COPERNICUS_CLIENT_ID, COPERNICUS_CLIENT_SECRET"
+    },
+    {
+      "provider_id": "fao_fpma",
+      "name": "FAO FPMA",
+      "credential_required": false,
+      "historical_verification": {
+        "status": "VERIFIED_LIVE",
+        "verified_at": "2026-11-15T20:21:44.854773+00:00",
+        "http_status": 200,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": true
+        },
+        "limitations": [
+          "Latest retrieved observation: 2026-10-15; market prices can lag and are not farm-gate quotes. Returned 272 observations; reports retain the last five."
+        ],
+        "result_digest": "88dc8e6014d8e0fb80f80cf1876600f8ce6f0e711e00dc214d23da4c6e38fba5"
+      },
+      "connection_id": "9889d83a-81b3-43e1-bdd5-ba3bd0c3988a",
+      "credential_stored": false,
+      "skill": "provided_agri_apis_v1_market_context",
+      "enabled": false,
+      "registration_status": "Draft registered; test/review/enable required"
+    },
+    {
+      "provider_id": "nasa_power_mcp",
+      "name": "NASA POWER public MCP",
+      "credential_required": false,
+      "historical_verification": {
+        "status": "VERIFIED_LIVE",
+        "verified_at": "2026-11-15T20:21:46.924595+00:00",
+        "http_status": 200,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": true
+        },
+        "limitations": [
+          "Live get_daily_data rejected the documented multi-day example with a maximum-one-day error. This probe uses one day and records REST/MCP availability separately."
+        ],
+        "result_digest": "448d46a452f68334d6d3945807e7b36027b8b56852e8c2b45c4b55c992f76d71"
+      },
+      "connection_id": "584457ff-8ad4-4312-b335-9eb204012606",
+      "credential_stored": false,
+      "skill": "provided_agri_apis_v1_climate_history",
+      "enabled": false,
+      "registration_status": "Draft connection; discovery, review and testing required"
+    },
+    {
+      "provider_id": "fao_gaez",
+      "name": "FAO GAEZ",
+      "credential_required": false,
+      "historical_verification": {
+        "status": "PARTIAL",
+        "verified_at": "2026-11-15T20:21:51.232644+00:00",
+        "http_status": 200,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": null
+        },
+        "limitations": [
+          "A documented search API exists, so this is not classified as a failed REST API or dataset-only portal. Coverage of usable pixels remains unconfirmed."
+        ],
+        "result_digest": "419310212a1ee4270c62964b0134fe717a0cb3b0e445e2245a2ebc9a57d6625d"
+      },
+      "connection_id": null,
+      "credential_stored": false,
+      "skill": null,
+      "enabled": false,
+      "registration_status": "Catalog metadata only; numerical suitability extraction was not established."
+    },
+    {
+      "provider_id": "google_earth_engine",
+      "name": "Google Earth Engine",
+      "credential_required": true,
+      "historical_verification": {
+        "status": "AUTH_REQUIRED",
+        "verified_at": "2026-11-15T20:21:52.968827+00:00",
+        "http_status": null,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": null
+        },
+        "limitations": [],
+        "result_digest": "8771bc4947e9fa8dad6001ed997b0cf8c85a10efbd7a494cf5e3e4be78153c31"
+      },
+      "connection_id": null,
+      "credential_stored": false,
+      "skill": null,
+      "enabled": false,
+      "registration_status": "Not configured: EE_PROJECT, EARTH_ENGINE_CREDENTIALS"
+    },
+    {
+      "provider_id": "fao_asis",
+      "name": "FAO ASIS",
+      "credential_required": false,
+      "historical_verification": {
+        "status": "PARTIAL",
+        "verified_at": "2026-11-15T20:23:03.202337+00:00",
+        "http_status": 403,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": null
+        },
+        "limitations": [
+          "Converted catalogue gs:// object URI to Google-documented public HTTPS download form; no credentials or access restrictions bypassed."
+        ],
+        "result_digest": "486ca142a87a4c070b9c3309e9d3339878d4773e59efb81dc1305c55aabcd172"
+      },
+      "connection_id": null,
+      "credential_stored": false,
+      "skill": null,
+      "enabled": false,
+      "registration_status": "Historical catalog access succeeded, but raster access returned HTTP 403."
+    },
+    {
+      "provider_id": "deepleaf",
+      "name": "DeepLeaf",
+      "credential_required": true,
+      "historical_verification": {
+        "status": "AUTH_REQUIRED",
+        "verified_at": "2026-11-15T20:21:55.890495+00:00",
+        "http_status": null,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": null
+        },
+        "limitations": [
+          "The provider-linked https://docs.deepleaf.io/agronomist-api returned HTTP 404 during research. A diagnosis endpoint/schema could not be verified; no endpoint was invented."
+        ],
+        "result_digest": "d7da3a1ef703a3c57db0475a3ac72cb9d167777ce52c436d3395c33ede05bf42"
+      },
+      "connection_id": null,
+      "credential_stored": false,
+      "skill": null,
+      "enabled": false,
+      "registration_status": "Not configured: DEEPLEAF_API_KEY"
+    },
+    {
+      "provider_id": "kindwise",
+      "name": "Kindwise Crop.health",
+      "credential_required": true,
+      "historical_verification": {
+        "status": "VERIFIED_LIVE",
+        "verified_at": "2026-11-16T02:57:52.193490+00:00",
+        "http_status": 201,
+        "scope": {
+          "image_sha256": "d6cf7a8bc0069f3aa08ac89ace1c2a90b3645238f3576dafb875d7224c37baa4",
+          "ethiopia_data_available": null,
+          "input_provenance": {
+            "source_url": "https://raw.githubusercontent.com/flowerchecker/crop-health-examples/master/images/example.jpg",
+            "source_repository": "https://github.com/flowerchecker/crop-health-examples",
+            "purpose": "Provider-published real crop photograph used as a single API smoke-test input; not an Ethiopian field validation.",
+            "downloaded_at_utc": "2026-11-16T02:55:35.636733+00:00",
+            "http_status": 200,
+            "bytes": 209765,
+            "sha256": "d6cf7a8bc0069f3aa08ac89ace1c2a90b3645238f3576dafb875d7224c37baa4"
+          },
+          "note": "Provider-published photo; no Ethiopian field accuracy established."
+        },
+        "limitations": [
+          "A successful photo request tests schema and predictions, not clinical accuracy or Ethiopian field validation. No sample-image origin was assumed.",
+          "Input is the provider-published images/example.jpg. Its field location is unknown. The default suite point/date in the report scope were not sent with this photo request."
+        ],
+        "result_digest": "28bdb59090e710fd8ec48e4b26d72ce38c3945f637bd5132604d498ed61bc39a"
+      },
+      "connection_id": "247ca9f9-73a5-40af-b8b6-b93d8d1b5d87",
+      "credential_stored": true,
+      "skill": "provided_agri_apis_v1_crop_health",
+      "enabled": false,
+      "registration_status": "Encrypted credential attached; authorized image workflow pending"
+    },
+    {
+      "provider_id": "plantix",
+      "name": "Plantix Intelligence",
+      "credential_required": true,
+      "historical_verification": {
+        "status": "AUTH_REQUIRED",
+        "verified_at": "2026-11-15T20:21:56.573050+00:00",
+        "http_status": null,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": null
+        },
+        "limitations": [],
+        "result_digest": "86216ade00cf3928c9ade6e5d870ac98429a758f3fe09fbe66e051da2c10aa28"
+      },
+      "connection_id": null,
+      "credential_stored": false,
+      "skill": null,
+      "enabled": false,
+      "registration_status": "Access request submitted; no issued API credential is configured."
+    },
+    {
+      "provider_id": "fao_locust",
+      "name": "FAO Locust Hub",
+      "credential_required": false,
+      "historical_verification": {
+        "status": "VERIFIED_LIVE",
+        "verified_at": "2026-11-15T20:23:05.626480+00:00",
+        "http_status": 200,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": true
+        },
+        "limitations": [
+          "Historical/public observations, not a current warning or prediction. The bbox alone includes neighbouring territory; country coverage is confirmed only when an Ethiopia country field is returned."
+        ],
+        "result_digest": "c5076eb5cdfa5976d3810a4881a8bf18c38ae83a819bb58acaef4b9dba1747f0"
+      },
+      "connection_id": "4e5b3d6f-16b1-4e2a-9325-b9f43123a83f",
+      "credential_stored": false,
+      "skill": "provided_agri_apis_v1_locust_context",
+      "enabled": false,
+      "registration_status": "Draft registered; test/review/enable required"
+    },
+    {
+      "provider_id": "eppo",
+      "name": "EPPO Global Database",
+      "credential_required": true,
+      "historical_verification": {
+        "status": "AUTH_REQUIRED",
+        "verified_at": "2026-11-15T20:22:02.656344+00:00",
+        "http_status": null,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": null
+        },
+        "limitations": [],
+        "result_digest": "f2df5eb75a5ed52f41e36120a4402ca47b074e63147a0f805c08a0fd88b9f13a"
+      },
+      "connection_id": null,
+      "credential_stored": false,
+      "skill": null,
+      "enabled": false,
+      "registration_status": "Not configured: EPPO_API_TOKEN"
+    },
+    {
+      "provider_id": "cabi",
+      "name": "CABI PMDG",
+      "credential_required": true,
+      "historical_verification": {
+        "status": "AUTH_REQUIRED",
+        "verified_at": "2026-11-15T20:22:02.936486+00:00",
+        "http_status": null,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": null
+        },
+        "limitations": [],
+        "result_digest": "2a00750094b85bfc766acabe55f237aa450992c1d6bd8bf36179e70d7d1f6a85"
+      },
+      "connection_id": null,
+      "credential_stored": false,
+      "skill": null,
+      "enabled": false,
+      "registration_status": "Not configured: CABI_API_KEY"
+    },
+    {
+      "provider_id": "wfp_prices",
+      "name": "WFP / HDX HAPI",
+      "credential_required": true,
+      "historical_verification": {
+        "status": "AUTH_REQUIRED",
+        "verified_at": "2026-11-15T20:22:03.215479+00:00",
+        "http_status": null,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": null
+        },
+        "limitations": [],
+        "result_digest": "9b7f1603dbb02f89db0b4d529d02b676aca8813711b59fdf823d8dbe870a4785"
+      },
+      "connection_id": null,
+      "credential_stored": false,
+      "skill": null,
+      "enabled": false,
+      "registration_status": "Not configured: HAPI_APP_IDENTIFIER"
+    },
+    {
+      "provider_id": "openrouteservice",
+      "name": "OpenRouteService",
+      "credential_required": true,
+      "historical_verification": {
+        "status": "AUTH_REQUIRED",
+        "verified_at": "2026-11-15T20:22:03.576972+00:00",
+        "http_status": null,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": null
+        },
+        "limitations": [],
+        "result_digest": "17f7ba02d8a11c8d3bd56875452db9be63f43161b222ccbd9f4f069ce658d16d"
+      },
+      "connection_id": null,
+      "credential_stored": false,
+      "skill": null,
+      "enabled": false,
+      "registration_status": "Not configured: OPENROUTESERVICE_API_KEY"
+    },
+    {
+      "provider_id": "kobotoolbox",
+      "name": "KoboToolbox",
+      "credential_required": true,
+      "historical_verification": {
+        "status": "AUTH_REQUIRED",
+        "verified_at": "2026-11-15T20:22:03.949585+00:00",
+        "http_status": null,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": null
+        },
+        "limitations": [],
+        "result_digest": "0598320ee3eaa3fc4e09168f517ab0369a17777d4a1696e03cb494462318e630"
+      },
+      "connection_id": null,
+      "credential_stored": false,
+      "skill": null,
+      "enabled": false,
+      "registration_status": "Not configured: KOBO_API_TOKEN"
+    },
+    {
+      "provider_id": "odk_central",
+      "name": "ODK Central",
+      "credential_required": true,
+      "historical_verification": {
+        "status": "NOT_TESTED",
+        "verified_at": "2026-11-15T20:22:04.258652+00:00",
+        "http_status": null,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": null
+        },
+        "limitations": [],
+        "result_digest": "3e5d9ef8f7f9f3c977fbe9a6dd79dde65af104b69efd19b8560bdb3cf7bb2d9e"
+      },
+      "connection_id": null,
+      "credential_stored": false,
+      "skill": null,
+      "enabled": false,
+      "registration_status": "ODK_BASE_URL is not configured; no public Central server is assumed."
+    },
+    {
+      "provider_id": "africas_talking",
+      "name": "Africa's Talking",
+      "credential_required": true,
+      "historical_verification": {
+        "status": "AUTH_REQUIRED",
+        "verified_at": "2026-11-15T20:22:04.535348+00:00",
+        "http_status": null,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": null
+        },
+        "limitations": [],
+        "result_digest": "045d5b592511fa5886c3bacadc98232348a76e3a8e8329c9f8167e44081d912a"
+      },
+      "connection_id": null,
+      "credential_stored": false,
+      "skill": null,
+      "enabled": false,
+      "registration_status": "Outbound delivery is not exposed to the companion. Sandbox diagnostics remain separate."
+    }
+  ],
+  "verification_note": "The local HTTP API returned all 9 connections, 8 disabled/unapproved skills and 22 inventory entries. Stored credential revisions are 1. No connector jobs or provider attempts were created.",
+  "latest_state_report": "priority_skill_activation.current.json",
+  "current_registry_report": "priority_registry_state.json",
+  "current_enabled_connections": [
+    "f674e05a-4c7d-4727-949f-fb7d04ac2d3f",
+    "44eae508-7a6c-40c1-88b1-127dcc7f16c1",
+    "2fc519a8-c4d9-4d19-b298-04ca5be7d2d6"
+  ],
+  "current_enabled_skills": [
+    "b3ea28d4-f54d-4aee-87d1-2fc593c388aa",
+    "0f5045a6-9aed-455f-ab92-02bfef343ca5",
+    "f7823385-8097-487f-ae4f-d444fbd1c823"
+  ]
+}

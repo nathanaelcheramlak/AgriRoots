@@ -1,0 +1,2039 @@
+{
+  "generated_at_utc": "2026-11-16T10:08:17.188650+00:00",
+  "implementation": {
+    "version": "0.4.0",
+    "branch": "agri-mcp",
+    "base_commit": "676b0fafb5a36a55d7f68489f6b3f619be282f5a",
+    "working_tree_code_sha256": "5bfbb4dbd4b2f63e09c6e14a643619dae5ceb50338a84cedef78283a93e349fd",
+    "code_files_hashed": 154,
+    "dependency_versions": {
+      "mcp": "1.29.0",
+      "google-genai": "1.74.0",
+      "langgraph": "1.1.10",
+      "langgraph-checkpoint-postgres": "3.0.5",
+      "psycopg": "3.2.13",
+      "httpx": "0.28.1",
+      "redis": "7.4.1",
+      "espeakng-loader": "0.2.4"
+    }
+  },
+  "commands_executed": {
+    "full_regression": ".\\.venv\\Scripts\\python.exe -m pytest -q --tb=short --junitxml=validation/agri-mcp-final.xml",
+    "postgres_redis": ".\\.venv\\Scripts\\python.exe scripts/test_connectors_postgres.py",
+    "fixture_demo": ".\\.venv\\Scripts\\python.exe scripts/demo_connectors.py",
+    "live_public": ".\\.venv\\Scripts\\python.exe scripts/demo_connectors.py --live",
+    "compose": "docker compose -p agrilo-connectors-test -f compose.yaml -f compose.test.yaml --env-file private-data/compose.env up -d --build api worker mcp",
+    "runtime_checks": "Get-Content scripts/check_connector_runtime.py -Raw | docker compose -p agrilo-connectors-test -f compose.yaml -f compose.test.yaml --env-file private-data/compose.env exec -T api python -",
+    "historical_import": ".\\.venv\\Scripts\\python.exe scripts/import_provider_inventory.py ..\\..\\f-test\\reports\\results.json"
+  },
+  "latest_full_regression": {
+    "artifact": "validation/agri-mcp-final.xml",
+    "timestamp": "2026-11-16T12:54:16.615467+03:00",
+    "counts": {
+      "PASSED": 124,
+      "FAILED": 0,
+      "SKIPPED": 1
+    },
+    "duration_seconds": 366.694,
+    "cases": [
+      {
+        "test": "tests.test_advisory_alert_voice::test_legacy_delivery_requires_review[post-/api/recommendations/crops-body0]",
+        "name": "test_legacy_delivery_requires_review[post-/api/recommendations/crops-body0]",
+        "outcome": "PASSED",
+        "seconds": 1.603
+      },
+      {
+        "test": "tests.test_advisory_alert_voice::test_legacy_delivery_requires_review[post-/api/recommendations/fertilizer-body1]",
+        "name": "test_legacy_delivery_requires_review[post-/api/recommendations/fertilizer-body1]",
+        "outcome": "PASSED",
+        "seconds": 1.349
+      },
+      {
+        "test": "tests.test_advisory_alert_voice::test_legacy_delivery_requires_review[post-/api/recommendations/weather-body2]",
+        "name": "test_legacy_delivery_requires_review[post-/api/recommendations/weather-body2]",
+        "outcome": "PASSED",
+        "seconds": 1.556
+      },
+      {
+        "test": "tests.test_advisory_alert_voice::test_legacy_delivery_requires_review[post-/api/alerts/weather/generate-body3]",
+        "name": "test_legacy_delivery_requires_review[post-/api/alerts/weather/generate-body3]",
+        "outcome": "PASSED",
+        "seconds": 1.609
+      },
+      {
+        "test": "tests.test_advisory_alert_voice::test_legacy_delivery_requires_review[get-/api/alerts-None]",
+        "name": "test_legacy_delivery_requires_review[get-/api/alerts-None]",
+        "outcome": "PASSED",
+        "seconds": 1.702
+      },
+      {
+        "test": "tests.test_advisory_alert_voice::test_legacy_delivery_requires_review[patch-/api/alerts/example/read-body5]",
+        "name": "test_legacy_delivery_requires_review[patch-/api/alerts/example/read-body5]",
+        "outcome": "PASSED",
+        "seconds": 1.52
+      },
+      {
+        "test": "tests.test_advisory_alert_voice::test_legacy_delivery_requires_review[delete-/api/alerts/example-None]",
+        "name": "test_legacy_delivery_requires_review[delete-/api/alerts/example-None]",
+        "outcome": "PASSED",
+        "seconds": 1.586
+      },
+      {
+        "test": "tests.test_advisory_alert_voice::test_legacy_delivery_requires_review[post-/api/voice/synthesize-body7]",
+        "name": "test_legacy_delivery_requires_review[post-/api/voice/synthesize-body7]",
+        "outcome": "PASSED",
+        "seconds": 1.686
+      },
+      {
+        "test": "tests.test_advisory_alert_voice::test_diagnosis_requires_review",
+        "name": "test_diagnosis_requires_review",
+        "outcome": "PASSED",
+        "seconds": 2.527
+      },
+      {
+        "test": "tests.test_advisory_alert_voice::test_voice_transcription_and_synthesis_are_mocked",
+        "name": "test_voice_transcription_and_synthesis_are_mocked",
+        "outcome": "PASSED",
+        "seconds": 3.2
+      },
+      {
+        "test": "tests.test_advisory_runs::test_real_mcp_graph_stops_at_review_and_is_idempotent",
+        "name": "test_real_mcp_graph_stops_at_review_and_is_idempotent",
+        "outcome": "PASSED",
+        "seconds": 8.544
+      },
+      {
+        "test": "tests.test_advisory_runs::test_run_scope_and_capability_are_enforced",
+        "name": "test_run_scope_and_capability_are_enforced",
+        "outcome": "PASSED",
+        "seconds": 6.083
+      },
+      {
+        "test": "tests.test_advisory_runs::test_missing_history_blocks_draft",
+        "name": "test_missing_history_blocks_draft",
+        "outcome": "PASSED",
+        "seconds": 6.221
+      },
+      {
+        "test": "tests.test_advisory_runs::test_weather_timeout_is_structured_logged_and_bounded",
+        "name": "test_weather_timeout_is_structured_logged_and_bounded",
+        "outcome": "PASSED",
+        "seconds": 2.514
+      },
+      {
+        "test": "tests.test_advisory_runs::test_local_model_rejects_cloud_and_proxy_hosts",
+        "name": "test_local_model_rejects_cloud_and_proxy_hosts",
+        "outcome": "PASSED",
+        "seconds": 1.039
+      },
+      {
+        "test": "tests.test_advisory_runs::test_public_egress_rejects_private_destinations[127.0.0.1]",
+        "name": "test_public_egress_rejects_private_destinations[127.0.0.1]",
+        "outcome": "PASSED",
+        "seconds": 1.05
+      },
+      {
+        "test": "tests.test_advisory_runs::test_public_egress_rejects_private_destinations[10.1.1.1]",
+        "name": "test_public_egress_rejects_private_destinations[10.1.1.1]",
+        "outcome": "PASSED",
+        "seconds": 1.0
+      },
+      {
+        "test": "tests.test_advisory_runs::test_public_egress_rejects_private_destinations[169.254.169.254]",
+        "name": "test_public_egress_rejects_private_destinations[169.254.169.254]",
+        "outcome": "PASSED",
+        "seconds": 0.981
+      },
+      {
+        "test": "tests.test_advisory_runs::test_public_egress_rejects_private_destinations[100.100.100.200]",
+        "name": "test_public_egress_rejects_private_destinations[100.100.100.200]",
+        "outcome": "PASSED",
+        "seconds": 0.953
+      },
+      {
+        "test": "tests.test_advisory_runs::test_public_egress_rejects_private_destinations[::1]",
+        "name": "test_public_egress_rejects_private_destinations[::1]",
+        "outcome": "PASSED",
+        "seconds": 0.962
+      },
+      {
+        "test": "tests.test_advisory_runs::test_public_egress_rejects_private_destinations[::ffff:127.0.0.1]",
+        "name": "test_public_egress_rejects_private_destinations[::ffff:127.0.0.1]",
+        "outcome": "PASSED",
+        "seconds": 1.011
+      },
+      {
+        "test": "tests.test_advisory_runs::test_public_egress_rejects_private_destinations[224.0.0.1]",
+        "name": "test_public_egress_rejects_private_destinations[224.0.0.1]",
+        "outcome": "PASSED",
+        "seconds": 1.059
+      },
+      {
+        "test": "tests.test_advisory_runs::test_candidate_validation_rejects_stale_invented_and_inapplicable_support",
+        "name": "test_candidate_validation_rejects_stale_invented_and_inapplicable_support",
+        "outcome": "PASSED",
+        "seconds": 8.835
+      },
+      {
+        "test": "tests.test_advisory_runs::test_interrupted_save_resumes_without_another_draft",
+        "name": "test_interrupted_save_resumes_without_another_draft",
+        "outcome": "PASSED",
+        "seconds": 13.246
+      },
+      {
+        "test": "tests.test_advisory_runs::test_untrusted_output_cannot_add_approval_or_recipient_fields",
+        "name": "test_untrusted_output_cannot_add_approval_or_recipient_fields",
+        "outcome": "PASSED",
+        "seconds": 6.524
+      },
+      {
+        "test": "tests.test_advisory_runs::test_dns_rebinding_and_mixed_dns_answers_are_rejected",
+        "name": "test_dns_rebinding_and_mixed_dns_answers_are_rejected",
+        "outcome": "PASSED",
+        "seconds": 0.866
+      },
+      {
+        "test": "tests.test_advisory_runs::test_graph_weather_retries_are_bounded",
+        "name": "test_graph_weather_retries_are_bounded",
+        "outcome": "PASSED",
+        "seconds": 5.93
+      },
+      {
+        "test": "tests.test_advisory_runs::test_expired_final_attempt_becomes_failed",
+        "name": "test_expired_final_attempt_becomes_failed",
+        "outcome": "PASSED",
+        "seconds": 1.49
+      },
+      {
+        "test": "tests.test_advisory_runs::test_generated_claims_are_retained_privately_and_excluded_from_advisory",
+        "name": "test_generated_claims_are_retained_privately_and_excluded_from_advisory",
+        "outcome": "PASSED",
+        "seconds": 7.55
+      },
+      {
+        "test": "tests.test_advisory_runs::test_conflicting_pest_reports_require_field_visit",
+        "name": "test_conflicting_pest_reports_require_field_visit",
+        "outcome": "PASSED",
+        "seconds": 7.18
+      },
+      {
+        "test": "tests.test_advisory_runs::test_reviewed_planting_rules_drive_sourced_decisions[rule_change0-plant_crop]",
+        "name": "test_reviewed_planting_rules_drive_sourced_decisions[rule_change0-plant_crop]",
+        "outcome": "PASSED",
+        "seconds": 6.028
+      },
+      {
+        "test": "tests.test_advisory_runs::test_reviewed_planting_rules_drive_sourced_decisions[rule_change1-hold_planting]",
+        "name": "test_reviewed_planting_rules_drive_sourced_decisions[rule_change1-hold_planting]",
+        "outcome": "PASSED",
+        "seconds": 6.322
+      },
+      {
+        "test": "tests.test_advisory_runs::test_reviewed_planting_rules_drive_sourced_decisions[rule_change2-hold_planting]",
+        "name": "test_reviewed_planting_rules_drive_sourced_decisions[rule_change2-hold_planting]",
+        "outcome": "PASSED",
+        "seconds": 5.847
+      },
+      {
+        "test": "tests.test_advisory_runs::test_reviewed_planting_rules_drive_sourced_decisions[rule_change3-hold_planting]",
+        "name": "test_reviewed_planting_rules_drive_sourced_decisions[rule_change3-hold_planting]",
+        "outcome": "PASSED",
+        "seconds": 5.901
+      },
+      {
+        "test": "tests.test_advisory_runs::test_reviewed_planting_rules_drive_sourced_decisions[rule_change4-hold_planting]",
+        "name": "test_reviewed_planting_rules_drive_sourced_decisions[rule_change4-hold_planting]",
+        "outcome": "PASSED",
+        "seconds": 6.05
+      },
+      {
+        "test": "tests.test_advisory_runs::test_five_plots_have_independent_citations_and_resumable_drafts",
+        "name": "test_five_plots_have_independent_citations_and_resumable_drafts",
+        "outcome": "PASSED",
+        "seconds": 6.949
+      },
+      {
+        "test": "tests.test_advisory_runs::test_planting_rules_are_required_and_weather_window_is_complete",
+        "name": "test_planting_rules_are_required_and_weather_window_is_complete",
+        "outcome": "PASSED",
+        "seconds": 1.105
+      },
+      {
+        "test": "tests.test_api_error_cases::test_auth_security_and_onboarding_error_cases",
+        "name": "test_auth_security_and_onboarding_error_cases",
+        "outcome": "PASSED",
+        "seconds": 1.432
+      },
+      {
+        "test": "tests.test_api_error_cases::test_recommendations_diagnosis_and_alerts_documented_error_cases",
+        "name": "test_recommendations_diagnosis_and_alerts_documented_error_cases",
+        "outcome": "PASSED",
+        "seconds": 1.481
+      },
+      {
+        "test": "tests.test_api_error_cases::test_chat_documented_error_cases",
+        "name": "test_chat_documented_error_cases",
+        "outcome": "PASSED",
+        "seconds": 1.495
+      },
+      {
+        "test": "tests.test_auth_profile::test_registration_login_onboarding_and_profile_update",
+        "name": "test_registration_login_onboarding_and_profile_update",
+        "outcome": "PASSED",
+        "seconds": 2.131
+      },
+      {
+        "test": "tests.test_auth_profile::test_password_reset_phone_change_and_account_delete",
+        "name": "test_password_reset_phone_change_and_account_delete",
+        "outcome": "PASSED",
+        "seconds": 4.992
+      },
+      {
+        "test": "tests.test_chat::test_chat_session_lifecycle_and_message_send",
+        "name": "test_chat_session_lifecycle_and_message_send",
+        "outcome": "PASSED",
+        "seconds": 1.668
+      },
+      {
+        "test": "tests.test_companion_skills::test_registry_driven_graph_uses_manual_calls_and_persistent_evidence",
+        "name": "test_registry_driven_graph_uses_manual_calls_and_persistent_evidence",
+        "outcome": "PASSED",
+        "seconds": 4.034
+      },
+      {
+        "test": "tests.test_companion_skills::test_new_approved_tool_appears_only_in_new_snapshots_without_restart",
+        "name": "test_new_approved_tool_appears_only_in_new_snapshots_without_restart",
+        "outcome": "PASSED",
+        "seconds": 3.229
+      },
+      {
+        "test": "tests.test_companion_skills::test_unknown_model_tool_is_audited_and_never_dispatched",
+        "name": "test_unknown_model_tool_is_audited_and_never_dispatched",
+        "outcome": "PASSED",
+        "seconds": 2.772
+      },
+      {
+        "test": "tests.test_companion_skills::test_unsupported_model_numbers_are_rejected",
+        "name": "test_unsupported_model_numbers_are_rejected",
+        "outcome": "PASSED",
+        "seconds": 3.317
+      },
+      {
+        "test": "tests.test_companion_skills::test_disabled_skill_and_missing_gemini_configuration_are_honest_blockers",
+        "name": "test_disabled_skill_and_missing_gemini_configuration_are_honest_blockers",
+        "outcome": "PASSED",
+        "seconds": 2.4
+      },
+      {
+        "test": "tests.test_companion_skills::test_model_repair_is_bounded_and_usage_is_retained[success]",
+        "name": "test_model_repair_is_bounded_and_usage_is_retained[success]",
+        "outcome": "PASSED",
+        "seconds": 3.288
+      },
+      {
+        "test": "tests.test_companion_skills::test_model_repair_is_bounded_and_usage_is_retained[second_empty]",
+        "name": "test_model_repair_is_bounded_and_usage_is_retained[second_empty]",
+        "outcome": "PASSED",
+        "seconds": 3.285
+      },
+      {
+        "test": "tests.test_companion_skills::test_model_repair_is_bounded_and_usage_is_retained[oversized]",
+        "name": "test_model_repair_is_bounded_and_usage_is_retained[oversized]",
+        "outcome": "PASSED",
+        "seconds": 2.24
+      },
+      {
+        "test": "tests.test_companion_skills::test_plugin_install_is_atomic_disabled_and_idempotent",
+        "name": "test_plugin_install_is_atomic_disabled_and_idempotent",
+        "outcome": "PASSED",
+        "seconds": 1.56
+      },
+      {
+        "test": "tests.test_companion_skills::test_failed_pack_install_rolls_back_all_created_resources",
+        "name": "test_failed_pack_install_rolls_back_all_created_resources",
+        "outcome": "PASSED",
+        "seconds": 1.646
+      },
+      {
+        "test": "tests.test_companion_skills::test_gemini_sdk_preserves_ids_signatures_and_manual_execution",
+        "name": "test_gemini_sdk_preserves_ids_signatures_and_manual_execution",
+        "outcome": "PASSED",
+        "seconds": 2.009
+      },
+      {
+        "test": "tests.test_connector_policy::test_cross_office_management_jobs_credentials_and_evidence_denied",
+        "name": "test_cross_office_management_jobs_credentials_and_evidence_denied",
+        "outcome": "PASSED",
+        "seconds": 3.12
+      },
+      {
+        "test": "tests.test_connector_policy::test_per_tool_role_is_checked_at_dispatch",
+        "name": "test_per_tool_role_is_checked_at_dispatch",
+        "outcome": "PASSED",
+        "seconds": 2.382
+      },
+      {
+        "test": "tests.test_connector_policy::test_credential_rotation_invalidates_approval_cache_and_pinned_replay",
+        "name": "test_credential_rotation_invalidates_approval_cache_and_pinned_replay",
+        "outcome": "PASSED",
+        "seconds": 3.304
+      },
+      {
+        "test": "tests.test_connector_policy::test_finished_cache_invocation_replay_preserves_original_retrieval",
+        "name": "test_finished_cache_invocation_replay_preserves_original_retrieval",
+        "outcome": "PASSED",
+        "seconds": 2.438
+      },
+      {
+        "test": "tests.test_connector_policy::test_followup_reuses_success_in_same_budget_without_another_remote_call",
+        "name": "test_followup_reuses_success_in_same_budget_without_another_remote_call",
+        "outcome": "PASSED",
+        "seconds": 3.194
+      },
+      {
+        "test": "tests.test_connector_policy::test_parallel_calls_consume_one_shared_atomic_budget[calls]",
+        "name": "test_parallel_calls_consume_one_shared_atomic_budget[calls]",
+        "outcome": "PASSED",
+        "seconds": 3.107
+      },
+      {
+        "test": "tests.test_connector_policy::test_parallel_calls_consume_one_shared_atomic_budget[requests]",
+        "name": "test_parallel_calls_consume_one_shared_atomic_budget[requests]",
+        "outcome": "PASSED",
+        "seconds": 3.503
+      },
+      {
+        "test": "tests.test_connector_policy::test_emergency_revocation_between_reservation_and_final_gate_blocks_http",
+        "name": "test_emergency_revocation_between_reservation_and_final_gate_blocks_http",
+        "outcome": "PASSED",
+        "seconds": 3.011
+      },
+      {
+        "test": "tests.test_connector_policy::test_wrong_digest_and_new_configuration_do_not_inherit_approval",
+        "name": "test_wrong_digest_and_new_configuration_do_not_inherit_approval",
+        "outcome": "PASSED",
+        "seconds": 2.375
+      },
+      {
+        "test": "tests.test_connector_policy::test_platform_jwt_and_gemini_key_cannot_be_provider_credentials",
+        "name": "test_platform_jwt_and_gemini_key_cannot_be_provider_credentials",
+        "outcome": "PASSED",
+        "seconds": 1.696
+      },
+      {
+        "test": "tests.test_connector_policy::test_runtime_expiry_cache_partition_and_cancelled_job",
+        "name": "test_runtime_expiry_cache_partition_and_cancelled_job",
+        "outcome": "PASSED",
+        "seconds": 4.325
+      },
+      {
+        "test": "tests.test_connector_policy::test_expired_lease_is_fenced_before_provider_dispatch",
+        "name": "test_expired_lease_is_fenced_before_provider_dispatch",
+        "outcome": "PASSED",
+        "seconds": 2.571
+      },
+      {
+        "test": "tests.test_connector_policy::test_recovered_job_does_not_repeat_an_ambiguous_dispatched_operation",
+        "name": "test_recovered_job_does_not_repeat_an_ambiguous_dispatched_operation",
+        "outcome": "PASSED",
+        "seconds": 2.471
+      },
+      {
+        "test": "tests.test_connector_policy::test_hot_operator_policy_is_authoritative_and_fixture_exception_forbidden_in_production",
+        "name": "test_hot_operator_policy_is_authoritative_and_fixture_exception_forbidden_in_production",
+        "outcome": "PASSED",
+        "seconds": 0.856
+      },
+      {
+        "test": "tests.test_connector_policy::test_dns_resolver_rejects_mixed_private_answers",
+        "name": "test_dns_resolver_rejects_mixed_private_answers",
+        "outcome": "PASSED",
+        "seconds": 0.951
+      },
+      {
+        "test": "tests.test_connector_policy::test_connect_proxy_pins_literal_resolved_public_address",
+        "name": "test_connect_proxy_pins_literal_resolved_public_address",
+        "outcome": "PASSED",
+        "seconds": 2.208
+      },
+      {
+        "test": "tests.test_connector_policy::test_configuration_cannot_execute_code_or_unsupported_effects[change0]",
+        "name": "test_configuration_cannot_execute_code_or_unsupported_effects[change0]",
+        "outcome": "PASSED",
+        "seconds": 1.635
+      },
+      {
+        "test": "tests.test_connector_policy::test_configuration_cannot_execute_code_or_unsupported_effects[change1]",
+        "name": "test_configuration_cannot_execute_code_or_unsupported_effects[change1]",
+        "outcome": "PASSED",
+        "seconds": 1.371
+      },
+      {
+        "test": "tests.test_connector_policy::test_configuration_cannot_execute_code_or_unsupported_effects[change2]",
+        "name": "test_configuration_cannot_execute_code_or_unsupported_effects[change2]",
+        "outcome": "PASSED",
+        "seconds": 1.107
+      },
+      {
+        "test": "tests.test_connector_policy::test_configuration_cannot_execute_code_or_unsupported_effects[change3]",
+        "name": "test_configuration_cannot_execute_code_or_unsupported_effects[change3]",
+        "outcome": "PASSED",
+        "seconds": 1.183
+      },
+      {
+        "test": "tests.test_connector_redis::test_redis_cache_authenticates_partition_freshness_and_key_rotation",
+        "name": "test_redis_cache_authenticates_partition_freshness_and_key_rotation",
+        "outcome": "SKIPPED",
+        "seconds": 0.0
+      },
+      {
+        "test": "tests.test_connectors_mcp::test_sdk_discovery_paginates_and_invokes_real_protocol",
+        "name": "test_sdk_discovery_paginates_and_invokes_real_protocol",
+        "outcome": "PASSED",
+        "seconds": 2.747
+      },
+      {
+        "test": "tests.test_connectors_mcp::test_changed_discovery_revokes_old_definition_and_unchanged_is_stable",
+        "name": "test_changed_discovery_revokes_old_definition_and_unchanged_is_stable",
+        "outcome": "PASSED",
+        "seconds": 3.797
+      },
+      {
+        "test": "tests.test_connectors_mcp::test_partial_discovery_does_not_infer_removals",
+        "name": "test_partial_discovery_does_not_infer_removals",
+        "outcome": "PASSED",
+        "seconds": 3.485
+      },
+      {
+        "test": "tests.test_connectors_mcp::test_same_upstream_names_are_collision_safe",
+        "name": "test_same_upstream_names_are_collision_safe",
+        "outcome": "PASSED",
+        "seconds": 3.466
+      },
+      {
+        "test": "tests.test_connectors_mcp::test_unstructured_and_tool_error_are_not_structured_success",
+        "name": "test_unstructured_and_tool_error_are_not_structured_success",
+        "outcome": "PASSED",
+        "seconds": 6.254
+      },
+      {
+        "test": "tests.test_connectors_mcp::test_mcp_schema_cannot_be_forged_from_a_description",
+        "name": "test_mcp_schema_cannot_be_forged_from_a_description",
+        "outcome": "PASSED",
+        "seconds": 1.664
+      },
+      {
+        "test": "tests.test_connectors_rest::test_two_rest_tools_are_registered_and_executed_without_code_changes",
+        "name": "test_two_rest_tools_are_registered_and_executed_without_code_changes",
+        "outcome": "PASSED",
+        "seconds": 5.576
+      },
+      {
+        "test": "tests.test_connectors_rest::test_invalid_arguments_never_reach_network[arguments0-INPUT_VALIDATION_FAILED]",
+        "name": "test_invalid_arguments_never_reach_network[arguments0-INPUT_VALIDATION_FAILED]",
+        "outcome": "PASSED",
+        "seconds": 2.624
+      },
+      {
+        "test": "tests.test_connectors_rest::test_invalid_arguments_never_reach_network[arguments1-INPUT_VALIDATION_FAILED]",
+        "name": "test_invalid_arguments_never_reach_network[arguments1-INPUT_VALIDATION_FAILED]",
+        "outcome": "PASSED",
+        "seconds": 1.823
+      },
+      {
+        "test": "tests.test_connectors_rest::test_invalid_arguments_never_reach_network[arguments2-INPUT_VALIDATION_FAILED]",
+        "name": "test_invalid_arguments_never_reach_network[arguments2-INPUT_VALIDATION_FAILED]",
+        "outcome": "PASSED",
+        "seconds": 1.819
+      },
+      {
+        "test": "tests.test_connectors_rest::test_invalid_arguments_never_reach_network[arguments3-POLICY_DENIED]",
+        "name": "test_invalid_arguments_never_reach_network[arguments3-POLICY_DENIED]",
+        "outcome": "PASSED",
+        "seconds": 2.497
+      },
+      {
+        "test": "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/html-OUTPUT_VALIDATION_FAILED]",
+        "name": "test_provider_failure_and_no_data_are_distinct[/html-OUTPUT_VALIDATION_FAILED]",
+        "outcome": "PASSED",
+        "seconds": 1.789
+      },
+      {
+        "test": "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/invalid-OUTPUT_VALIDATION_FAILED]",
+        "name": "test_provider_failure_and_no_data_are_distinct[/invalid-OUTPUT_VALIDATION_FAILED]",
+        "outcome": "PASSED",
+        "seconds": 1.953
+      },
+      {
+        "test": "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/missing-OUTPUT_VALIDATION_FAILED]",
+        "name": "test_provider_failure_and_no_data_are_distinct[/missing-OUTPUT_VALIDATION_FAILED]",
+        "outcome": "PASSED",
+        "seconds": 2.083
+      },
+      {
+        "test": "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/auth-AUTH_INVALID]",
+        "name": "test_provider_failure_and_no_data_are_distinct[/auth-AUTH_INVALID]",
+        "outcome": "PASSED",
+        "seconds": 2.614
+      },
+      {
+        "test": "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/redirect-EGRESS_BLOCKED]",
+        "name": "test_provider_failure_and_no_data_are_distinct[/redirect-EGRESS_BLOCKED]",
+        "outcome": "PASSED",
+        "seconds": 1.668
+      },
+      {
+        "test": "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/empty-SUCCESS]",
+        "name": "test_provider_failure_and_no_data_are_distinct[/empty-SUCCESS]",
+        "outcome": "PASSED",
+        "seconds": 1.643
+      },
+      {
+        "test": "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/huge-RESPONSE_TOO_LARGE]",
+        "name": "test_provider_failure_and_no_data_are_distinct[/huge-RESPONSE_TOO_LARGE]",
+        "outcome": "PASSED",
+        "seconds": 1.61
+      },
+      {
+        "test": "tests.test_connectors_rest::test_header_credentials_are_encrypted_and_redacted",
+        "name": "test_header_credentials_are_encrypted_and_redacted",
+        "outcome": "PASSED",
+        "seconds": 2.145
+      },
+      {
+        "test": "tests.test_connectors_rest::test_revocation_blocks_pinned_runs_and_cache_hits",
+        "name": "test_revocation_blocks_pinned_runs_and_cache_hits",
+        "outcome": "PASSED",
+        "seconds": 1.458
+      },
+      {
+        "test": "tests.test_connectors_rest::test_safe_reads_retry_within_shared_request_budget",
+        "name": "test_safe_reads_retry_within_shared_request_budget",
+        "outcome": "PASSED",
+        "seconds": 1.528
+      },
+      {
+        "test": "tests.test_connectors_rest::test_scope_and_configuration_cannot_grant_network_exceptions",
+        "name": "test_scope_and_configuration_cannot_grant_network_exceptions",
+        "outcome": "PASSED",
+        "seconds": 1.142
+      },
+      {
+        "test": "tests.test_internal_mcp_http::test_internal_http_mcp_preserves_run_scope_and_persisted_review_draft",
+        "name": "test_internal_http_mcp_preserves_run_scope_and_persisted_review_draft",
+        "outcome": "PASSED",
+        "seconds": 2.379
+      },
+      {
+        "test": "tests.test_local_speech::test_real_local_speech_produces_decodable_pcm[en-Inspect the crop. Officer confirmation is required.]",
+        "name": "test_real_local_speech_produces_decodable_pcm[en-Inspect the crop. Officer confirmation is required.]",
+        "outcome": "PASSED",
+        "seconds": 1.373
+      },
+      {
+        "test": "tests.test_local_speech::test_real_local_speech_produces_decodable_pcm[am-\\u1208\\u121b\\u1233\\u12eb \\u1265\\u127b\\u1362]",
+        "name": "test_real_local_speech_produces_decodable_pcm[am-\\u1208\\u121b\\u1233\\u12eb \\u1265\\u127b\\u1362]",
+        "outcome": "PASSED",
+        "seconds": 1.041
+      },
+      {
+        "test": "tests.test_local_speech::test_local_speech_rejects_unreviewed_languages_and_oversized_text",
+        "name": "test_local_speech_rejects_unreviewed_languages_and_oversized_text",
+        "outcome": "PASSED",
+        "seconds": 0.686
+      },
+      {
+        "test": "tests.test_mcp_compatibility::test_mcp_authenticated_clients_are_isolated_across_offices",
+        "name": "test_mcp_authenticated_clients_are_isolated_across_offices",
+        "outcome": "PASSED",
+        "seconds": 4.016
+      },
+      {
+        "test": "tests.test_mcp_compatibility::test_mcp_unhandled_artifacts_are_blocked_without_retrieval",
+        "name": "test_mcp_unhandled_artifacts_are_blocked_without_retrieval",
+        "outcome": "PASSED",
+        "seconds": 1.847
+      },
+      {
+        "test": "tests.test_mcp_compatibility::test_unsupported_auth_transport_and_sdk_version_fail_honestly",
+        "name": "test_unsupported_auth_transport_and_sdk_version_fail_honestly",
+        "outcome": "PASSED",
+        "seconds": 0.856
+      },
+      {
+        "test": "tests.test_provider_adapters::test_reviewed_provider_adapter_uses_common_executor_and_transport[open_meteo.forecast]",
+        "name": "test_reviewed_provider_adapter_uses_common_executor_and_transport[open_meteo.forecast]",
+        "outcome": "PASSED",
+        "seconds": 2.902
+      },
+      {
+        "test": "tests.test_provider_adapters::test_reviewed_provider_adapter_uses_common_executor_and_transport[isda.soil_profile]",
+        "name": "test_reviewed_provider_adapter_uses_common_executor_and_transport[isda.soil_profile]",
+        "outcome": "PASSED",
+        "seconds": 10.906
+      },
+      {
+        "test": "tests.test_provider_adapters::test_power_validation_rejects_plausible_but_invalid_agricultural_payloads[units]",
+        "name": "test_power_validation_rejects_plausible_but_invalid_agricultural_payloads[units]",
+        "outcome": "PASSED",
+        "seconds": 1.305
+      },
+      {
+        "test": "tests.test_provider_adapters::test_power_validation_rejects_plausible_but_invalid_agricultural_payloads[fill]",
+        "name": "test_power_validation_rejects_plausible_but_invalid_agricultural_payloads[fill]",
+        "outcome": "PASSED",
+        "seconds": 2.255
+      },
+      {
+        "test": "tests.test_provider_adapters::test_power_validation_rejects_plausible_but_invalid_agricultural_payloads[dates]",
+        "name": "test_power_validation_rejects_plausible_but_invalid_agricultural_payloads[dates]",
+        "outcome": "PASSED",
+        "seconds": 1.513
+      },
+      {
+        "test": "tests.test_provider_adapters::test_power_validation_rejects_plausible_but_invalid_agricultural_payloads[location]",
+        "name": "test_power_validation_rejects_plausible_but_invalid_agricultural_payloads[location]",
+        "outcome": "PASSED",
+        "seconds": 1.627
+      },
+      {
+        "test": "tests.test_provider_adapters::test_power_validation_rejects_plausible_but_invalid_agricultural_payloads[bool]",
+        "name": "test_power_validation_rejects_plausible_but_invalid_agricultural_payloads[bool]",
+        "outcome": "PASSED",
+        "seconds": 2.375
+      },
+      {
+        "test": "tests.test_readiness::test_weather_readiness_recovers_once_or_fails_explicitly[True]",
+        "name": "test_weather_readiness_recovers_once_or_fails_explicitly[True]",
+        "outcome": "PASSED",
+        "seconds": 1.202
+      },
+      {
+        "test": "tests.test_readiness::test_weather_readiness_recovers_once_or_fails_explicitly[False]",
+        "name": "test_weather_readiness_recovers_once_or_fails_explicitly[False]",
+        "outcome": "PASSED",
+        "seconds": 1.483
+      },
+      {
+        "test": "tests.test_workspace::test_review_approval_release_and_exact_audio",
+        "name": "test_review_approval_release_and_exact_audio",
+        "outcome": "PASSED",
+        "seconds": 4.0
+      },
+      {
+        "test": "tests.test_workspace::test_new_version_invalidates_approval_and_preserves_history",
+        "name": "test_new_version_invalidates_approval_and_preserves_history",
+        "outcome": "PASSED",
+        "seconds": 3.453
+      },
+      {
+        "test": "tests.test_workspace::test_scope_and_privilege_escalation",
+        "name": "test_scope_and_privilege_escalation",
+        "outcome": "PASSED",
+        "seconds": 2.696
+      },
+      {
+        "test": "tests.test_workspace::test_unsourced_and_invalid_records_are_blocked",
+        "name": "test_unsourced_and_invalid_records_are_blocked",
+        "outcome": "PASSED",
+        "seconds": 2.772
+      },
+      {
+        "test": "tests.test_workspace::test_reject_cancel_replace_and_record_audits",
+        "name": "test_reject_cancel_replace_and_record_audits",
+        "outcome": "PASSED",
+        "seconds": 2.292
+      },
+      {
+        "test": "tests.test_workspace::test_concurrent_release_publishes_once",
+        "name": "test_concurrent_release_publishes_once",
+        "outcome": "PASSED",
+        "seconds": 2.217
+      },
+      {
+        "test": "tests.test_workspace::test_migrations_fresh_and_legacy_copy",
+        "name": "test_migrations_fresh_and_legacy_copy",
+        "outcome": "PASSED",
+        "seconds": 1.982
+      },
+      {
+        "test": "tests.test_workspace::test_chat_education_requests_and_legacy_history",
+        "name": "test_chat_education_requests_and_legacy_history",
+        "outcome": "PASSED",
+        "seconds": 2.027
+      },
+      {
+        "test": "tests.test_workspace::test_controlled_initial_administrator_provisioning",
+        "name": "test_controlled_initial_administrator_provisioning",
+        "outcome": "PASSED",
+        "seconds": 1.387
+      },
+      {
+        "test": "tests.test_workspace::test_synthetic_seed_is_usable_and_refuses_existing_data",
+        "name": "test_synthetic_seed_is_usable_and_refuses_existing_data",
+        "outcome": "PASSED",
+        "seconds": 13.437
+      },
+      {
+        "test": "tests.test_workspace::test_amharic_education_uses_fixed_catalogue",
+        "name": "test_amharic_education_uses_fixed_catalogue",
+        "outcome": "PASSED",
+        "seconds": 1.688
+      },
+      {
+        "test": "tests.test_workspace::test_release_rolls_back_if_auditing_fails",
+        "name": "test_release_rolls_back_if_auditing_fails",
+        "outcome": "PASSED",
+        "seconds": 1.859
+      }
+    ]
+  },
+  "latest_postgres_redis": {
+    "artifact": "validation/agri-mcp-postgres-redis.xml",
+    "timestamp": "2026-11-16T12:58:02.359717+03:00",
+    "counts": {
+      "PASSED": 65,
+      "FAILED": 0,
+      "SKIPPED": 0
+    },
+    "duration_seconds": 234.283,
+    "cases": [
+      {
+        "test": "tests.test_connector_policy::test_cross_office_management_jobs_credentials_and_evidence_denied",
+        "name": "test_cross_office_management_jobs_credentials_and_evidence_denied",
+        "outcome": "PASSED",
+        "seconds": 3.08
+      },
+      {
+        "test": "tests.test_connector_policy::test_per_tool_role_is_checked_at_dispatch",
+        "name": "test_per_tool_role_is_checked_at_dispatch",
+        "outcome": "PASSED",
+        "seconds": 1.725
+      },
+      {
+        "test": "tests.test_connector_policy::test_credential_rotation_invalidates_approval_cache_and_pinned_replay",
+        "name": "test_credential_rotation_invalidates_approval_cache_and_pinned_replay",
+        "outcome": "PASSED",
+        "seconds": 3.776
+      },
+      {
+        "test": "tests.test_connector_policy::test_finished_cache_invocation_replay_preserves_original_retrieval",
+        "name": "test_finished_cache_invocation_replay_preserves_original_retrieval",
+        "outcome": "PASSED",
+        "seconds": 3.595
+      },
+      {
+        "test": "tests.test_connector_policy::test_followup_reuses_success_in_same_budget_without_another_remote_call",
+        "name": "test_followup_reuses_success_in_same_budget_without_another_remote_call",
+        "outcome": "PASSED",
+        "seconds": 4.538
+      },
+      {
+        "test": "tests.test_connector_policy::test_parallel_calls_consume_one_shared_atomic_budget[calls]",
+        "name": "test_parallel_calls_consume_one_shared_atomic_budget[calls]",
+        "outcome": "PASSED",
+        "seconds": 5.067
+      },
+      {
+        "test": "tests.test_connector_policy::test_parallel_calls_consume_one_shared_atomic_budget[requests]",
+        "name": "test_parallel_calls_consume_one_shared_atomic_budget[requests]",
+        "outcome": "PASSED",
+        "seconds": 5.706
+      },
+      {
+        "test": "tests.test_connector_policy::test_emergency_revocation_between_reservation_and_final_gate_blocks_http",
+        "name": "test_emergency_revocation_between_reservation_and_final_gate_blocks_http",
+        "outcome": "PASSED",
+        "seconds": 4.649
+      },
+      {
+        "test": "tests.test_connector_policy::test_wrong_digest_and_new_configuration_do_not_inherit_approval",
+        "name": "test_wrong_digest_and_new_configuration_do_not_inherit_approval",
+        "outcome": "PASSED",
+        "seconds": 2.688
+      },
+      {
+        "test": "tests.test_connector_policy::test_platform_jwt_and_gemini_key_cannot_be_provider_credentials",
+        "name": "test_platform_jwt_and_gemini_key_cannot_be_provider_credentials",
+        "outcome": "PASSED",
+        "seconds": 1.917
+      },
+      {
+        "test": "tests.test_connector_policy::test_runtime_expiry_cache_partition_and_cancelled_job",
+        "name": "test_runtime_expiry_cache_partition_and_cancelled_job",
+        "outcome": "PASSED",
+        "seconds": 5.895
+      },
+      {
+        "test": "tests.test_connector_policy::test_expired_lease_is_fenced_before_provider_dispatch",
+        "name": "test_expired_lease_is_fenced_before_provider_dispatch",
+        "outcome": "PASSED",
+        "seconds": 4.112
+      },
+      {
+        "test": "tests.test_connector_policy::test_recovered_job_does_not_repeat_an_ambiguous_dispatched_operation",
+        "name": "test_recovered_job_does_not_repeat_an_ambiguous_dispatched_operation",
+        "outcome": "PASSED",
+        "seconds": 2.808
+      },
+      {
+        "test": "tests.test_connector_policy::test_hot_operator_policy_is_authoritative_and_fixture_exception_forbidden_in_production",
+        "name": "test_hot_operator_policy_is_authoritative_and_fixture_exception_forbidden_in_production",
+        "outcome": "PASSED",
+        "seconds": 1.019
+      },
+      {
+        "test": "tests.test_connector_policy::test_dns_resolver_rejects_mixed_private_answers",
+        "name": "test_dns_resolver_rejects_mixed_private_answers",
+        "outcome": "PASSED",
+        "seconds": 1.111
+      },
+      {
+        "test": "tests.test_connector_policy::test_connect_proxy_pins_literal_resolved_public_address",
+        "name": "test_connect_proxy_pins_literal_resolved_public_address",
+        "outcome": "PASSED",
+        "seconds": 1.45
+      },
+      {
+        "test": "tests.test_connector_policy::test_configuration_cannot_execute_code_or_unsupported_effects[change0]",
+        "name": "test_configuration_cannot_execute_code_or_unsupported_effects[change0]",
+        "outcome": "PASSED",
+        "seconds": 1.887
+      },
+      {
+        "test": "tests.test_connector_policy::test_configuration_cannot_execute_code_or_unsupported_effects[change1]",
+        "name": "test_configuration_cannot_execute_code_or_unsupported_effects[change1]",
+        "outcome": "PASSED",
+        "seconds": 1.674
+      },
+      {
+        "test": "tests.test_connector_policy::test_configuration_cannot_execute_code_or_unsupported_effects[change2]",
+        "name": "test_configuration_cannot_execute_code_or_unsupported_effects[change2]",
+        "outcome": "PASSED",
+        "seconds": 1.547
+      },
+      {
+        "test": "tests.test_connector_policy::test_configuration_cannot_execute_code_or_unsupported_effects[change3]",
+        "name": "test_configuration_cannot_execute_code_or_unsupported_effects[change3]",
+        "outcome": "PASSED",
+        "seconds": 1.561
+      },
+      {
+        "test": "tests.test_connectors_rest::test_two_rest_tools_are_registered_and_executed_without_code_changes",
+        "name": "test_two_rest_tools_are_registered_and_executed_without_code_changes",
+        "outcome": "PASSED",
+        "seconds": 4.104
+      },
+      {
+        "test": "tests.test_connectors_rest::test_invalid_arguments_never_reach_network[arguments0-INPUT_VALIDATION_FAILED]",
+        "name": "test_invalid_arguments_never_reach_network[arguments0-INPUT_VALIDATION_FAILED]",
+        "outcome": "PASSED",
+        "seconds": 2.451
+      },
+      {
+        "test": "tests.test_connectors_rest::test_invalid_arguments_never_reach_network[arguments1-INPUT_VALIDATION_FAILED]",
+        "name": "test_invalid_arguments_never_reach_network[arguments1-INPUT_VALIDATION_FAILED]",
+        "outcome": "PASSED",
+        "seconds": 2.157
+      },
+      {
+        "test": "tests.test_connectors_rest::test_invalid_arguments_never_reach_network[arguments2-INPUT_VALIDATION_FAILED]",
+        "name": "test_invalid_arguments_never_reach_network[arguments2-INPUT_VALIDATION_FAILED]",
+        "outcome": "PASSED",
+        "seconds": 2.235
+      },
+      {
+        "test": "tests.test_connectors_rest::test_invalid_arguments_never_reach_network[arguments3-POLICY_DENIED]",
+        "name": "test_invalid_arguments_never_reach_network[arguments3-POLICY_DENIED]",
+        "outcome": "PASSED",
+        "seconds": 3.084
+      },
+      {
+        "test": "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/html-OUTPUT_VALIDATION_FAILED]",
+        "name": "test_provider_failure_and_no_data_are_distinct[/html-OUTPUT_VALIDATION_FAILED]",
+        "outcome": "PASSED",
+        "seconds": 4.601
+      },
+      {
+        "test": "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/invalid-OUTPUT_VALIDATION_FAILED]",
+        "name": "test_provider_failure_and_no_data_are_distinct[/invalid-OUTPUT_VALIDATION_FAILED]",
+        "outcome": "PASSED",
+        "seconds": 4.748
+      },
+      {
+        "test": "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/missing-OUTPUT_VALIDATION_FAILED]",
+        "name": "test_provider_failure_and_no_data_are_distinct[/missing-OUTPUT_VALIDATION_FAILED]",
+        "outcome": "PASSED",
+        "seconds": 6.708
+      },
+      {
+        "test": "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/auth-AUTH_INVALID]",
+        "name": "test_provider_failure_and_no_data_are_distinct[/auth-AUTH_INVALID]",
+        "outcome": "PASSED",
+        "seconds": 12.748
+      },
+      {
+        "test": "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/redirect-EGRESS_BLOCKED]",
+        "name": "test_provider_failure_and_no_data_are_distinct[/redirect-EGRESS_BLOCKED]",
+        "outcome": "PASSED",
+        "seconds": 8.321
+      },
+      {
+        "test": "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/empty-SUCCESS]",
+        "name": "test_provider_failure_and_no_data_are_distinct[/empty-SUCCESS]",
+        "outcome": "PASSED",
+        "seconds": 6.294
+      },
+      {
+        "test": "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/huge-RESPONSE_TOO_LARGE]",
+        "name": "test_provider_failure_and_no_data_are_distinct[/huge-RESPONSE_TOO_LARGE]",
+        "outcome": "PASSED",
+        "seconds": 4.738
+      },
+      {
+        "test": "tests.test_connectors_rest::test_header_credentials_are_encrypted_and_redacted",
+        "name": "test_header_credentials_are_encrypted_and_redacted",
+        "outcome": "PASSED",
+        "seconds": 5.998
+      },
+      {
+        "test": "tests.test_connectors_rest::test_revocation_blocks_pinned_runs_and_cache_hits",
+        "name": "test_revocation_blocks_pinned_runs_and_cache_hits",
+        "outcome": "PASSED",
+        "seconds": 5.238
+      },
+      {
+        "test": "tests.test_connectors_rest::test_safe_reads_retry_within_shared_request_budget",
+        "name": "test_safe_reads_retry_within_shared_request_budget",
+        "outcome": "PASSED",
+        "seconds": 5.085
+      },
+      {
+        "test": "tests.test_connectors_rest::test_scope_and_configuration_cannot_grant_network_exceptions",
+        "name": "test_scope_and_configuration_cannot_grant_network_exceptions",
+        "outcome": "PASSED",
+        "seconds": 3.077
+      },
+      {
+        "test": "tests.test_connectors_mcp::test_sdk_discovery_paginates_and_invokes_real_protocol",
+        "name": "test_sdk_discovery_paginates_and_invokes_real_protocol",
+        "outcome": "PASSED",
+        "seconds": 9.799
+      },
+      {
+        "test": "tests.test_connectors_mcp::test_changed_discovery_revokes_old_definition_and_unchanged_is_stable",
+        "name": "test_changed_discovery_revokes_old_definition_and_unchanged_is_stable",
+        "outcome": "PASSED",
+        "seconds": 4.462
+      },
+      {
+        "test": "tests.test_connectors_mcp::test_partial_discovery_does_not_infer_removals",
+        "name": "test_partial_discovery_does_not_infer_removals",
+        "outcome": "PASSED",
+        "seconds": 2.74
+      },
+      {
+        "test": "tests.test_connectors_mcp::test_same_upstream_names_are_collision_safe",
+        "name": "test_same_upstream_names_are_collision_safe",
+        "outcome": "PASSED",
+        "seconds": 2.869
+      },
+      {
+        "test": "tests.test_connectors_mcp::test_unstructured_and_tool_error_are_not_structured_success",
+        "name": "test_unstructured_and_tool_error_are_not_structured_success",
+        "outcome": "PASSED",
+        "seconds": 5.096
+      },
+      {
+        "test": "tests.test_connectors_mcp::test_mcp_schema_cannot_be_forged_from_a_description",
+        "name": "test_mcp_schema_cannot_be_forged_from_a_description",
+        "outcome": "PASSED",
+        "seconds": 2.518
+      },
+      {
+        "test": "tests.test_companion_skills::test_registry_driven_graph_uses_manual_calls_and_persistent_evidence",
+        "name": "test_registry_driven_graph_uses_manual_calls_and_persistent_evidence",
+        "outcome": "PASSED",
+        "seconds": 3.917
+      },
+      {
+        "test": "tests.test_companion_skills::test_new_approved_tool_appears_only_in_new_snapshots_without_restart",
+        "name": "test_new_approved_tool_appears_only_in_new_snapshots_without_restart",
+        "outcome": "PASSED",
+        "seconds": 3.647
+      },
+      {
+        "test": "tests.test_companion_skills::test_unknown_model_tool_is_audited_and_never_dispatched",
+        "name": "test_unknown_model_tool_is_audited_and_never_dispatched",
+        "outcome": "PASSED",
+        "seconds": 3.048
+      },
+      {
+        "test": "tests.test_companion_skills::test_unsupported_model_numbers_are_rejected",
+        "name": "test_unsupported_model_numbers_are_rejected",
+        "outcome": "PASSED",
+        "seconds": 4.012
+      },
+      {
+        "test": "tests.test_companion_skills::test_disabled_skill_and_missing_gemini_configuration_are_honest_blockers",
+        "name": "test_disabled_skill_and_missing_gemini_configuration_are_honest_blockers",
+        "outcome": "PASSED",
+        "seconds": 3.111
+      },
+      {
+        "test": "tests.test_companion_skills::test_model_repair_is_bounded_and_usage_is_retained[success]",
+        "name": "test_model_repair_is_bounded_and_usage_is_retained[success]",
+        "outcome": "PASSED",
+        "seconds": 3.502
+      },
+      {
+        "test": "tests.test_companion_skills::test_model_repair_is_bounded_and_usage_is_retained[second_empty]",
+        "name": "test_model_repair_is_bounded_and_usage_is_retained[second_empty]",
+        "outcome": "PASSED",
+        "seconds": 4.686
+      },
+      {
+        "test": "tests.test_companion_skills::test_model_repair_is_bounded_and_usage_is_retained[oversized]",
+        "name": "test_model_repair_is_bounded_and_usage_is_retained[oversized]",
+        "outcome": "PASSED",
+        "seconds": 2.984
+      },
+      {
+        "test": "tests.test_companion_skills::test_plugin_install_is_atomic_disabled_and_idempotent",
+        "name": "test_plugin_install_is_atomic_disabled_and_idempotent",
+        "outcome": "PASSED",
+        "seconds": 1.695
+      },
+      {
+        "test": "tests.test_companion_skills::test_failed_pack_install_rolls_back_all_created_resources",
+        "name": "test_failed_pack_install_rolls_back_all_created_resources",
+        "outcome": "PASSED",
+        "seconds": 1.642
+      },
+      {
+        "test": "tests.test_companion_skills::test_gemini_sdk_preserves_ids_signatures_and_manual_execution",
+        "name": "test_gemini_sdk_preserves_ids_signatures_and_manual_execution",
+        "outcome": "PASSED",
+        "seconds": 1.333
+      },
+      {
+        "test": "tests.test_provider_adapters::test_reviewed_provider_adapter_uses_common_executor_and_transport[open_meteo.forecast]",
+        "name": "test_reviewed_provider_adapter_uses_common_executor_and_transport[open_meteo.forecast]",
+        "outcome": "PASSED",
+        "seconds": 3.145
+      },
+      {
+        "test": "tests.test_provider_adapters::test_reviewed_provider_adapter_uses_common_executor_and_transport[isda.soil_profile]",
+        "name": "test_reviewed_provider_adapter_uses_common_executor_and_transport[isda.soil_profile]",
+        "outcome": "PASSED",
+        "seconds": 4.511
+      },
+      {
+        "test": "tests.test_provider_adapters::test_power_validation_rejects_plausible_but_invalid_agricultural_payloads[units]",
+        "name": "test_power_validation_rejects_plausible_but_invalid_agricultural_payloads[units]",
+        "outcome": "PASSED",
+        "seconds": 0.944
+      },
+      {
+        "test": "tests.test_provider_adapters::test_power_validation_rejects_plausible_but_invalid_agricultural_payloads[fill]",
+        "name": "test_power_validation_rejects_plausible_but_invalid_agricultural_payloads[fill]",
+        "outcome": "PASSED",
+        "seconds": 0.953
+      },
+      {
+        "test": "tests.test_provider_adapters::test_power_validation_rejects_plausible_but_invalid_agricultural_payloads[dates]",
+        "name": "test_power_validation_rejects_plausible_but_invalid_agricultural_payloads[dates]",
+        "outcome": "PASSED",
+        "seconds": 0.916
+      },
+      {
+        "test": "tests.test_provider_adapters::test_power_validation_rejects_plausible_but_invalid_agricultural_payloads[location]",
+        "name": "test_power_validation_rejects_plausible_but_invalid_agricultural_payloads[location]",
+        "outcome": "PASSED",
+        "seconds": 1.119
+      },
+      {
+        "test": "tests.test_provider_adapters::test_power_validation_rejects_plausible_but_invalid_agricultural_payloads[bool]",
+        "name": "test_power_validation_rejects_plausible_but_invalid_agricultural_payloads[bool]",
+        "outcome": "PASSED",
+        "seconds": 0.955
+      },
+      {
+        "test": "tests.test_internal_mcp_http::test_internal_http_mcp_preserves_run_scope_and_persisted_review_draft",
+        "name": "test_internal_http_mcp_preserves_run_scope_and_persisted_review_draft",
+        "outcome": "PASSED",
+        "seconds": 3.256
+      },
+      {
+        "test": "tests.test_connector_redis::test_redis_cache_authenticates_partition_freshness_and_key_rotation",
+        "name": "test_redis_cache_authenticates_partition_freshness_and_key_rotation",
+        "outcome": "PASSED",
+        "seconds": 0.978
+      },
+      {
+        "test": "tests.test_mcp_compatibility::test_mcp_authenticated_clients_are_isolated_across_offices",
+        "name": "test_mcp_authenticated_clients_are_isolated_across_offices",
+        "outcome": "PASSED",
+        "seconds": 6.083
+      },
+      {
+        "test": "tests.test_mcp_compatibility::test_mcp_unhandled_artifacts_are_blocked_without_retrieval",
+        "name": "test_mcp_unhandled_artifacts_are_blocked_without_retrieval",
+        "outcome": "PASSED",
+        "seconds": 3.014
+      },
+      {
+        "test": "tests.test_mcp_compatibility::test_unsupported_auth_transport_and_sdk_version_fail_honestly",
+        "name": "test_unsupported_auth_transport_and_sdk_version_fail_honestly",
+        "outcome": "PASSED",
+        "seconds": 1.728
+      }
+    ]
+  },
+  "final_schema_hardening": {
+    "artifact": "validation/agri-mcp-schema-hardening.xml",
+    "timestamp": "2026-11-16T13:04:10.370682+03:00",
+    "counts": {
+      "PASSED": 47,
+      "FAILED": 0,
+      "SKIPPED": 0
+    },
+    "duration_seconds": 187.807,
+    "cases": [
+      {
+        "test": "tests.test_connector_schema_limits::test_unsafe_or_unchecked_schema_constraints_are_rejected[schema0]",
+        "name": "test_unsafe_or_unchecked_schema_constraints_are_rejected[schema0]",
+        "outcome": "PASSED",
+        "seconds": 0.989
+      },
+      {
+        "test": "tests.test_connector_schema_limits::test_unsafe_or_unchecked_schema_constraints_are_rejected[schema1]",
+        "name": "test_unsafe_or_unchecked_schema_constraints_are_rejected[schema1]",
+        "outcome": "PASSED",
+        "seconds": 1.01
+      },
+      {
+        "test": "tests.test_connector_schema_limits::test_unsafe_or_unchecked_schema_constraints_are_rejected[schema2]",
+        "name": "test_unsafe_or_unchecked_schema_constraints_are_rejected[schema2]",
+        "outcome": "PASSED",
+        "seconds": 1.014
+      },
+      {
+        "test": "tests.test_connector_schema_limits::test_unsafe_or_unchecked_schema_constraints_are_rejected[schema3]",
+        "name": "test_unsafe_or_unchecked_schema_constraints_are_rejected[schema3]",
+        "outcome": "PASSED",
+        "seconds": 0.85
+      },
+      {
+        "test": "tests.test_connectors_rest::test_two_rest_tools_are_registered_and_executed_without_code_changes",
+        "name": "test_two_rest_tools_are_registered_and_executed_without_code_changes",
+        "outcome": "PASSED",
+        "seconds": 6.242
+      },
+      {
+        "test": "tests.test_connectors_rest::test_invalid_arguments_never_reach_network[arguments0-INPUT_VALIDATION_FAILED]",
+        "name": "test_invalid_arguments_never_reach_network[arguments0-INPUT_VALIDATION_FAILED]",
+        "outcome": "PASSED",
+        "seconds": 2.95
+      },
+      {
+        "test": "tests.test_connectors_rest::test_invalid_arguments_never_reach_network[arguments1-INPUT_VALIDATION_FAILED]",
+        "name": "test_invalid_arguments_never_reach_network[arguments1-INPUT_VALIDATION_FAILED]",
+        "outcome": "PASSED",
+        "seconds": 2.768
+      },
+      {
+        "test": "tests.test_connectors_rest::test_invalid_arguments_never_reach_network[arguments2-INPUT_VALIDATION_FAILED]",
+        "name": "test_invalid_arguments_never_reach_network[arguments2-INPUT_VALIDATION_FAILED]",
+        "outcome": "PASSED",
+        "seconds": 2.66
+      },
+      {
+        "test": "tests.test_connectors_rest::test_invalid_arguments_never_reach_network[arguments3-POLICY_DENIED]",
+        "name": "test_invalid_arguments_never_reach_network[arguments3-POLICY_DENIED]",
+        "outcome": "PASSED",
+        "seconds": 2.683
+      },
+      {
+        "test": "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/html-OUTPUT_VALIDATION_FAILED]",
+        "name": "test_provider_failure_and_no_data_are_distinct[/html-OUTPUT_VALIDATION_FAILED]",
+        "outcome": "PASSED",
+        "seconds": 2.739
+      },
+      {
+        "test": "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/invalid-OUTPUT_VALIDATION_FAILED]",
+        "name": "test_provider_failure_and_no_data_are_distinct[/invalid-OUTPUT_VALIDATION_FAILED]",
+        "outcome": "PASSED",
+        "seconds": 2.966
+      },
+      {
+        "test": "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/missing-OUTPUT_VALIDATION_FAILED]",
+        "name": "test_provider_failure_and_no_data_are_distinct[/missing-OUTPUT_VALIDATION_FAILED]",
+        "outcome": "PASSED",
+        "seconds": 3.548
+      },
+      {
+        "test": "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/auth-AUTH_INVALID]",
+        "name": "test_provider_failure_and_no_data_are_distinct[/auth-AUTH_INVALID]",
+        "outcome": "PASSED",
+        "seconds": 3.317
+      },
+      {
+        "test": "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/redirect-EGRESS_BLOCKED]",
+        "name": "test_provider_failure_and_no_data_are_distinct[/redirect-EGRESS_BLOCKED]",
+        "outcome": "PASSED",
+        "seconds": 3.494
+      },
+      {
+        "test": "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/empty-SUCCESS]",
+        "name": "test_provider_failure_and_no_data_are_distinct[/empty-SUCCESS]",
+        "outcome": "PASSED",
+        "seconds": 3.264
+      },
+      {
+        "test": "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/huge-RESPONSE_TOO_LARGE]",
+        "name": "test_provider_failure_and_no_data_are_distinct[/huge-RESPONSE_TOO_LARGE]",
+        "outcome": "PASSED",
+        "seconds": 3.809
+      },
+      {
+        "test": "tests.test_connectors_rest::test_header_credentials_are_encrypted_and_redacted",
+        "name": "test_header_credentials_are_encrypted_and_redacted",
+        "outcome": "PASSED",
+        "seconds": 3.752
+      },
+      {
+        "test": "tests.test_connectors_rest::test_revocation_blocks_pinned_runs_and_cache_hits",
+        "name": "test_revocation_blocks_pinned_runs_and_cache_hits",
+        "outcome": "PASSED",
+        "seconds": 2.677
+      },
+      {
+        "test": "tests.test_connectors_rest::test_safe_reads_retry_within_shared_request_budget",
+        "name": "test_safe_reads_retry_within_shared_request_budget",
+        "outcome": "PASSED",
+        "seconds": 3.028
+      },
+      {
+        "test": "tests.test_connectors_rest::test_scope_and_configuration_cannot_grant_network_exceptions",
+        "name": "test_scope_and_configuration_cannot_grant_network_exceptions",
+        "outcome": "PASSED",
+        "seconds": 2.315
+      },
+      {
+        "test": "tests.test_connectors_mcp::test_sdk_discovery_paginates_and_invokes_real_protocol",
+        "name": "test_sdk_discovery_paginates_and_invokes_real_protocol",
+        "outcome": "PASSED",
+        "seconds": 7.446
+      },
+      {
+        "test": "tests.test_connectors_mcp::test_changed_discovery_revokes_old_definition_and_unchanged_is_stable",
+        "name": "test_changed_discovery_revokes_old_definition_and_unchanged_is_stable",
+        "outcome": "PASSED",
+        "seconds": 11.127
+      },
+      {
+        "test": "tests.test_connectors_mcp::test_partial_discovery_does_not_infer_removals",
+        "name": "test_partial_discovery_does_not_infer_removals",
+        "outcome": "PASSED",
+        "seconds": 6.332
+      },
+      {
+        "test": "tests.test_connectors_mcp::test_same_upstream_names_are_collision_safe",
+        "name": "test_same_upstream_names_are_collision_safe",
+        "outcome": "PASSED",
+        "seconds": 6.254
+      },
+      {
+        "test": "tests.test_connectors_mcp::test_unstructured_and_tool_error_are_not_structured_success",
+        "name": "test_unstructured_and_tool_error_are_not_structured_success",
+        "outcome": "PASSED",
+        "seconds": 8.931
+      },
+      {
+        "test": "tests.test_connectors_mcp::test_mcp_schema_cannot_be_forged_from_a_description",
+        "name": "test_mcp_schema_cannot_be_forged_from_a_description",
+        "outcome": "PASSED",
+        "seconds": 2.138
+      },
+      {
+        "test": "tests.test_mcp_compatibility::test_mcp_authenticated_clients_are_isolated_across_offices",
+        "name": "test_mcp_authenticated_clients_are_isolated_across_offices",
+        "outcome": "PASSED",
+        "seconds": 13.424
+      },
+      {
+        "test": "tests.test_mcp_compatibility::test_mcp_unhandled_artifacts_are_blocked_without_retrieval",
+        "name": "test_mcp_unhandled_artifacts_are_blocked_without_retrieval",
+        "outcome": "PASSED",
+        "seconds": 5.066
+      },
+      {
+        "test": "tests.test_mcp_compatibility::test_unsupported_auth_transport_and_sdk_version_fail_honestly",
+        "name": "test_unsupported_auth_transport_and_sdk_version_fail_honestly",
+        "outcome": "PASSED",
+        "seconds": 1.982
+      },
+      {
+        "test": "tests.test_provider_adapters::test_reviewed_provider_adapter_uses_common_executor_and_transport[open_meteo.forecast]",
+        "name": "test_reviewed_provider_adapter_uses_common_executor_and_transport[open_meteo.forecast]",
+        "outcome": "PASSED",
+        "seconds": 4.242
+      },
+      {
+        "test": "tests.test_provider_adapters::test_reviewed_provider_adapter_uses_common_executor_and_transport[isda.soil_profile]",
+        "name": "test_reviewed_provider_adapter_uses_common_executor_and_transport[isda.soil_profile]",
+        "outcome": "PASSED",
+        "seconds": 8.988
+      },
+      {
+        "test": "tests.test_provider_adapters::test_power_validation_rejects_plausible_but_invalid_agricultural_payloads[units]",
+        "name": "test_power_validation_rejects_plausible_but_invalid_agricultural_payloads[units]",
+        "outcome": "PASSED",
+        "seconds": 1.507
+      },
+      {
+        "test": "tests.test_provider_adapters::test_power_validation_rejects_plausible_but_invalid_agricultural_payloads[fill]",
+        "name": "test_power_validation_rejects_plausible_but_invalid_agricultural_payloads[fill]",
+        "outcome": "PASSED",
+        "seconds": 1.411
+      },
+      {
+        "test": "tests.test_provider_adapters::test_power_validation_rejects_plausible_but_invalid_agricultural_payloads[dates]",
+        "name": "test_power_validation_rejects_plausible_but_invalid_agricultural_payloads[dates]",
+        "outcome": "PASSED",
+        "seconds": 1.446
+      },
+      {
+        "test": "tests.test_provider_adapters::test_power_validation_rejects_plausible_but_invalid_agricultural_payloads[location]",
+        "name": "test_power_validation_rejects_plausible_but_invalid_agricultural_payloads[location]",
+        "outcome": "PASSED",
+        "seconds": 1.384
+      },
+      {
+        "test": "tests.test_provider_adapters::test_power_validation_rejects_plausible_but_invalid_agricultural_payloads[bool]",
+        "name": "test_power_validation_rejects_plausible_but_invalid_agricultural_payloads[bool]",
+        "outcome": "PASSED",
+        "seconds": 1.592
+      },
+      {
+        "test": "tests.test_companion_skills::test_registry_driven_graph_uses_manual_calls_and_persistent_evidence",
+        "name": "test_registry_driven_graph_uses_manual_calls_and_persistent_evidence",
+        "outcome": "PASSED",
+        "seconds": 6.709
+      },
+      {
+        "test": "tests.test_companion_skills::test_new_approved_tool_appears_only_in_new_snapshots_without_restart",
+        "name": "test_new_approved_tool_appears_only_in_new_snapshots_without_restart",
+        "outcome": "PASSED",
+        "seconds": 5.354
+      },
+      {
+        "test": "tests.test_companion_skills::test_unknown_model_tool_is_audited_and_never_dispatched",
+        "name": "test_unknown_model_tool_is_audited_and_never_dispatched",
+        "outcome": "PASSED",
+        "seconds": 3.703
+      },
+      {
+        "test": "tests.test_companion_skills::test_unsupported_model_numbers_are_rejected",
+        "name": "test_unsupported_model_numbers_are_rejected",
+        "outcome": "PASSED",
+        "seconds": 4.831
+      },
+      {
+        "test": "tests.test_companion_skills::test_disabled_skill_and_missing_gemini_configuration_are_honest_blockers",
+        "name": "test_disabled_skill_and_missing_gemini_configuration_are_honest_blockers",
+        "outcome": "PASSED",
+        "seconds": 3.685
+      },
+      {
+        "test": "tests.test_companion_skills::test_model_repair_is_bounded_and_usage_is_retained[success]",
+        "name": "test_model_repair_is_bounded_and_usage_is_retained[success]",
+        "outcome": "PASSED",
+        "seconds": 4.957
+      },
+      {
+        "test": "tests.test_companion_skills::test_model_repair_is_bounded_and_usage_is_retained[second_empty]",
+        "name": "test_model_repair_is_bounded_and_usage_is_retained[second_empty]",
+        "outcome": "PASSED",
+        "seconds": 4.651
+      },
+      {
+        "test": "tests.test_companion_skills::test_model_repair_is_bounded_and_usage_is_retained[oversized]",
+        "name": "test_model_repair_is_bounded_and_usage_is_retained[oversized]",
+        "outcome": "PASSED",
+        "seconds": 3.95
+      },
+      {
+        "test": "tests.test_companion_skills::test_plugin_install_is_atomic_disabled_and_idempotent",
+        "name": "test_plugin_install_is_atomic_disabled_and_idempotent",
+        "outcome": "PASSED",
+        "seconds": 1.955
+      },
+      {
+        "test": "tests.test_companion_skills::test_failed_pack_install_rolls_back_all_created_resources",
+        "name": "test_failed_pack_install_rolls_back_all_created_resources",
+        "outcome": "PASSED",
+        "seconds": 1.872
+      },
+      {
+        "test": "tests.test_companion_skills::test_gemini_sdk_preserves_ids_signatures_and_manual_execution",
+        "name": "test_gemini_sdk_preserves_ids_signatures_and_manual_execution",
+        "outcome": "PASSED",
+        "seconds": 2.382
+      }
+    ]
+  },
+  "acceptance": [
+    {
+      "id": "REST-01",
+      "status": "PASSED_FIXTURE",
+      "tests": [
+        "tests.test_connectors_rest::test_two_rest_tools_are_registered_and_executed_without_code_changes"
+      ],
+      "type": "LOCAL_HTTP_PROTOCOL_MODEL_FIXTURES_AND_REAL_LOCAL_DATABASES"
+    },
+    {
+      "id": "REST-02",
+      "status": "PASSED_FIXTURE",
+      "tests": [
+        "tests.test_connectors_rest::test_two_rest_tools_are_registered_and_executed_without_code_changes"
+      ],
+      "type": "LOCAL_HTTP_PROTOCOL_MODEL_FIXTURES_AND_REAL_LOCAL_DATABASES"
+    },
+    {
+      "id": "REST-03",
+      "status": "PASSED_FIXTURE",
+      "tests": [
+        "tests.test_connectors_rest::test_invalid_arguments_never_reach_network[arguments0-INPUT_VALIDATION_FAILED]",
+        "tests.test_connectors_rest::test_invalid_arguments_never_reach_network[arguments1-INPUT_VALIDATION_FAILED]",
+        "tests.test_connectors_rest::test_invalid_arguments_never_reach_network[arguments2-INPUT_VALIDATION_FAILED]",
+        "tests.test_connectors_rest::test_invalid_arguments_never_reach_network[arguments3-POLICY_DENIED]"
+      ],
+      "type": "LOCAL_HTTP_PROTOCOL_MODEL_FIXTURES_AND_REAL_LOCAL_DATABASES"
+    },
+    {
+      "id": "REST-04",
+      "status": "PASSED_FIXTURE",
+      "tests": [
+        "tests.test_connector_policy::test_platform_jwt_and_gemini_key_cannot_be_provider_credentials",
+        "tests.test_connectors_rest::test_header_credentials_are_encrypted_and_redacted"
+      ],
+      "type": "LOCAL_HTTP_PROTOCOL_MODEL_FIXTURES_AND_REAL_LOCAL_DATABASES"
+    },
+    {
+      "id": "REST-05",
+      "status": "PASSED_FIXTURE",
+      "tests": [
+        "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/auth-AUTH_INVALID]",
+        "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/empty-SUCCESS]",
+        "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/html-OUTPUT_VALIDATION_FAILED]",
+        "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/huge-RESPONSE_TOO_LARGE]",
+        "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/invalid-OUTPUT_VALIDATION_FAILED]",
+        "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/missing-OUTPUT_VALIDATION_FAILED]",
+        "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/redirect-EGRESS_BLOCKED]"
+      ],
+      "type": "LOCAL_HTTP_PROTOCOL_MODEL_FIXTURES_AND_REAL_LOCAL_DATABASES"
+    },
+    {
+      "id": "REST-06",
+      "status": "PASSED_FIXTURE",
+      "tests": [
+        "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/auth-AUTH_INVALID]",
+        "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/empty-SUCCESS]",
+        "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/html-OUTPUT_VALIDATION_FAILED]",
+        "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/huge-RESPONSE_TOO_LARGE]",
+        "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/invalid-OUTPUT_VALIDATION_FAILED]",
+        "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/missing-OUTPUT_VALIDATION_FAILED]",
+        "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/redirect-EGRESS_BLOCKED]",
+        "tests.test_connectors_rest::test_two_rest_tools_are_registered_and_executed_without_code_changes"
+      ],
+      "type": "LOCAL_HTTP_PROTOCOL_MODEL_FIXTURES_AND_REAL_LOCAL_DATABASES"
+    },
+    {
+      "id": "REST-07",
+      "status": "PASSED_FIXTURE",
+      "tests": [
+        "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/auth-AUTH_INVALID]",
+        "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/empty-SUCCESS]",
+        "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/html-OUTPUT_VALIDATION_FAILED]",
+        "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/huge-RESPONSE_TOO_LARGE]",
+        "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/invalid-OUTPUT_VALIDATION_FAILED]",
+        "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/missing-OUTPUT_VALIDATION_FAILED]",
+        "tests.test_connectors_rest::test_provider_failure_and_no_data_are_distinct[/redirect-EGRESS_BLOCKED]",
+        "tests.test_connectors_rest::test_safe_reads_retry_within_shared_request_budget"
+      ],
+      "type": "LOCAL_HTTP_PROTOCOL_MODEL_FIXTURES_AND_REAL_LOCAL_DATABASES"
+    },
+    {
+      "id": "REST-08",
+      "status": "PASSED_FIXTURE",
+      "tests": [
+        "tests.test_internal_mcp_http::test_internal_http_mcp_preserves_run_scope_and_persisted_review_draft",
+        "tests.test_provider_adapters::test_reviewed_provider_adapter_uses_common_executor_and_transport[isda.soil_profile]",
+        "tests.test_provider_adapters::test_reviewed_provider_adapter_uses_common_executor_and_transport[open_meteo.forecast]"
+      ],
+      "type": "LOCAL_HTTP_PROTOCOL_MODEL_FIXTURES_AND_REAL_LOCAL_DATABASES"
+    },
+    {
+      "id": "MCP-01",
+      "status": "PASSED_FIXTURE",
+      "tests": [
+        "tests.test_connectors_mcp::test_sdk_discovery_paginates_and_invokes_real_protocol"
+      ],
+      "type": "LOCAL_HTTP_PROTOCOL_MODEL_FIXTURES_AND_REAL_LOCAL_DATABASES"
+    },
+    {
+      "id": "MCP-02",
+      "status": "PASSED_FIXTURE",
+      "tests": [
+        "tests.test_connectors_mcp::test_partial_discovery_does_not_infer_removals"
+      ],
+      "type": "LOCAL_HTTP_PROTOCOL_MODEL_FIXTURES_AND_REAL_LOCAL_DATABASES"
+    },
+    {
+      "id": "MCP-03",
+      "status": "PASSED_FIXTURE",
+      "tests": [
+        "tests.test_connectors_mcp::test_sdk_discovery_paginates_and_invokes_real_protocol"
+      ],
+      "type": "LOCAL_HTTP_PROTOCOL_MODEL_FIXTURES_AND_REAL_LOCAL_DATABASES"
+    },
+    {
+      "id": "MCP-04",
+      "status": "PASSED_FIXTURE",
+      "tests": [
+        "tests.test_connectors_mcp::test_changed_discovery_revokes_old_definition_and_unchanged_is_stable"
+      ],
+      "type": "LOCAL_HTTP_PROTOCOL_MODEL_FIXTURES_AND_REAL_LOCAL_DATABASES"
+    },
+    {
+      "id": "MCP-05",
+      "status": "PASSED_FIXTURE",
+      "tests": [
+        "tests.test_connectors_mcp::test_same_upstream_names_are_collision_safe"
+      ],
+      "type": "LOCAL_HTTP_PROTOCOL_MODEL_FIXTURES_AND_REAL_LOCAL_DATABASES"
+    },
+    {
+      "id": "MCP-06",
+      "status": "PASSED_FIXTURE",
+      "tests": [
+        "tests.test_connectors_mcp::test_unstructured_and_tool_error_are_not_structured_success",
+        "tests.test_mcp_compatibility::test_mcp_unhandled_artifacts_are_blocked_without_retrieval"
+      ],
+      "type": "LOCAL_HTTP_PROTOCOL_MODEL_FIXTURES_AND_REAL_LOCAL_DATABASES"
+    },
+    {
+      "id": "MCP-07",
+      "status": "PASSED_FIXTURE",
+      "tests": [
+        "tests.test_mcp_compatibility::test_mcp_authenticated_clients_are_isolated_across_offices"
+      ],
+      "type": "LOCAL_HTTP_PROTOCOL_MODEL_FIXTURES_AND_REAL_LOCAL_DATABASES"
+    },
+    {
+      "id": "MCP-08",
+      "status": "PASSED_FIXTURE",
+      "tests": [
+        "tests.test_mcp_compatibility::test_unsupported_auth_transport_and_sdk_version_fail_honestly"
+      ],
+      "type": "LOCAL_HTTP_PROTOCOL_MODEL_FIXTURES_AND_REAL_LOCAL_DATABASES"
+    },
+    {
+      "id": "POLICY-01",
+      "status": "PASSED_FIXTURE",
+      "tests": [
+        "tests.test_connector_policy::test_cross_office_management_jobs_credentials_and_evidence_denied"
+      ],
+      "type": "LOCAL_HTTP_PROTOCOL_MODEL_FIXTURES_AND_REAL_LOCAL_DATABASES"
+    },
+    {
+      "id": "POLICY-02",
+      "status": "PASSED_FIXTURE",
+      "tests": [
+        "tests.test_connector_policy::test_wrong_digest_and_new_configuration_do_not_inherit_approval",
+        "tests.test_connectors_rest::test_revocation_blocks_pinned_runs_and_cache_hits"
+      ],
+      "type": "LOCAL_HTTP_PROTOCOL_MODEL_FIXTURES_AND_REAL_LOCAL_DATABASES"
+    },
+    {
+      "id": "POLICY-03",
+      "status": "PASSED_FIXTURE",
+      "tests": [
+        "tests.test_connector_policy::test_connect_proxy_pins_literal_resolved_public_address",
+        "tests.test_connector_policy::test_dns_resolver_rejects_mixed_private_answers",
+        "tests.test_connectors_rest::test_scope_and_configuration_cannot_grant_network_exceptions"
+      ],
+      "type": "LOCAL_HTTP_PROTOCOL_MODEL_FIXTURES_AND_REAL_LOCAL_DATABASES"
+    },
+    {
+      "id": "POLICY-04",
+      "status": "PASSED_FIXTURE",
+      "tests": [
+        "tests.test_connector_policy::test_hot_operator_policy_is_authoritative_and_fixture_exception_forbidden_in_production",
+        "tests.test_connectors_rest::test_invalid_arguments_never_reach_network[arguments0-INPUT_VALIDATION_FAILED]",
+        "tests.test_connectors_rest::test_invalid_arguments_never_reach_network[arguments1-INPUT_VALIDATION_FAILED]",
+        "tests.test_connectors_rest::test_invalid_arguments_never_reach_network[arguments2-INPUT_VALIDATION_FAILED]",
+        "tests.test_connectors_rest::test_invalid_arguments_never_reach_network[arguments3-POLICY_DENIED]"
+      ],
+      "type": "LOCAL_HTTP_PROTOCOL_MODEL_FIXTURES_AND_REAL_LOCAL_DATABASES"
+    },
+    {
+      "id": "POLICY-05",
+      "status": "PASSED_FIXTURE",
+      "tests": [
+        "tests.test_companion_skills::test_unknown_model_tool_is_audited_and_never_dispatched",
+        "tests.test_connectors_mcp::test_mcp_schema_cannot_be_forged_from_a_description"
+      ],
+      "type": "LOCAL_HTTP_PROTOCOL_MODEL_FIXTURES_AND_REAL_LOCAL_DATABASES"
+    },
+    {
+      "id": "POLICY-06",
+      "status": "PASSED_FIXTURE",
+      "tests": [
+        "tests.test_connector_policy::test_configuration_cannot_execute_code_or_unsupported_effects[change0]",
+        "tests.test_connector_policy::test_configuration_cannot_execute_code_or_unsupported_effects[change1]",
+        "tests.test_connector_policy::test_configuration_cannot_execute_code_or_unsupported_effects[change2]",
+        "tests.test_connector_policy::test_configuration_cannot_execute_code_or_unsupported_effects[change3]"
+      ],
+      "type": "LOCAL_HTTP_PROTOCOL_MODEL_FIXTURES_AND_REAL_LOCAL_DATABASES"
+    },
+    {
+      "id": "REGISTRY-01",
+      "status": "PASSED_FIXTURE",
+      "tests": [
+        "tests.test_companion_skills::test_new_approved_tool_appears_only_in_new_snapshots_without_restart"
+      ],
+      "type": "LOCAL_HTTP_PROTOCOL_MODEL_FIXTURES_AND_REAL_LOCAL_DATABASES"
+    },
+    {
+      "id": "REGISTRY-02",
+      "status": "PASSED_FIXTURE",
+      "tests": [
+        "tests.test_connector_policy::test_emergency_revocation_between_reservation_and_final_gate_blocks_http"
+      ],
+      "type": "LOCAL_HTTP_PROTOCOL_MODEL_FIXTURES_AND_REAL_LOCAL_DATABASES"
+    },
+    {
+      "id": "REGISTRY-03",
+      "status": "PASSED_FIXTURE",
+      "tests": [
+        "tests.test_connector_policy::test_parallel_calls_consume_one_shared_atomic_budget[calls]",
+        "tests.test_connector_policy::test_parallel_calls_consume_one_shared_atomic_budget[requests]"
+      ],
+      "type": "LOCAL_HTTP_PROTOCOL_MODEL_FIXTURES_AND_REAL_LOCAL_DATABASES"
+    },
+    {
+      "id": "CACHE-01",
+      "status": "PASSED_FIXTURE",
+      "tests": [
+        "tests.test_connector_policy::test_credential_rotation_invalidates_approval_cache_and_pinned_replay",
+        "tests.test_connector_redis::test_redis_cache_authenticates_partition_freshness_and_key_rotation"
+      ],
+      "type": "LOCAL_HTTP_PROTOCOL_MODEL_FIXTURES_AND_REAL_LOCAL_DATABASES"
+    },
+    {
+      "id": "MODEL-02",
+      "status": "PASSED_FIXTURE",
+      "tests": [
+        "tests.test_companion_skills::test_unknown_model_tool_is_audited_and_never_dispatched",
+        "tests.test_connectors_rest::test_invalid_arguments_never_reach_network[arguments0-INPUT_VALIDATION_FAILED]",
+        "tests.test_connectors_rest::test_invalid_arguments_never_reach_network[arguments1-INPUT_VALIDATION_FAILED]",
+        "tests.test_connectors_rest::test_invalid_arguments_never_reach_network[arguments2-INPUT_VALIDATION_FAILED]",
+        "tests.test_connectors_rest::test_invalid_arguments_never_reach_network[arguments3-POLICY_DENIED]"
+      ],
+      "type": "LOCAL_HTTP_PROTOCOL_MODEL_FIXTURES_AND_REAL_LOCAL_DATABASES"
+    },
+    {
+      "id": "LIVE-01",
+      "status": "VERIFIED_LIVE",
+      "provider": "Open-Meteo",
+      "evidence": "reports/connector_live_results.json",
+      "observed_at": "2026-11-16T08:59:11.789112+00:00",
+      "reason": null,
+      "agricultural_payload_validation": null
+    },
+    {
+      "id": "LIVE-02",
+      "status": "VERIFIED_LIVE",
+      "provider": "NASA POWER MCP",
+      "evidence": "reports/connector_live_results.json",
+      "observed_at": "2026-11-16T08:59:11.789112+00:00",
+      "reason": null,
+      "agricultural_payload_validation": {
+        "outcome": "PASSED",
+        "type": "OFFLINE_VALIDATION_OF_SAVED_REAL_RESPONSE",
+        "fields_checked": [
+          "T2M",
+          "PRECTOTCORR",
+          "RH2M",
+          "WS2M",
+          "ALLSKY_SFC_SW_DWN"
+        ],
+        "time_standard": "LST",
+        "checks": [
+          "date coverage",
+          "numeric values and fill values",
+          "exact units",
+          "returned coordinates"
+        ]
+      }
+    },
+    {
+      "id": "MODEL-01",
+      "status": "BLOCKED",
+      "provider": "Gemini",
+      "evidence": "reports/connector_live_results.json",
+      "observed_at": "2026-11-16T08:59:11.789112+00:00",
+      "reason": "GEMINI_API_KEY is not configured; model ID/access must be verified",
+      "agricultural_payload_validation": null
+    }
+  ],
+  "live_http_attempts": 8,
+  "deployment": {
+    "executed_at_utc": "2026-11-16T10:07:19.958496+00:00",
+    "type": "REAL_LOCAL_POSTGRES_REDIS_COMPOSE_DEPLOYMENT",
+    "command": "Get-Content scripts/check_connector_runtime.py -Raw | docker compose -p agrilo-connectors-test -f compose.yaml -f compose.test.yaml --env-file private-data/compose.env exec -T api python -",
+    "checks": {
+      "application_environment": "production",
+      "fixture_exceptions": 0,
+      "database_role": "agrilo_app",
+      "immutable_permissions": {
+        "workspace_events": {
+          "SELECT": true,
+          "INSERT": true,
+          "UPDATE": false,
+          "DELETE": false
+        },
+        "connector_approvals": {
+          "SELECT": true,
+          "INSERT": true,
+          "UPDATE": false,
+          "DELETE": false
+        },
+        "connector_tool_versions": {
+          "SELECT": true,
+          "INSERT": true,
+          "UPDATE": false,
+          "DELETE": false
+        },
+        "connector_integration_versions": {
+          "SELECT": true,
+          "INSERT": true,
+          "UPDATE": false,
+          "DELETE": false
+        },
+        "connector_skill_versions": {
+          "SELECT": true,
+          "INSERT": true,
+          "UPDATE": false,
+          "DELETE": false
+        }
+      },
+      "actual_audit_mutation": "denied with PostgreSQL insufficient_privilege",
+      "live": {
+        "status": "ok",
+        "provider_requests": 0
+      },
+      "ready": {
+        "status": "ready",
+        "dependencies": {
+          "database": "ready",
+          "redis": "ready"
+        },
+        "provider_requests": 0
+      },
+      "egress_policy": "production operator host policy active; private/metadata/fixture/deceptive hosts blocked without contacting them",
+      "checkpoint": "persisted and reloaded through separate PostgreSQL saver sessions as the application role",
+      "redis": "authenticated encrypted payload read successfully",
+      "speech": {
+        "en": {
+          "frames": 32588,
+          "sample_rate": 22050
+        },
+        "am": {
+          "frames": 31644,
+          "sample_rate": 22050
+        }
+      },
+      "inventory_entries": 22,
+      "internal_mcp": "reachable; unauthenticated requests rejected",
+      "deployed_source_sha256": {
+        "src/integrations/safe_http.py": "fc900d79e30f99d4eb395661af1f82a802625cdfb407f8fa19aee5ea7a71e420",
+        "src/tools/executor.py": "d93cfc3ba9c30dba9102813f88f3d5d6f3c53a7e1d238bdb8fea97de78b8369f",
+        "src/agent/companion/graph.py": "8a489a8d1c8e8e77653c3f459e54282c63edcc436db3a9ad50ba1ae96269d506",
+        "src/main.py": "419043fd043a87d1ee84dcf28d05d634bffa8c77914b09564020d7b362f2d281",
+        "src/integrations/schema_translation.py": "9a4789279fcf782b48fb18617f279e007d3af31be25a552ab59457078bf16b1e"
+      }
+    },
+    "provider_requests": 0,
+    "model_requests": 0
+  },
+  "fixture_demo_report": "reports/connector_fixture_demo.json",
+  "historical_inventory": "reports/provider_inventory.json",
+  "earlier_run_journal": [
+    {
+      "artifact": "validation/agri-mcp-baseline.xml",
+      "timestamp": "2026-11-16T10:59:33.077257+03:00",
+      "counts": {
+        "PASSED": 57,
+        "FAILED": 3,
+        "SKIPPED": 0
+      },
+      "duration_seconds": 90.577
+    },
+    {
+      "artifact": "validation/agri-mcp-connectors.xml",
+      "timestamp": "2026-11-16T12:30:07.958145+03:00",
+      "counts": {
+        "PASSED": 47,
+        "FAILED": 1,
+        "SKIPPED": 0
+      },
+      "duration_seconds": 174.182
+    },
+    {
+      "artifact": "validation/agri-mcp-final.xml",
+      "timestamp": "2026-11-16T12:54:16.615467+03:00",
+      "counts": {
+        "PASSED": 124,
+        "FAILED": 0,
+        "SKIPPED": 1
+      },
+      "duration_seconds": 366.694
+    },
+    {
+      "artifact": "validation/agri-mcp-followup.xml",
+      "timestamp": "2026-11-16T12:43:56.582629+03:00",
+      "counts": {
+        "PASSED": 22,
+        "FAILED": 0,
+        "SKIPPED": 0
+      },
+      "duration_seconds": 56.847
+    },
+    {
+      "artifact": "validation/agri-mcp-full.xml",
+      "timestamp": "2026-11-16T12:37:09.588683+03:00",
+      "counts": {
+        "PASSED": 117,
+        "FAILED": 2,
+        "SKIPPED": 0
+      },
+      "duration_seconds": 279.982
+    },
+    {
+      "artifact": "validation/agri-mcp-legacy-mcp.xml",
+      "timestamp": "2026-11-16T11:52:08.362205+03:00",
+      "counts": {
+        "PASSED": 27,
+        "FAILED": 0,
+        "SKIPPED": 0
+      },
+      "duration_seconds": 84.133
+    },
+    {
+      "artifact": "validation/agri-mcp-mcp.xml",
+      "timestamp": "2026-11-16T11:15:13.915563+03:00",
+      "counts": {
+        "PASSED": 0,
+        "FAILED": 1,
+        "SKIPPED": 0
+      },
+      "duration_seconds": 1.649
+    },
+    {
+      "artifact": "validation/agri-mcp-postgres-redis.xml",
+      "timestamp": "2026-11-16T12:58:02.359717+03:00",
+      "counts": {
+        "PASSED": 65,
+        "FAILED": 0,
+        "SKIPPED": 0
+      },
+      "duration_seconds": 234.283
+    },
+    {
+      "artifact": "validation/agri-mcp-postgres.xml",
+      "timestamp": "2026-11-16T12:34:24.205561+03:00",
+      "counts": {
+        "PASSED": 48,
+        "FAILED": 0,
+        "SKIPPED": 0
+      },
+      "duration_seconds": 144.804
+    },
+    {
+      "artifact": "validation/agri-mcp-provenance.xml",
+      "timestamp": "2026-11-16T12:52:08.441348+03:00",
+      "counts": {
+        "PASSED": 59,
+        "FAILED": 0,
+        "SKIPPED": 0
+      },
+      "duration_seconds": 229.61
+    },
+    {
+      "artifact": "validation/agri-mcp-rest.xml",
+      "timestamp": "2026-11-16T11:10:36.565565+03:00",
+      "counts": {
+        "PASSED": 16,
+        "FAILED": 0,
+        "SKIPPED": 0
+      },
+      "duration_seconds": 26.041
+    },
+    {
+      "artifact": "validation/agri-mcp-schema-hardening.xml",
+      "timestamp": "2026-11-16T13:04:10.370682+03:00",
+      "counts": {
+        "PASSED": 47,
+        "FAILED": 0,
+        "SKIPPED": 0
+      },
+      "duration_seconds": 187.807
+    },
+    {
+      "artifact": "validation/agri-mcp-skills.xml",
+      "timestamp": "2026-11-16T11:33:13.129429+03:00",
+      "counts": {
+        "PASSED": 8,
+        "FAILED": 0,
+        "SKIPPED": 0
+      },
+      "duration_seconds": 21.663
+    }
+  ],
+  "resolved_failures": [
+    "Migration expectation updated for additive revision 4.",
+    "SDK fixture list handler corrected to use the installed request signature.",
+    "Credential-cache test corrected: a new authorized credential test can populate its own new-scope cache.",
+    "Missing pinned espeakng-loader dependency restored; real English/Amharic synthesis now passes."
+  ],
+  "blocked": [
+    "MODEL-01: no configured Gemini API key or verified model access; only SDK/model fixtures ran.",
+    "Plantix credential issuance and other inventory entries requiring account access remain outside configured office connections."
+  ],
+  "deferred": [
+    "Bounded OpenAPI importer",
+    "Generic REST pagination",
+    "Interactive OAuth/elicitation/sampling",
+    "Tenant stdio/code plugins",
+    "Private image asset workflow and new Kindwise credit calls",
+    "Instrumented WaPOR raster/range transport",
+    "CHIRPS geometry beyond the historical synthetic Adama fixture",
+    "Full map/PostGIS FieldOps workflows and frontend",
+    "Automatic companion advisory approval/release or external messaging"
+  ],
+  "limitations": [
+    "Final schema hardening rejects regex patterns, quadratic uniqueness checks and unchecked formats; its separate fixture result is included rather than folded into an earlier full-suite count.",
+    "Fixtures do not prove live availability or agronomic accuracy.",
+    "Old report failures are retained as historical execution evidence; only latest runs determine acceptance.",
+    "The live report predates final provenance/audit hardening; final changes were verified with protocol/database fixtures. Its real responses were not fabricated or relabeled.",
+    "Live public checks used a synthetic plot context and real provider evidence. NASA MCP uses LST, not the REST adapter UTC request.",
+    "Actual/estimated monetary costs remain unknown/null unless supplied; request caps are not dollar limits.",
+    "Generic read-only POST and remote implementation behavior require administrator/provider trust.",
+    "Legacy third-party Fetch subprocess HTTP traffic is bounded by its proxy but not individually counted as common-executor attempts.",
+    "SQLite development cannot establish production cross-process revocation locking."
+  ]
+}

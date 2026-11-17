@@ -19,9 +19,9 @@ def public_ip(address):
     return ip.is_global and not ip.is_multicast and not ip.is_reserved
 
 
-def validate_authority(authority):
+def validate_authority(authority, allowed_hosts=ALLOWED_HOSTS):
     host, sep, port = authority.rpartition(":")
-    if not sep or port != "443" or host.lower() not in ALLOWED_HOSTS:
+    if not sep or port != "443" or host.lower() not in allowed_hosts:
         raise ValueError("Public guidance domain or port is not approved")
     return host.lower()
 
@@ -35,7 +35,7 @@ async def public_addresses(host):
 
 
 @asynccontextmanager
-async def egress_proxy():
+async def egress_proxy(allowed_hosts=ALLOWED_HOSTS, *, max_bytes=8 * 1024 * 1024, timeout=60):
     password = secrets.token_hex(24)
     expected = "Basic " + base64.b64encode(("farmly:" + password).encode()).decode()
     async def handle(reader, writer):
@@ -49,7 +49,7 @@ async def egress_proxy():
             auth = next((v for k, v in fields.items() if k.lower() == "proxy-authorization"), "")
             if method != "CONNECT" or not secrets.compare_digest(auth, expected):
                 raise ValueError("Proxy authorization required")
-            host = validate_authority(authority)
+            host = validate_authority(authority, allowed_hosts)
             addresses = await public_addresses(host)
             upstream_reader, upstream = await asyncio.wait_for(asyncio.open_connection(addresses[0], 443), 10)
             writer.write(b"HTTP/1.1 200 Connection Established\r\n\r\n"); await writer.drain()
@@ -58,7 +58,7 @@ async def egress_proxy():
                 nonlocal total
                 while chunk := await source.read(32768):
                     total += len(chunk)
-                    if total > 2 * 1024 * 1024:
+                    if total > max_bytes:
                         raise ValueError("Public document response exceeds limit")
                     target.write(chunk); await target.drain()
             async def tunnel():
@@ -69,7 +69,7 @@ async def egress_proxy():
                 finally:
                     for t in tasks: t.cancel()
                     await asyncio.gather(*tasks, return_exceptions=True)
-            await asyncio.wait_for(tunnel(), 30)
+            await asyncio.wait_for(tunnel(), timeout)
         except Exception:
             if not writer.is_closing():
                 try: writer.write(b"HTTP/1.1 403 Forbidden\r\nContent-Length: 0\r\n\r\n"); await writer.drain()

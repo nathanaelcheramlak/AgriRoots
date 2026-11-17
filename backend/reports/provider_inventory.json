@@ -1,0 +1,706 @@
+{
+  "imported_at_utc": "2026-11-16T09:44:50.397532+00:00",
+  "source_report": "C:\\Users\\fraol\\Documents\\Agri-roots\\f-test\\reports\\results.json",
+  "source_report_sha256": "597312eaeab952616294cc6317193374e89ccb0b263d3b3ad183e0ece5265943",
+  "source_generated_at": "2026-11-16T02:58:40.042914+00:00",
+  "historical_counts": {
+    "WORKING": 9,
+    "AUTH_REQUIRED": 10,
+    "PARTIAL": 2,
+    "NOT_TESTED": 1
+  },
+  "providers": [
+    {
+      "id": "open_meteo",
+      "name": "Open-Meteo",
+      "category": "weather",
+      "historical_verification": {
+        "status": "VERIFIED_LIVE",
+        "verified_at": "2026-11-15T20:21:23.745812+00:00",
+        "http_status": 200,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": true
+        },
+        "limitations": [
+          "Modelled forecast and modelled soil variables; not field sensor measurements."
+        ],
+        "result_digest": "ed3f68c56a9cf4aaae8d8162d069af2ebfafec811940c18d01c828fba60edef1"
+      },
+      "documentation": "https://open-meteo.com/en/docs",
+      "authentication_required": false,
+      "access_notes": "Public non-commercial access; verify limits/attribution",
+      "handler_id": "open_meteo.forecast",
+      "disposition": "REUSED_CONTROLLED_ADAPTER",
+      "blocker": null,
+      "runtime_health": "NOT_TESTED_BY_INVENTORY_IMPORT",
+      "historical_source_path": "C:\\Users\\fraol\\Documents\\Agri-roots\\f-test\\reports\\results.json"
+    },
+    {
+      "id": "nasa_power",
+      "name": "NASA POWER",
+      "category": "weather",
+      "historical_verification": {
+        "status": "VERIFIED_LIVE",
+        "verified_at": "2026-11-15T20:21:24.714167+00:00",
+        "http_status": 200,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": true
+        },
+        "limitations": [
+          "Gridded historical estimates; useful as climate background, not a plot-level rain gauge."
+        ],
+        "result_digest": "c2fcf29ae365bc77d4639022100cd0e0f48cb206bb6603a4474bbec546b15203"
+      },
+      "documentation": "https://power.larc.nasa.gov/docs/services/api/temporal/daily/",
+      "authentication_required": false,
+      "access_notes": "Public; no API key",
+      "handler_id": "nasa_power.history",
+      "disposition": "REUSED_CONTROLLED_ADAPTER",
+      "blocker": null,
+      "runtime_health": "NOT_TESTED_BY_INVENTORY_IMPORT",
+      "historical_source_path": "C:\\Users\\fraol\\Documents\\Agri-roots\\f-test\\reports\\results.json"
+    },
+    {
+      "id": "chirps",
+      "name": "CHIRPS / ClimateSERV",
+      "category": "weather",
+      "historical_verification": {
+        "status": "VERIFIED_LIVE",
+        "verified_at": "2026-11-15T20:21:26.791689+00:00",
+        "http_status": 200,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": true
+        },
+        "limitations": [
+          "Small synthetic polygon near Adama, regardless of --location; asynchronous CHIRPS daily spatial averages in mm."
+        ],
+        "result_digest": "72955981b9f5969218569361e132f920524dcab18c771da9b6a7c1d504bbc4f7"
+      },
+      "documentation": "https://climateserv.readthedocs.io/en/latest/api.html",
+      "authentication_required": false,
+      "access_notes": "Public processing; respect capacity",
+      "handler_id": "chirps.rainfall_history",
+      "disposition": "REUSED_CONTROLLED_ADAPTER",
+      "blocker": null,
+      "runtime_health": "NOT_TESTED_BY_INVENTORY_IMPORT",
+      "historical_source_path": "C:\\Users\\fraol\\Documents\\Agri-roots\\f-test\\reports\\results.json"
+    },
+    {
+      "id": "isda_soil",
+      "name": "iSDAsoil",
+      "category": "soil",
+      "historical_verification": {
+        "status": "VERIFIED_LIVE",
+        "verified_at": "2026-11-16T02:15:15.982430+00:00",
+        "http_status": 200,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": true
+        },
+        "limitations": [
+          "Returned clay, sand and silt sum to 93%; retained unchanged rather than normalized.",
+          "Mapped soil estimates and uncertainty, not a laboratory sample. Preserve provider units/transforms.",
+          "The property response does not echo coordinates or provide a measurement date; Ethiopian applicability is established by the exact requested coordinates, not independent geolocation or a current field observation."
+        ],
+        "result_digest": "8a412ea7d59ac3ea2fb46cad3e8fa41af8d7ad2625256ee332040cd33a83fab1"
+      },
+      "documentation": "https://www.isda-africa.com/isdasoil/developer/",
+      "authentication_required": true,
+      "access_notes": "Registration required; verify licence",
+      "handler_id": "isda.soil_profile",
+      "disposition": "REUSED_CONTROLLED_ADAPTER",
+      "blocker": null,
+      "runtime_health": "NOT_TESTED_BY_INVENTORY_IMPORT",
+      "historical_source_path": "C:\\Users\\fraol\\Documents\\Agri-roots\\f-test\\reports\\results.json"
+    },
+    {
+      "id": "fao_wapor",
+      "name": "FAO WaPOR",
+      "category": "soil",
+      "historical_verification": {
+        "status": "VERIFIED_LIVE",
+        "verified_at": "2026-11-15T20:21:35.507769+00:00",
+        "http_status": 200,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": true
+        },
+        "limitations": [
+          "COG point extraction requires rasterio/GDAL; only a pixel and required tiles/indexes are read. Catalogue page is not guaranteed to contain the globally latest raster."
+        ],
+        "result_digest": "d1075fc2407f0751fe9e5b137ef8ff8ba1ca9c310561fa9ac29f7f1a4e13a70d"
+      },
+      "documentation": "https://www.fao.org/in-action/remote-sensing-for-water-productivity/wapor-data-access/en",
+      "authentication_required": false,
+      "access_notes": "WaPOR v3 public API; no credentials",
+      "handler_id": null,
+      "disposition": "INVENTORIED_DISABLED",
+      "blocker": "Historical raster verification retained; instrumented/budgeted range transport is not yet implemented.",
+      "runtime_health": "NOT_TESTED_BY_INVENTORY_IMPORT",
+      "historical_source_path": "C:\\Users\\fraol\\Documents\\Agri-roots\\f-test\\reports\\results.json"
+    },
+    {
+      "id": "copernicus",
+      "name": "Copernicus Sentinel Hub",
+      "category": "satellite",
+      "historical_verification": {
+        "status": "AUTH_REQUIRED",
+        "verified_at": "2026-11-15T20:21:44.694600+00:00",
+        "http_status": null,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": null
+        },
+        "limitations": [],
+        "result_digest": "03f885c92c220489622c4497ae76ba4bd569af117cb2bcc298f016d2a1b3683c"
+      },
+      "documentation": "https://documentation.dataspace.copernicus.eu/APIs/SentinelHub/Statistical.html",
+      "authentication_required": true,
+      "access_notes": "Account and processing quota; no paid activation by this suite",
+      "handler_id": null,
+      "disposition": "INVENTORIED_DISABLED",
+      "blocker": "Not configured: COPERNICUS_CLIENT_ID, COPERNICUS_CLIENT_SECRET",
+      "runtime_health": "NOT_TESTED_BY_INVENTORY_IMPORT",
+      "historical_source_path": "C:\\Users\\fraol\\Documents\\Agri-roots\\f-test\\reports\\results.json"
+    },
+    {
+      "id": "fao_fpma",
+      "name": "FAO FPMA",
+      "category": "markets",
+      "historical_verification": {
+        "status": "VERIFIED_LIVE",
+        "verified_at": "2026-11-15T20:21:44.854773+00:00",
+        "http_status": 200,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": true
+        },
+        "limitations": [
+          "Latest retrieved observation: 2026-10-15; market prices can lag and are not farm-gate quotes. Returned 272 observations; reports retain the last five."
+        ],
+        "result_digest": "88dc8e6014d8e0fb80f80cf1876600f8ce6f0e711e00dc214d23da4c6e38fba5"
+      },
+      "documentation": "https://fpma-documentation.web.app/docs/api-docs/series-price/",
+      "authentication_required": false,
+      "access_notes": "Public read-only price API",
+      "handler_id": "fpma.ethiopia_prices",
+      "disposition": "REUSED_CONTROLLED_ADAPTER",
+      "blocker": null,
+      "runtime_health": "NOT_TESTED_BY_INVENTORY_IMPORT",
+      "historical_source_path": "C:\\Users\\fraol\\Documents\\Agri-roots\\f-test\\reports\\results.json"
+    },
+    {
+      "id": "nasa_power_mcp",
+      "name": "NASA POWER public MCP",
+      "category": "weather",
+      "historical_verification": {
+        "status": "VERIFIED_LIVE",
+        "verified_at": "2026-11-15T20:21:46.924595+00:00",
+        "http_status": 200,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": true
+        },
+        "limitations": [
+          "Live get_daily_data rejected the documented multi-day example with a maximum-one-day error. This probe uses one day and records REST/MCP availability separately."
+        ],
+        "result_digest": "448d46a452f68334d6d3945807e7b36027b8b56852e8c2b45c4b55c992f76d71"
+      },
+      "documentation": "https://power.larc.nasa.gov/docs/services/super-intelligence/mcp/",
+      "authentication_required": false,
+      "access_notes": "Public; no API key",
+      "handler_id": null,
+      "disposition": "INVENTORIED_DISABLED",
+      "blocker": "Historical manual-protocol result retained. Official-SDK verification is recorded separately in connector_live_results.json; no office connection is enabled by importing it.",
+      "runtime_health": "NOT_TESTED_BY_INVENTORY_IMPORT",
+      "historical_source_path": "C:\\Users\\fraol\\Documents\\Agri-roots\\f-test\\reports\\results.json"
+    },
+    {
+      "id": "fao_gaez",
+      "name": "FAO GAEZ",
+      "category": "soil",
+      "historical_verification": {
+        "status": "PARTIAL",
+        "verified_at": "2026-11-15T20:21:51.232644+00:00",
+        "http_status": 200,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": null
+        },
+        "limitations": [
+          "A documented search API exists, so this is not classified as a failed REST API or dataset-only portal. Coverage of usable pixels remains unconfirmed."
+        ],
+        "result_digest": "419310212a1ee4270c62964b0134fe717a0cb3b0e445e2245a2ebc9a57d6625d"
+      },
+      "documentation": "https://gaez.fao.org/api/search/definition/",
+      "authentication_required": false,
+      "access_notes": "Public catalogue; verify dataset terms",
+      "handler_id": null,
+      "disposition": "INVENTORIED_DISABLED",
+      "blocker": "Catalog metadata only; numerical suitability extraction was not established.",
+      "runtime_health": "NOT_TESTED_BY_INVENTORY_IMPORT",
+      "historical_source_path": "C:\\Users\\fraol\\Documents\\Agri-roots\\f-test\\reports\\results.json"
+    },
+    {
+      "id": "google_earth_engine",
+      "name": "Google Earth Engine",
+      "category": "satellite",
+      "historical_verification": {
+        "status": "AUTH_REQUIRED",
+        "verified_at": "2026-11-15T20:21:52.968827+00:00",
+        "http_status": null,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": null
+        },
+        "limitations": [],
+        "result_digest": "8771bc4947e9fa8dad6001ed997b0cf8c85a10efbd7a494cf5e3e4be78153c31"
+      },
+      "documentation": "https://developers.google.com/earth-engine/guides/auth",
+      "authentication_required": true,
+      "access_notes": "Registered project and eligible access required",
+      "handler_id": null,
+      "disposition": "INVENTORIED_DISABLED",
+      "blocker": "Not configured: EE_PROJECT, EARTH_ENGINE_CREDENTIALS",
+      "runtime_health": "NOT_TESTED_BY_INVENTORY_IMPORT",
+      "historical_source_path": "C:\\Users\\fraol\\Documents\\Agri-roots\\f-test\\reports\\results.json"
+    },
+    {
+      "id": "fao_asis",
+      "name": "FAO ASIS",
+      "category": "satellite",
+      "historical_verification": {
+        "status": "PARTIAL",
+        "verified_at": "2026-11-15T20:23:03.202337+00:00",
+        "http_status": 403,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": null
+        },
+        "limitations": [
+          "Converted catalogue gs:// object URI to Google-documented public HTTPS download form; no credentials or access restrictions bypassed."
+        ],
+        "result_digest": "486ca142a87a4c070b9c3309e9d3339878d4773e59efb81dc1305c55aabcd172"
+      },
+      "documentation": "https://www.fao.org/giews/earthobservation/access.jsp",
+      "authentication_required": false,
+      "access_notes": "Public datasets; attribution and FAO terms",
+      "handler_id": null,
+      "disposition": "INVENTORIED_DISABLED",
+      "blocker": "Historical catalog access succeeded, but raster access returned HTTP 403.",
+      "runtime_health": "NOT_TESTED_BY_INVENTORY_IMPORT",
+      "historical_source_path": "C:\\Users\\fraol\\Documents\\Agri-roots\\f-test\\reports\\results.json"
+    },
+    {
+      "id": "deepleaf",
+      "name": "DeepLeaf",
+      "category": "diagnosis",
+      "historical_verification": {
+        "status": "AUTH_REQUIRED",
+        "verified_at": "2026-11-15T20:21:55.890495+00:00",
+        "http_status": null,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": null
+        },
+        "limitations": [
+          "The provider-linked https://docs.deepleaf.io/agronomist-api returned HTTP 404 during research. A diagnosis endpoint/schema could not be verified; no endpoint was invented."
+        ],
+        "result_digest": "d7da3a1ef703a3c57db0475a3ac72cb9d167777ce52c436d3395c33ede05bf42"
+      },
+      "documentation": "https://deepleaf.org/en/platform/api",
+      "authentication_required": true,
+      "access_notes": "Provider access/credits must be confirmed",
+      "handler_id": null,
+      "disposition": "INVENTORIED_DISABLED",
+      "blocker": "Not configured: DEEPLEAF_API_KEY",
+      "runtime_health": "NOT_TESTED_BY_INVENTORY_IMPORT",
+      "historical_source_path": "C:\\Users\\fraol\\Documents\\Agri-roots\\f-test\\reports\\results.json"
+    },
+    {
+      "id": "kindwise",
+      "name": "Kindwise Crop.health",
+      "category": "diagnosis",
+      "historical_verification": {
+        "status": "VERIFIED_LIVE",
+        "verified_at": "2026-11-16T02:57:52.193490+00:00",
+        "http_status": 201,
+        "scope": {
+          "image_sha256": "d6cf7a8bc0069f3aa08ac89ace1c2a90b3645238f3576dafb875d7224c37baa4",
+          "ethiopia_data_available": null,
+          "input_provenance": {
+            "source_url": "https://raw.githubusercontent.com/flowerchecker/crop-health-examples/master/images/example.jpg",
+            "source_repository": "https://github.com/flowerchecker/crop-health-examples",
+            "purpose": "Provider-published real crop photograph used as a single API smoke-test input; not an Ethiopian field validation.",
+            "downloaded_at_utc": "2026-11-16T02:55:35.636733+00:00",
+            "http_status": 200,
+            "bytes": 209765,
+            "sha256": "d6cf7a8bc0069f3aa08ac89ace1c2a90b3645238f3576dafb875d7224c37baa4"
+          },
+          "note": "Provider-published photo; no Ethiopian field accuracy established."
+        },
+        "limitations": [
+          "A successful photo request tests schema and predictions, not clinical accuracy or Ethiopian field validation. No sample-image origin was assumed.",
+          "Input is the provider-published images/example.jpg. Its field location is unknown. The default suite point/date in the report scope were not sent with this photo request."
+        ],
+        "result_digest": "28bdb59090e710fd8ec48e4b26d72ce38c3945f637bd5132604d498ed61bc39a"
+      },
+      "documentation": "https://github.com/flowerchecker/crop-health-examples",
+      "authentication_required": true,
+      "access_notes": "Trial credits require registration; one request can consume credit",
+      "handler_id": null,
+      "disposition": "INVENTORIED_DISABLED",
+      "blocker": "One historical crop-photo call verified. New calls require the separate authorized asset workflow and credit-use permission.",
+      "runtime_health": "NOT_TESTED_BY_INVENTORY_IMPORT",
+      "historical_source_path": "C:\\Users\\fraol\\Documents\\Agri-roots\\f-test\\reports\\results.json"
+    },
+    {
+      "id": "plantix",
+      "name": "Plantix Intelligence",
+      "category": "diagnosis",
+      "historical_verification": {
+        "status": "AUTH_REQUIRED",
+        "verified_at": "2026-11-15T20:21:56.573050+00:00",
+        "http_status": null,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": null
+        },
+        "limitations": [],
+        "result_digest": "86216ade00cf3928c9ade6e5d870ac98429a758f3fe09fbe66e051da2c10aa28"
+      },
+      "documentation": "https://plantix.net/en/plantix-intelligence/api-toolkit/",
+      "authentication_required": true,
+      "access_notes": "Partner API access; terms unverified",
+      "handler_id": null,
+      "disposition": "INVENTORIED_DISABLED",
+      "blocker": "Access request submitted; no issued API credential is configured.",
+      "runtime_health": "NOT_TESTED_BY_INVENTORY_IMPORT",
+      "historical_source_path": "C:\\Users\\fraol\\Documents\\Agri-roots\\f-test\\reports\\results.json"
+    },
+    {
+      "id": "fao_locust",
+      "name": "FAO Locust Hub",
+      "category": "pests",
+      "historical_verification": {
+        "status": "VERIFIED_LIVE",
+        "verified_at": "2026-11-15T20:23:05.626480+00:00",
+        "http_status": 200,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": true
+        },
+        "limitations": [
+          "Historical/public observations, not a current warning or prediction. The bbox alone includes neighbouring territory; country coverage is confirmed only when an Ethiopia country field is returned."
+        ],
+        "result_digest": "c5076eb5cdfa5976d3810a4881a8bf18c38ae83a819bb58acaef4b9dba1747f0"
+      },
+      "documentation": "https://locust-hub-hqfao.hub.arcgis.com/",
+      "authentication_required": false,
+      "access_notes": "Public ArcGIS read access",
+      "handler_id": "fao.locust_observations",
+      "disposition": "REUSED_CONTROLLED_ADAPTER",
+      "blocker": null,
+      "runtime_health": "NOT_TESTED_BY_INVENTORY_IMPORT",
+      "historical_source_path": "C:\\Users\\fraol\\Documents\\Agri-roots\\f-test\\reports\\results.json"
+    },
+    {
+      "id": "eppo",
+      "name": "EPPO Global Database",
+      "category": "pests",
+      "historical_verification": {
+        "status": "AUTH_REQUIRED",
+        "verified_at": "2026-11-15T20:22:02.656344+00:00",
+        "http_status": null,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": null
+        },
+        "limitations": [],
+        "result_digest": "f2df5eb75a5ed52f41e36120a4402ca47b074e63147a0f805c08a0fd88b9f13a"
+      },
+      "documentation": "https://data.eppo.int/apis/",
+      "authentication_required": true,
+      "access_notes": "Account, token, and open licence acceptance",
+      "handler_id": null,
+      "disposition": "INVENTORIED_DISABLED",
+      "blocker": "Not configured: EPPO_API_TOKEN",
+      "runtime_health": "NOT_TESTED_BY_INVENTORY_IMPORT",
+      "historical_source_path": "C:\\Users\\fraol\\Documents\\Agri-roots\\f-test\\reports\\results.json"
+    },
+    {
+      "id": "cabi",
+      "name": "CABI PMDG",
+      "category": "pests",
+      "historical_verification": {
+        "status": "AUTH_REQUIRED",
+        "verified_at": "2026-11-15T20:22:02.936486+00:00",
+        "http_status": null,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": null
+        },
+        "limitations": [],
+        "result_digest": "2a00750094b85bfc766acabe55f237aa450992c1d6bd8bf36179e70d7d1f6a85"
+      },
+      "documentation": "https://docs-aws.cabi.org/pmdg/",
+      "authentication_required": true,
+      "access_notes": "Partner key and country/content entitlements",
+      "handler_id": null,
+      "disposition": "INVENTORIED_DISABLED",
+      "blocker": "Not configured: CABI_API_KEY",
+      "runtime_health": "NOT_TESTED_BY_INVENTORY_IMPORT",
+      "historical_source_path": "C:\\Users\\fraol\\Documents\\Agri-roots\\f-test\\reports\\results.json"
+    },
+    {
+      "id": "wfp_prices",
+      "name": "WFP / HDX HAPI",
+      "category": "markets",
+      "historical_verification": {
+        "status": "AUTH_REQUIRED",
+        "verified_at": "2026-11-15T20:22:03.215479+00:00",
+        "http_status": null,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": null
+        },
+        "limitations": [],
+        "result_digest": "9b7f1603dbb02f89db0b4d529d02b676aca8813711b59fdf823d8dbe870a4785"
+      },
+      "documentation": "https://hdx-hapi.readthedocs.io/en/latest/getting-started/",
+      "authentication_required": true,
+      "access_notes": "Public data with an application identifier",
+      "handler_id": null,
+      "disposition": "INVENTORIED_DISABLED",
+      "blocker": "Not configured: HAPI_APP_IDENTIFIER",
+      "runtime_health": "NOT_TESTED_BY_INVENTORY_IMPORT",
+      "historical_source_path": "C:\\Users\\fraol\\Documents\\Agri-roots\\f-test\\reports\\results.json"
+    },
+    {
+      "id": "openrouteservice",
+      "name": "OpenRouteService",
+      "category": "markets",
+      "historical_verification": {
+        "status": "AUTH_REQUIRED",
+        "verified_at": "2026-11-15T20:22:03.576972+00:00",
+        "http_status": null,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": null
+        },
+        "limitations": [],
+        "result_digest": "17f7ba02d8a11c8d3bd56875452db9be63f43161b222ccbd9f4f069ce658d16d"
+      },
+      "documentation": "https://giscience.github.io/openrouteservice/api-reference/endpoints/directions/",
+      "authentication_required": true,
+      "access_notes": "API key and quota required",
+      "handler_id": null,
+      "disposition": "INVENTORIED_DISABLED",
+      "blocker": "Not configured: OPENROUTESERVICE_API_KEY",
+      "runtime_health": "NOT_TESTED_BY_INVENTORY_IMPORT",
+      "historical_source_path": "C:\\Users\\fraol\\Documents\\Agri-roots\\f-test\\reports\\results.json"
+    },
+    {
+      "id": "kobotoolbox",
+      "name": "KoboToolbox",
+      "category": "field_operations",
+      "historical_verification": {
+        "status": "AUTH_REQUIRED",
+        "verified_at": "2026-11-15T20:22:03.949585+00:00",
+        "http_status": null,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": null
+        },
+        "limitations": [],
+        "result_digest": "0598320ee3eaa3fc4e09168f517ab0369a17777d4a1696e03cb494462318e630"
+      },
+      "documentation": "https://support.kobotoolbox.org/api.html",
+      "authentication_required": true,
+      "access_notes": "Account/server plan terms apply",
+      "handler_id": null,
+      "disposition": "INVENTORIED_DISABLED",
+      "blocker": "Not configured: KOBO_API_TOKEN",
+      "runtime_health": "NOT_TESTED_BY_INVENTORY_IMPORT",
+      "historical_source_path": "C:\\Users\\fraol\\Documents\\Agri-roots\\f-test\\reports\\results.json"
+    },
+    {
+      "id": "odk_central",
+      "name": "ODK Central",
+      "category": "field_operations",
+      "historical_verification": {
+        "status": "NOT_TESTED",
+        "verified_at": "2026-11-15T20:22:04.258652+00:00",
+        "http_status": null,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": null
+        },
+        "limitations": [],
+        "result_digest": "3e5d9ef8f7f9f3c977fbe9a6dd79dde65af104b69efd19b8560bdb3cf7bb2d9e"
+      },
+      "documentation": "https://docs.getodk.org/central-api-project-management/",
+      "authentication_required": true,
+      "access_notes": "Your configured server and account",
+      "handler_id": null,
+      "disposition": "INVENTORIED_DISABLED",
+      "blocker": "ODK_BASE_URL is not configured; no public Central server is assumed.",
+      "runtime_health": "NOT_TESTED_BY_INVENTORY_IMPORT",
+      "historical_source_path": "C:\\Users\\fraol\\Documents\\Agri-roots\\f-test\\reports\\results.json"
+    },
+    {
+      "id": "africas_talking",
+      "name": "Africa's Talking",
+      "category": "field_operations",
+      "historical_verification": {
+        "status": "AUTH_REQUIRED",
+        "verified_at": "2026-11-15T20:22:04.535348+00:00",
+        "http_status": null,
+        "scope": {
+          "point": {
+            "name": "Adama",
+            "latitude": 8.54,
+            "longitude": 39.27
+          },
+          "historical_start": "2025-07-01",
+          "historical_end": "2025-07-07",
+          "ethiopia_data_available": null
+        },
+        "limitations": [],
+        "result_digest": "045d5b592511fa5886c3bacadc98232348a76e3a8e8329c9f8167e44081d912a"
+      },
+      "documentation": "https://github.com/AfricasTalkingLtd/africastalking-python",
+      "authentication_required": true,
+      "access_notes": "Sandbox credentials required; no SMS requests",
+      "handler_id": null,
+      "disposition": "INVENTORIED_DISABLED",
+      "blocker": "Outbound delivery is not exposed to the companion. Sandbox diagnostics remain separate.",
+      "runtime_health": "NOT_TESTED_BY_INVENTORY_IMPORT",
+      "historical_source_path": "C:\\Users\\fraol\\Documents\\Agri-roots\\f-test\\reports\\results.json"
+    }
+  ],
+  "note": "This file imports previously recorded evidence. It neither executes nor enables providers and contains no credentials."
+}

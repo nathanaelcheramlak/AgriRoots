@@ -1,0 +1,17 @@
+# Optional: edit this operator-owned file to admit/revoke exact public hosts without restarting workers.
+services:
+  api:
+    environment:
+      OUTBOUND_HOSTS_POLICY_FILE: /app/operator/outbound-hosts.json
+    volumes:
+      - ./private-data/outbound-hosts.json:/app/operator/outbound-hosts.json:ro
+  worker:
+    environment:
+      OUTBOUND_HOSTS_POLICY_FILE: /app/operator/outbound-hosts.json
+    volumes:
+      - ./private-data/outbound-hosts.json:/app/operator/outbound-hosts.json:ro
+  mcp:
+    environment:
+      OUTBOUND_HOSTS_POLICY_FILE: /app/operator/outbound-hosts.json
+    volumes:
+      - ./private-data/outbound-hosts.json:/app/operator/outbound-hosts.json:ro
