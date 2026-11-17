@@ -90,6 +90,9 @@ class IntegrationService:
             raise ConnectorError("NOT_FOUND", "Object was not found in the authenticated office")
         if cls is ConnectorJob and row.request.get("plot_ids"):
             authorized_plots(self.db, self.principal, row.request["plot_ids"])
+        if cls is ConnectorJob and row.request.get("territory_id"):
+            from src.registry.access import require_territory
+            require_territory(self.db, self.principal, row.request["territory_id"])
         from src.db.models.workspace import WorkspaceRecord
         if cls is WorkspaceRecord:
             from src.registry.access import guard_record

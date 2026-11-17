@@ -1,25 +1,26 @@
 """Persistent, bounded Gemini/tool loop with source checks and pinned registry versions."""
 
 import asyncio
-from contextlib import asynccontextmanager
 import json
 import math
-from pathlib import Path
 import re
+from contextlib import asynccontextmanager
+from pathlib import Path
 from typing import TypedDict
 
-from langgraph.graph import StateGraph, END
+from langgraph.graph import END, StateGraph
 from langsmith import tracing_context
 from sqlalchemy.engine import make_url
 
+from src.agent.companion.environment_policy import environment_prompt, scope_environment_snapshot
 from src.config.settings import get_settings
+from src.db.models.connectors import ConnectorJob, ExecutionBudget, RegisteredSkill
 from src.db.session import SessionLocal
-from src.db.models.connectors import ConnectorJob, RegisteredSkill, ExecutionBudget
-from src.integrations.contracts import ConnectorError, utc, now
-from src.integrations.llm.companion_model import model_provider, function_response
+from src.integrations.contracts import ConnectorError, now, utc
+from src.integrations.llm.companion_model import function_response, model_provider
 from src.skills.service import pack_allows
-from src.tools.policy import principal_for, authorized_plots
 from src.tools.executor import ToolExecutor
+from src.tools.policy import authorized_locations, principal_for
 
 SYSTEM = """You are AgriLo, an agricultural evidence companion for an extension officer.
 Use only the supplied approved function aliases. Function proposals do not grant permission.
@@ -69,12 +70,25 @@ async def checkpointer():
 def validate_claims(text, outcomes, *, context_ids=()):
     evidence = {ident for item in outcomes for ident in item.get("evidence_ids", [])}
     authorized_context = set(context_ids)
-    mentioned = set(re.findall(r"\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b", text, re.I))
+    mentioned = set(
+        re.findall(r"\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b", text, re.IGNORECASE)
+    )
     if evidence and not mentioned.intersection(evidence):
         raise ConnectorError("OUTPUT_VALIDATION_FAILED", "The answer must cite evidence from this run")
     if not mentioned <= evidence | authorized_context:
         raise ConnectorError("OUTPUT_VALIDATION_FAILED", "Model cited an evidence ID absent from this run")
-    haystack = json.dumps([{ "data": item.get("data"), "source": item.get("source")} for item in outcomes])
+    haystack = json.dumps(
+        [
+            {
+                "data": item.get("data"),
+                "source": item.get("source"),
+                "retrieved_at": item.get("retrieved_at"),
+                "observed_at": item.get("observed_at"),
+                "valid_time_range": item.get("valid_time_range"),
+            }
+            for item in outcomes
+        ]
+    )
     numbers = [float(n) for n in re.findall(r"(?<![\w])[+-]?\d+(?:\.\d+)?(?![\w])", haystack)]
     stripped = text
     for ident in evidence | authorized_context:
@@ -86,25 +100,49 @@ def validate_claims(text, outcomes, *, context_ids=()):
             raise ConnectorError(
                 "OUTPUT_VALIDATION_FAILED", "Model used a numerical value absent from validated tool results"
             )
-    if re.search(r"\b(guaranteed yield|confirmed diagnosis|apply .{0,30}(?:pesticide|fungicide))\b", text, re.I):
+    # Explicit uncertainty statements must not be mistaken for confirmed diagnoses.
+    claim_text = re.sub(r"[*_`]", "", text)
+    consequential = re.sub(
+        r"\b(?:not|never)\s+(?:a\s+)?confirmed diagnos(?:is|es)\b",
+        "uncertain photo assessment",
+        claim_text,
+        flags=re.IGNORECASE,
+    )
+    if re.search(
+        r"\b(guaranteed yield|confirmed diagnosis|apply .{0,30}(?:pesticide|fungicide))\b", consequential, re.IGNORECASE
+    ):
         raise ConnectorError("OUTPUT_VALIDATION_FAILED", "Response contains an unsupported consequential claim")
 
 
 async def execute_skill_job(job, principal, lease_token, *, model=None):
     settings = get_settings()
     snapshot = job.snapshot
-    tools = snapshot["tools"]
+    environment_only = settings.cloud_model_data_policy == "environment_only"
+    if environment_only:
+        snapshot = scope_environment_snapshot(snapshot)
+    tools = [] if job.request.get("evidence_job_id") else snapshot["tools"]
     aliases = {tool["alias"]: tool for tool in tools}
     request = job.request
     with SessionLocal() as db:
         current = principal_for(db, principal.user_id)
-        plots = authorized_plots(db, current, request.get("plot_ids", []))
+        evidence_outcomes = []
+        if request.get("evidence_job_id"):
+            from src.skills.demo import evidence_source
+
+            evidence_outcomes = evidence_source(db, current, request["evidence_job_id"], job.target_id).result[
+                "outcomes"
+            ]
+        plots = authorized_locations(db, current, request.get("plot_ids", []), request.get("territory_id"))
         if settings.llm_provider == "gemini" and model is None:
             if not request.get("authorize_model"):
                 raise ConnectorError("POLICY_DENIED", "This run did not authorize a cloud-model request")
             if settings.cloud_model_data_policy == "synthetic_only" and any(not plot["synthetic"] for plot in plots):
                 raise ConnectorError("POLICY_DENIED", "Cloud model policy permits synthetic plot contexts only")
-            if re.search(r"\b[\w.+-]+@[\w.-]+\.[a-z]{2,}\b|(?:\+?251|09|07)\d{8,10}", request["task"] + " " + json.dumps(request.get("parameters", {})), re.I):
+            if re.search(
+                r"\b[\w.+-]+@[\w.-]+\.[a-z]{2,}\b|(?:\+?251|09|07)\d{8,10}",
+                request["task"] + " " + json.dumps(request.get("parameters", {})),
+                re.IGNORECASE,
+            ):
                 raise ConnectorError("POLICY_DENIED", "Remove personal contact information from the model task")
     owns_model = model is None
     active_model = model or model_provider()
@@ -131,20 +169,22 @@ async def execute_skill_job(job, principal, lease_token, *, model=None):
                     "CANCELLED", "Run permission, skill enablement or worker lease is no longer current"
                 )
             pack_allows(db, principal.office_id, skill.id, "skills")
-            authorized_plots(db, actor, request.get("plot_ids", []))
+            authorized_locations(db, actor, request.get("plot_ids", []), request.get("territory_id"))
 
     async def prepare(state):
         reauthorize()
         if state.get("messages"):
             return {}
-        return {
+        prepared = {
             "messages": [
                 {
                     "role": "user",
                     "parts": [
                         {
                             "text": json.dumps(
-                                {
+                                environment_prompt(request, plots, snapshot)
+                                if environment_only
+                                else {
                                     "task": request["task"],
                                     "parameters": request.get("parameters", {}),
                                     "image_attached": bool(request.get("image_asset_id")),
@@ -168,6 +208,12 @@ async def execute_skill_job(job, principal, lease_token, *, model=None):
             "completed_steps": {},
         }
 
+        if evidence_outcomes:
+            prepared["outcomes"] = evidence_outcomes
+            for outcome in evidence_outcomes:
+                prepared["messages"].append(function_response("saved_evidence", outcome))
+        return prepared
+
     async def propose(state):
         reauthorize()
         prompt = (
@@ -175,6 +221,10 @@ async def execute_skill_job(job, principal, lease_token, *, model=None):
             + "\nReviewed skill instructions (subordinate to system policy):\n"
             + snapshot["manifest"]["instructions"]
         )
+        if environment_only and not evidence_outcomes:
+            prompt += "\nFetch each provided weather/soil tool before answering. Explain only its environmental evidence, dates, units and limitations. Soil is a mapped estimate, not a soil forecast. Do not infer farmer details, locations, crop suitability or planting recommendations. Cite evidence IDs."
+        if evidence_outcomes:
+            prompt += "\nThis phase explains previously collected evidence; image and provider credit authorization are unnecessary because no tools or images will be submitted. Explain the supplied saved evidence only; do not call tools or assess the photo again. Offer cautious low-risk crop-care guidance and field checks, clearly labelled as general guidance, not a confirmed diagnosis or pesticide prescription. You may discuss general crop considerations but must not rank or promise crop suitability from a photo or rainfall alone. For rainfall use the precomputed total and summarize patterns; the UI already shows every daily value so do not repeat the daily list. Use provided confidence_percent when quoting percentages. Do not round other numbers or make new calculations. Never invent thresholds, doses, measured conditions or guarantees. Cite evidence IDs. Keep the complete answer under 250 words, including practical next steps and limitations."
         output = await active_model.generate(state["messages"], tools, prompt)
         usage = [*state["usage"], output.get("usage", {})]
         repairs = state.get("repairs", 0)
@@ -287,11 +337,23 @@ async def execute_skill_job(job, principal, lease_token, *, model=None):
             compiled = graph.compile(checkpointer=saver)
             config = {"configurable": {"thread_id": job.id}, "recursion_limit": 20}
             existing = await compiled.aget_state(config)
+            if environment_only and existing.values:
+                try:
+                    original = json.loads(existing.values["messages"][0]["parts"][0]["text"])
+                except (KeyError, IndexError, TypeError, ValueError):
+                    original = {}
+                if original.get("data_policy") != "environment_only":
+                    raise ConnectorError(
+                        "POLICY_DENIED", "Start a new weather/soil investigation under the current data policy"
+                    )
             with tracing_context(enabled=False):
                 state = await compiled.ainvoke(None if existing.values else {}, config)
         outcomes = state.get("outcomes", [])
         evidence = list(dict.fromkeys(ident for result in outcomes for ident in result.get("evidence_ids", [])))
-        partial = not evidence or any(result["execution_outcome"] != "SUCCESS" or result.get("data_outcome") not in ("VALID", "UNSTRUCTURED") for result in outcomes)
+        partial = not evidence or any(
+            result["execution_outcome"] != "SUCCESS" or result.get("data_outcome") not in ("VALID", "UNSTRUCTURED")
+            for result in outcomes
+        )
         return {
             "status": "partial" if partial else "completed",
             "answer": state["final_text"],

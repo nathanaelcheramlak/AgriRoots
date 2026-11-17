@@ -1,8 +1,7 @@
 """Only operator-reviewed handler identifiers resolve to Python functions."""
 
 from src.integrations.contracts import ConnectorError, ToolSpec
-from src.providers import agriculture
-from src.providers import references, environment, earth_engine
+from src.providers import agriculture, earth_engine, environment, references
 
 HANDLERS = {
     "open_meteo.forecast": {
@@ -34,6 +33,7 @@ HANDLERS = {
         "auth": "none",
         "coordinates": True,
         "dates": True,
+        "sampling_revision": "0.05-degree representative-point box; complete daily series with recorded monthly summary",
     },
     "fpma.ethiopia_prices": {
         "base_url": "https://fpma.fao.org",
@@ -51,32 +51,89 @@ HANDLERS = {
     },
 }
 
-HANDLERS.update({
-    "eppo.names": {"base_url": "https://api.eppo.int", "call": references.eppo,
-                   "capability": "pests.taxonomy", "auth": "provider", "coordinates": False,
-                   "properties": {"eppo_code": {"type": "string", "minLength": 5, "maxLength": 6}}, "required": ["eppo_code"]},
-    "hapi.ethiopia_prices": {"base_url": "https://hapi.humdata.org", "call": references.hapi,
-                   "capability": "market.wfp_prices", "auth": "provider", "coordinates": False, "dates": True},
-    "ors.driving_route": {"base_url": "https://api.heigit.org", "call": references.route,
-                   "capability": "logistics.route", "auth": "provider", "coordinates": False, "geo": True,
-                   "properties": {k: {"type": "string", "minLength": 36, "maxLength": 36} for k in ("from_plot_id", "to_plot_id")},
-                   "required": ["from_plot_id", "to_plot_id"]},
-    "kindwise.diagnosis": {"base_url": "https://crop.kindwise.com", "call": references.kindwise,
-                   "capability": "crop.diagnosis", "auth": "provider", "coordinates": False, "image": True,
-                   "properties": {"image_asset_id": {"type": "string", "minLength": 36, "maxLength": 36}},
-                   "required": ["image_asset_id"]},
-    "gaez.maize_suitability": {"base_url": "https://storage.googleapis.com", "call": environment.gaez,
-                   "capability": "crop.maize_suitability", "auth": "none", "coordinates": True, "binary": True},
-    "wapor.evapotranspiration": {"base_url": "https://data.apps.fao.org", "call": environment.wapor,
-                   "capability": "water.evapotranspiration", "auth": "none", "coordinates": True, "dates": True, "binary": True},
-    "asis.vegetation_condition": {"base_url": "https://asis-esri.fao.org", "call": environment.asis,
-                   "capability": "vegetation.condition", "auth": "none", "coordinates": True, "dates": True},
-    "gee.modis_ndvi": {"base_url": "https://earthengine.googleapis.com", "call": earth_engine.earth_engine,
-                   "capability": "vegetation.ndvi", "auth": "provider", "coordinates": True, "dates": True, "binary": True},
-})
-HANDLERS["fpma.ethiopia_prices"]["properties"] = {k: {"type": "string", "minLength": 1, "maxLength": 100} for k in ("market_name", "commodity_name")}
+HANDLERS.update(
+    {
+        "eppo.names": {
+            "base_url": "https://api.eppo.int",
+            "call": references.eppo,
+            "capability": "pests.taxonomy",
+            "auth": "provider",
+            "coordinates": False,
+            "properties": {"eppo_code": {"type": "string", "minLength": 5, "maxLength": 6}},
+            "required": ["eppo_code"],
+        },
+        "hapi.ethiopia_prices": {
+            "base_url": "https://hapi.humdata.org",
+            "call": references.hapi,
+            "capability": "market.wfp_prices",
+            "auth": "provider",
+            "coordinates": False,
+            "dates": True,
+        },
+        "ors.driving_route": {
+            "base_url": "https://api.heigit.org",
+            "call": references.route,
+            "capability": "logistics.route",
+            "auth": "provider",
+            "coordinates": False,
+            "geo": True,
+            "properties": {
+                k: {"type": "string", "minLength": 36, "maxLength": 36} for k in ("from_plot_id", "to_plot_id")
+            },
+            "required": ["from_plot_id", "to_plot_id"],
+        },
+        "kindwise.diagnosis": {
+            "base_url": "https://crop.kindwise.com",
+            "call": references.kindwise,
+            "capability": "crop.diagnosis",
+            "auth": "provider",
+            "coordinates": False,
+            "image": True,
+            "properties": {"image_asset_id": {"type": "string", "minLength": 36, "maxLength": 36}},
+            "required": ["image_asset_id"],
+        },
+        "gaez.maize_suitability": {
+            "base_url": "https://storage.googleapis.com",
+            "call": environment.gaez,
+            "capability": "crop.maize_suitability",
+            "auth": "none",
+            "coordinates": True,
+            "binary": True,
+        },
+        "wapor.evapotranspiration": {
+            "base_url": "https://data.apps.fao.org",
+            "call": environment.wapor,
+            "capability": "water.evapotranspiration",
+            "auth": "none",
+            "coordinates": True,
+            "dates": True,
+            "binary": True,
+        },
+        "asis.vegetation_condition": {
+            "base_url": "https://asis-esri.fao.org",
+            "call": environment.asis,
+            "capability": "vegetation.condition",
+            "auth": "none",
+            "coordinates": True,
+            "dates": True,
+        },
+        "gee.modis_ndvi": {
+            "base_url": "https://earthengine.googleapis.com",
+            "call": earth_engine.earth_engine,
+            "capability": "vegetation.ndvi",
+            "auth": "provider",
+            "coordinates": True,
+            "dates": True,
+            "binary": True,
+        },
+    }
+)
+HANDLERS["fpma.ethiopia_prices"]["properties"] = {
+    k: {"type": "string", "minLength": 1, "maxLength": 100} for k in ("market_name", "commodity_name")
+}
 HANDLERS["chirps.rainfall_history"]["properties"] = {
-    "resume_invocation_id": {"type": "string", "minLength": 36, "maxLength": 36}}
+    "resume_invocation_id": {"type": "string", "minLength": 36, "maxLength": 36}
+}
 
 
 def handler_definition(handler_id):
@@ -111,7 +168,14 @@ def template(handler_id):
         bindings["image_asset_id"] = "run.image_asset_id"
     operation = ToolSpec(
         name=handler_id.replace(".", "_"),
-        description="Reviewed agricultural operation: " + handler_id + ("; controlled runtime revision 2" if handler_id in ("gee.modis_ndvi", "gaez.maize_suitability", "wapor.evapotranspiration") else ""),
+        description="Reviewed agricultural operation: "
+        + handler_id
+        + (
+            "; controlled runtime revision 2"
+            if handler_id in ("gee.modis_ndvi", "gaez.maize_suitability", "wapor.evapotranspiration")
+            else ""
+        )
+        + ("; " + handler["sampling_revision"] if handler.get("sampling_revision") else ""),
         capability_tags=[handler["capability"]],
         input_json_schema={
             "type": "object",
@@ -123,8 +187,11 @@ def template(handler_id):
         required_data_classes=data_classes,
         response={"normalized_output_json_schema": {"type": "object"}},
         evidence_semantics={"value_kind": handler["capability"]},
-        policy={"max_attempts": 1, "max_response_bytes": 4194304 if handler.get("binary") else 1048576,
-                "cache_ttl_seconds": 0},
+        policy={
+            "max_attempts": 1,
+            "max_response_bytes": 4194304 if handler.get("binary") else 1048576,
+            "cache_ttl_seconds": 0,
+        },
     )
     return {
         "connection": {

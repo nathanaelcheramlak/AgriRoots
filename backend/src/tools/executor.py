@@ -1,37 +1,41 @@
 """One policy boundary for runtime calls, exact-version tests and MCP transport requests."""
 
 import asyncio
-from contextlib import asynccontextmanager
-from datetime import timedelta
 import json
 import time
+from contextlib import asynccontextmanager
+from datetime import timedelta
 from uuid import uuid4
 
-from sqlalchemy import select, update, func
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy.exc import OperationalError
+from sqlalchemy import func, select, update
+from sqlalchemy.exc import IntegrityError, OperationalError
 
 from src.config.settings import get_settings
-from src.db.session import SessionLocal
 from src.db.models.connectors import (
+    ConnectionCredential,
+    ConnectorCache,
+    ConnectorJob,
+    ExecutionBudget,
     Integration,
     IntegrationVersion,
-    RegisteredTool,
-    ToolVersion,
-    ConnectionCredential,
-    ExecutionBudget,
-    ConnectorJob,
-    ToolInvocation,
     InvocationAttempt,
-    ConnectorCache,
+    RegisteredTool,
+    ToolInvocation,
+    ToolVersion,
 )
 from src.db.models.workspace import WorkspaceRecord
+from src.db.session import SessionLocal
 from src.integrations.contracts import ConnectorError, ExecutionContext, digest, now, utc
-from src.integrations.secrets import decrypt, redact
-from src.integrations.schema_translation import validate
-from src.integrations.service import approval, credential_scope, audit
 from src.integrations.safe_http import SafeHttp, destination
-from src.tools.policy import principal_for, require_admin, authorized_plots, bind_and_check_arguments
+from src.integrations.schema_translation import validate
+from src.integrations.secrets import decrypt, redact
+from src.integrations.service import approval, audit, credential_scope
+from src.tools.policy import (
+    authorized_locations,
+    bind_and_check_arguments,
+    principal_for,
+    require_admin,
+)
 
 
 def flatten_secrets(value):
@@ -63,8 +67,8 @@ class DispatchGate:
         if principal.office_id != self.context.principal.office_id or principal.role == "viewer":
             raise ConnectorError("POLICY_DENIED", "Actor no longer has execution permission")
         ensure_budget(db, self.context)
-        if self.context.plots:
-            authorized_plots(db, principal, [p["id"] for p in self.context.plots])
+        if self.context.plots or self.context.territory_id:
+            authorized_locations(db, principal, self.context.plot_ids, self.context.territory_id)
         if self.context.job_id:
             lease = db.get(ConnectorJob, self.context.job_id)
             if (
@@ -192,7 +196,11 @@ class DispatchGate:
         with SessionLocal() as db:
             row = db.get(ToolInvocation, self.context.invocation_id)
             payloads = list(row.input_metadata.get("response_digests", []))
-            payloads.append({"kind": kind, "sha256": value["sha256"], "bytes": value["bytes"]} if kind == "provider_binary" else {"kind": kind, "sha256": digest(value)})
+            payloads.append(
+                {"kind": kind, "sha256": value["sha256"], "bytes": value["bytes"]}
+                if kind == "provider_binary"
+                else {"kind": kind, "sha256": digest(value)}
+            )
             row.input_metadata = {**row.input_metadata, "response_digests": payloads}
             db.commit()
 
@@ -300,10 +308,12 @@ class ToolExecutor:
         """
         from pathlib import Path
         from uuid import uuid4
-        from src.mcp.advisory_tools import AdvisoryTools, TOOL_SCHEMAS
-        from src.services.run_service import authorize_capability
-        from src.api.schemas.advisory_run import ToolResult, ToolError
+
         from fastapi import HTTPException
+
+        from src.api.schemas.advisory_run import ToolError, ToolResult
+        from src.mcp.advisory_tools import TOOL_SCHEMAS, AdvisoryTools
+        from src.services.run_service import authorize_capability
 
         if name not in {*TOOL_SCHEMAS, "get_public_guidance"}:
             return await AdvisoryTools(run_id, capability)._call_reviewed(name, arguments)
@@ -451,6 +461,8 @@ class ToolExecutor:
                 raise ConnectorError("INPUT_VALIDATION_FAILED", "Arguments must be a JSON object smaller than 64 KiB")
             with SessionLocal() as db:
                 current = principal_for(db, principal.user_id)
+                scope_job = db.get(ConnectorJob, job_id) if job_id else None
+                territory_id = scope_job.request.get("territory_id") if scope_job else None
                 if current.office_id != principal.office_id:
                     raise ConnectorError("POLICY_DENIED", "Office membership changed")
                 prior = db.scalar(
@@ -479,6 +491,7 @@ class ToolExecutor:
                             "argument_names": sorted(arguments),
                             "mode": mode,
                             "plot_ids": sorted(plot_ids),
+                            "territory_id": territory_id,
                         },
                     )
                     db.add(prior)
@@ -501,6 +514,7 @@ class ToolExecutor:
                     prior.id,
                     job_id=job_id,
                     plot_ids=list(plot_ids),
+                    territory_id=territory_id,
                     mode=mode,
                     authorize_network=authorize_network,
                     authorize_credit_use=authorize_credit_use,
@@ -513,7 +527,7 @@ class ToolExecutor:
                 tool = db.get(RegisteredTool, version.tool_id)
                 gate = DispatchGate(context, version.id, tool.connection_id, version.connection_revision)
                 connection, config, version = gate.check(db)
-                context.plots = authorized_plots(db, current, list(plot_ids))
+                context.plots = authorized_locations(db, current, list(plot_ids), territory_id)
                 if job_id:
                     context.image_asset_id = db.get(ConnectorJob, job_id).request.get("image_asset_id")
                 # Operator tests provide the opaque asset ID explicitly; runtime uses the pinned run asset.
@@ -521,13 +535,17 @@ class ToolExecutor:
                 effective_arguments = dict(arguments)
                 if mode == "test" and "image_asset_id" in version.specification.get("context_bindings", {}):
                     effective_arguments.pop("image_asset_id", None)
-                bound = bind_and_check_arguments(version.specification, effective_arguments, context.plots,
-                                                  image_asset_id=image_argument)
+                bound = bind_and_check_arguments(
+                    version.specification, effective_arguments, context.plots, image_asset_id=image_argument
+                )
                 validate(bound, version.specification["input_json_schema"])
                 if prior.finished_at:
-                    if prior.input_metadata.get(
-                        "credential_scope", credential_scope(db, connection)
-                    ) != credential_scope(db, connection) or prior.input_metadata.get("plot_ids") != sorted(plot_ids):
+                    if (
+                        prior.input_metadata.get("credential_scope", credential_scope(db, connection))
+                        != credential_scope(db, connection)
+                        or prior.input_metadata.get("plot_ids") != sorted(plot_ids)
+                        or prior.input_metadata.get("territory_id") != territory_id
+                    ):
                         raise ConnectorError(
                             "VERSION_CONFLICT", "Invocation replay scope no longer matches the original request"
                         )
@@ -548,8 +566,12 @@ class ToolExecutor:
                     raise ConnectorError("POLICY_DENIED", "Connection does not permit this data transfer")
                 if "image" in required:
                     if config.configuration.get("handler_id") != "kindwise.diagnosis" or not authorize_credit_use:
-                        raise ConnectorError("POLICY_DENIED", "Image transfer requires the reviewed diagnosis handler and credit authorization")
+                        raise ConnectorError(
+                            "POLICY_DENIED",
+                            "Image transfer requires the reviewed diagnosis handler and credit authorization",
+                        )
                     from src.services.image_asset_service import owned_image
+
                     owned_image(db, current, bound.get("image_asset_id"))
                 if "private_record" in required:
                     raise ConnectorError(
@@ -569,12 +591,14 @@ class ToolExecutor:
                         "credential_revision": credential_revision,
                         "arguments": bound,
                         "plot_ids": sorted(plot_ids),
+                        "territory_id": territory_id,
                     }
                 )
                 prior.input_metadata = {
                     **prior.input_metadata,
                     "credential_scope": credential_scope(db, connection),
                     "plot_ids": sorted(plot_ids),
+                    "territory_id": territory_id,
                     "execution_fingerprint": cache_key,
                 }
                 if mode == "runtime":
@@ -654,6 +678,7 @@ class ToolExecutor:
                     "dispatched": True,
                     "credential_scope": credential_scope(db, connection),
                     "plot_ids": sorted(plot_ids),
+                    "territory_id": territory_id,
                 }
                 audit(db, current, prior.id, "tool_invocation_started", tool_version_id=version.id, mode=mode)
                 configuration = config.configuration.copy()
@@ -715,6 +740,7 @@ class ToolExecutor:
                         "input_synthetic": all(p["synthetic"] for p in context.plots) if context.plots else None,
                         "plot_id": context.plot_ids[0] if len(context.plot_ids) == 1 else None,
                         "permitted_plot_ids": context.plot_ids,
+                        "territory_id": context.territory_id,
                         "payload_digest": digest(clean_data),
                         "provider_response_digests": db.get(ToolInvocation, context.invocation_id).input_metadata.get(
                             "response_digests", []
@@ -778,7 +804,7 @@ class ToolExecutor:
                 if ttl and output.data_outcome in ("VALID", "UNSTRUCTURED"):
                     shared_cache.put(cache_key, result, now() + timedelta(seconds=ttl))
                 return result
-        except (ConnectorError, asyncio.TimeoutError, asyncio.CancelledError) as exc:
+        except (TimeoutError, ConnectorError, asyncio.CancelledError) as exc:
             error = (
                 exc
                 if isinstance(exc, ConnectorError)
@@ -837,9 +863,10 @@ class LegacyDispatchGate(DispatchGate):
         self.run_id, self.capability = run_id, capability
 
     def check(self, db, *, lock=False):
-        from src.services.run_service import authorize_capability
-        from src.db.models.advisory_run import AdvisoryRun
         from fastapi import HTTPException
+
+        from src.db.models.advisory_run import AdvisoryRun
+        from src.services.run_service import authorize_capability
 
         try:
             if lock:

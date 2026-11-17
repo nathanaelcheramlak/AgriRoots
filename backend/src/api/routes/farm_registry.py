@@ -10,6 +10,7 @@ from src.registry.schemas import (
     AssignmentInput,
     FarmerEdit,
     FarmerInput,
+    FarmRegistration,
     ObservationInput,
     PlotEdit,
     PlotInput,
@@ -153,6 +154,24 @@ def plots(
 @router.post("/territories/{ident}/plots", status_code=201)
 def register_plot(ident: str, payload: PlotInput, s=_registry_dependency):
     return s.save_plot(ident, payload)
+
+
+@router.post("/territories/{ident}/farm-registrations", status_code=201)
+def register_farm(ident: str, payload: FarmRegistration, s=_registry_dependency):
+    from sqlalchemy.exc import IntegrityError
+
+    from src.integrations.contracts import ConnectorError
+
+    try:
+        return s.register_farm(ident, payload)
+    except IntegrityError:
+        s.db.rollback()
+        raise ConnectorError(
+            "VERSION_CONFLICT", "A matching record already exists. Reload before saving again."
+        ) from None
+    except Exception:
+        s.db.rollback()
+        raise
 
 
 @router.get("/plots/{ident}")

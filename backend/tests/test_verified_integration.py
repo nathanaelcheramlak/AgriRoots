@@ -402,7 +402,8 @@ def test_chirps_uses_plot_centred_area_and_can_resume_without_submission(monkeyp
     http = SimpleNamespace(gate=gate, json=AsyncMock(side_effect=[["fixture-job-identifier-123456"], [100], rows]))
     args = {"start": "2025-07-01", "end": "2025-07-01", "longitude": 38.74, "latitude": 9.03}
     result = asyncio.run(agriculture.chirps(http, "https://climateserv.servirglobal.net", args, None, None))
-    assert result.data["polygon"]["coordinates"][0][0] == [38.739000000000004, 9.029]
+    assert result.data["polygon"]["coordinates"][0][0] == pytest.approx([38.715, 9.005])
+    assert result.data["summary"]["total_mm"] == 2
     from src.integrations.contracts import digest
 
     fingerprint = digest({"start": args["start"], "end": args["end"], "polygon": result.data["polygon"]})
@@ -502,7 +503,7 @@ def test_additive_image_migration_preserves_existing_data():
     migrate(engine)
     with engine.connect() as connection:
         assert connection.execute(text("SELECT name FROM offices WHERE id='fixture-office'")).scalar() == "Existing"
-        assert connection.execute(text("SELECT max(version) FROM schema_revisions")).scalar() == 5
+        assert connection.execute(text("SELECT count(*) FROM schema_revisions WHERE version=5")).scalar() == 1
     assert "connector_image_assets" in inspect(engine).get_table_names()
 
 

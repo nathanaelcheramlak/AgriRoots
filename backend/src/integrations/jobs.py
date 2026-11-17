@@ -2,18 +2,20 @@
 
 import asyncio
 import json
-from datetime import timedelta
 import secrets
 import time
-from sqlalchemy import select, update, or_, and_
+from datetime import timedelta
+
+from sqlalchemy import and_, or_, select, update
+
 from src.config.settings import get_settings
-from src.db.session import SessionLocal
 from src.db.models.connectors import ConnectorJob, ExecutionBudget, Integration, ToolInvocation
-from src.integrations.contracts import ConnectorError, ExecutionContext, now, utc, digest
-from src.integrations.service import IntegrationService, audit
+from src.db.session import SessionLocal
+from src.integrations.contracts import ConnectorError, ExecutionContext, digest, now, utc
 from src.integrations.secrets import redact
+from src.integrations.service import IntegrationService, audit
+from src.tools.executor import DispatchGate, ToolExecutor, connection_headers
 from src.tools.policy import principal_for
-from src.tools.executor import ToolExecutor, DispatchGate, connection_headers
 
 
 def job_view(job):
@@ -82,9 +84,9 @@ async def heartbeat(job_id, token):
 
 
 async def discover_job(job, principal, lease_token):
-    from src.integrations.safe_http import SafeHttp
-    from src.integrations.mcp_client import McpConnector
     from src.integrations.discovery import stage_catalog
+    from src.integrations.mcp_client import McpConnector
+    from src.integrations.safe_http import SafeHttp
 
     with SessionLocal() as db:
         service = IntegrationService(db, principal)
@@ -201,7 +203,12 @@ async def process_job(job_id, *, model=None):
                 budget = db.get(ExecutionBudget, job.budget_id)
                 remaining = max(0.001, (utc(budget.deadline) - now()).total_seconds())
             async with asyncio.timeout(remaining):
-                result = await execute_skill_job(job, principal, token, model=model)
+                if job.request.get("workflow_phase") == "evidence":
+                    from src.skills.demo import execute_evidence
+
+                    result = await execute_evidence(job, principal, token)
+                else:
+                    result = await execute_skill_job(job, principal, token, model=model)
             status = "succeeded" if result.get("status") == "completed" else "partial"
         else:
             raise ConnectorError("UNSUPPORTED_CAPABILITY", "Unknown job kind")

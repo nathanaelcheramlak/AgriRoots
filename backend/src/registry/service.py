@@ -199,7 +199,7 @@ class FarmRegistry(IntegrationService):
         rows, meta = page(self.db, query.order_by(Farmer.reference, Farmer.id), limit, offset)
         return {"items": [self.farmer_view(r) for r in rows], **meta}
 
-    def save_farmer(self, payload, ident=None):
+    def save_farmer(self, payload, ident=None, *, commit=True):
         require_territory(self.db, self.principal, payload.territory_id, write=True, lock=True)
         if payload.synthetic:
             require_admin(self.principal)
@@ -237,7 +237,11 @@ class FarmRegistry(IntegrationService):
         if ident:
             row.revision += 1
         self.db.flush()
-        self.commit(row.id, "farmer_updated" if ident else "farmer_registered", territory_id=row.territory_id)
+        action = "farmer_updated" if ident else "farmer_registered"
+        if commit:
+            self.commit(row.id, action, territory_id=row.territory_id)
+        else:
+            audit(self.db, self.principal, row.id, action, territory_id=row.territory_id)
         return self.farmer_view(row)
 
     def plot(self, ident, *, write=False, lock=False):
@@ -312,7 +316,7 @@ class FarmRegistry(IntegrationService):
         rows, meta = page(self.db, query.order_by(RegisteredPlot.id), limit, offset)
         return {"items": [self.plot_view(r) for r in rows], **meta}
 
-    def save_plot(self, territory_id, payload, ident=None):
+    def save_plot(self, territory_id, payload, ident=None, *, commit=True):
         territory = require_territory(self.db, self.principal, territory_id, write=True, lock=True)
         if payload.synthetic:
             require_admin(self.principal)
@@ -426,14 +430,87 @@ class FarmRegistry(IntegrationService):
                     office_id=self.principal.office_id, plot_id=row.id, data=payload.season.model_dump(mode="json")
                 )
             )
-        self.commit(
-            row.id,
-            "plot_updated" if ident else "plot_registered",
-            territory_id=territory_id,
-            revision=row.revision,
-            overlap_review=bool(overlaps),
-        )
+        details = {"territory_id": territory_id, "revision": row.revision, "overlap_review": bool(overlaps)}
+        action = "plot_updated" if ident else "plot_registered"
+        if commit:
+            self.commit(row.id, action, **details)
+        else:
+            audit(self.db, self.principal, row.id, action, **details)
+            self.db.flush()
         return self.plot_view(row, details=True)
+
+    def register_farm(self, territory_id, payload):
+        """One transaction, no invented household, no implied consent or model request."""
+        from src.registry.schemas import FarmerInput, PlotInput
+
+        territory = require_territory(self.db, self.principal, territory_id, write=True, lock=True)
+        fingerprint = digest({"kind": "map-first-registration", **payload.model_dump(mode="json")})
+        previous = self.db.scalar(
+            select(RegisteredPlot).where(
+                RegisteredPlot.office_id == self.principal.office_id, RegisteredPlot.request_key == payload.request_key
+            )
+        )
+        if previous:
+            self.plot(previous.id)
+            if previous.territory_id != territory_id or previous.request_digest != fingerprint:
+                raise ConnectorError("VERSION_CONFLICT", "This save request was already used for different details")
+            return self.plot_view(previous, details=True)
+
+        selected, _ = validate_geometry(payload.selection_boundary)
+        parcel, _ = validate_geometry(payload.geometry, plot=True)
+        if not shape(territory.boundary).covers(selected) or not selected.covers(parcel):
+            invalid("Draw the farm entirely inside the selected area and assigned territory")
+        # Matching IDs may link another parcel, but cannot overwrite a different farmer's contact data.
+        farmer = self.db.scalar(
+            select(Farmer)
+            .where(
+                Farmer.office_id == self.principal.office_id,
+                func.lower(Farmer.reference) == payload.farmer_reference.lower(),
+            )
+            .with_for_update()
+        )
+        if farmer:
+            self.farmer(farmer.id, write=True)
+            private = json.loads(cipher().decrypt(farmer.private_ciphertext.encode()))
+
+            def digits(value):
+                return "".join(c for c in value if c.isdigit())
+
+            if (
+                farmer.territory_id != territory_id
+                or farmer.display_name.casefold() != payload.farmer_name.casefold()
+                or digits(private.get("phone", "")) != digits(payload.phone)
+            ):
+                raise ConnectorError(
+                    "VERSION_CONFLICT",
+                    "Farmer ID already exists with different details. Use the farmer registry to review it.",
+                )
+            farmer_id = farmer.id
+        else:
+            saved = self.save_farmer(
+                FarmerInput(
+                    territory_id=territory_id,
+                    reference=payload.farmer_reference,
+                    display_name=payload.farmer_name,
+                    phone=payload.phone,
+                    channel="in-person",
+                ),
+                commit=False,
+            )
+            farmer_id = saved["id"]
+        result = self.save_plot(
+            territory_id,
+            PlotInput(
+                name="Farm " + payload.farmer_reference,
+                geometry=payload.geometry,
+                farmer_ids=[farmer_id],
+                request_key=payload.request_key,
+            ),
+            commit=False,
+        )
+        self.db.get(RegisteredPlot, result["id"]).request_digest = fingerprint
+        self.commit(result["id"], "farm_registration_saved", territory_id=territory_id, farmer_id=farmer_id)
+        return result
 
     def summary(self, territory_id):
         territory = require_territory(self.db, self.principal, territory_id)

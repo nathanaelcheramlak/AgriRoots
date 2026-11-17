@@ -1,7 +1,9 @@
 """Identity and geography are obtained from application records, never model declarations."""
 
 import math
+
 from sqlalchemy import select
+
 from src.db.models.user import User
 from src.db.models.workspace import Membership, WorkspaceRecord
 from src.integrations.contracts import ConnectorError, Principal
@@ -37,20 +39,45 @@ def authorized_plots(db, principal, plot_ids):
         if not plot or plot.office_id != principal.office_id or plot.kind != "plot":
             raise ConnectorError("POLICY_DENIED", "Plot is outside the authenticated office")
         from src.registry.access import guard_plot
+
         registered = guard_plot(db, principal, plot_id)
         if registered:
             from src.db.models.farm_registry import CropSeason, FarmObservation
-            season = db.scalar(select(CropSeason).where(CropSeason.plot_id == plot_id)
-                .order_by(CropSeason.created_at.desc()).limit(1))
-            observations = list(db.scalars(select(FarmObservation).where(FarmObservation.plot_id == plot_id)
-                .order_by(FarmObservation.created_at.desc()).limit(10)))
-            output.append({"id": plot.id, "latitude": plot.data["latitude"],
-                "longitude": plot.data["longitude"], "synthetic": plot.data.get("synthetic") is True,
-                "farm_context": {"crop_season": season.data if season else {},
-                    "observations": [{"metric": row.data["metric"], "value": row.data["value"],
-                        "unit": row.data["unit"], "provenance": row.provenance,
-                        "observed_at": row.observed_at.isoformat() if row.observed_at else None} for row in observations],
-                    "area_m2": registered.area_m2, "sampling": "registered interior point; not whole-farm measurement"}})
+
+            season = db.scalar(
+                select(CropSeason).where(CropSeason.plot_id == plot_id).order_by(CropSeason.created_at.desc()).limit(1)
+            )
+            observations = list(
+                db.scalars(
+                    select(FarmObservation)
+                    .where(FarmObservation.plot_id == plot_id)
+                    .order_by(FarmObservation.created_at.desc())
+                    .limit(10)
+                )
+            )
+            output.append(
+                {
+                    "id": plot.id,
+                    "latitude": plot.data["latitude"],
+                    "longitude": plot.data["longitude"],
+                    "synthetic": plot.data.get("synthetic") is True,
+                    "farm_context": {
+                        "crop_season": season.data if season else {},
+                        "observations": [
+                            {
+                                "metric": row.data["metric"],
+                                "value": row.data["value"],
+                                "unit": row.data["unit"],
+                                "provenance": row.provenance,
+                                "observed_at": row.observed_at.isoformat() if row.observed_at else None,
+                            }
+                            for row in observations
+                        ],
+                        "area_m2": registered.area_m2,
+                        "sampling": "registered interior point; not whole-farm measurement",
+                    },
+                }
+            )
             continue
         household = db.get(WorkspaceRecord, plot.data.get("household_id")) if plot.data.get("household_id") else None
         if not household or household.office_id != principal.office_id:
@@ -100,3 +127,26 @@ def bind_and_check_arguments(spec, arguments, plots, *, image_asset_id=None):
     if pairs and "plot_coordinates" not in spec.get("required_data_classes", []):
         raise ConnectorError("POLICY_DENIED", "Tool lacks a reviewed coordinate-egress classification")
     return result
+
+
+def authorized_locations(db, principal, plot_ids, territory_id=None):
+    if not territory_id:
+        return authorized_plots(db, principal, plot_ids)
+    if plot_ids:
+        raise ConnectorError("INPUT_VALIDATION_FAILED", "Choose a territory or farms, not both")
+    from shapely.geometry import shape
+
+    from src.registry.access import require_territory
+
+    territory = require_territory(db, principal, territory_id)
+    geometry = shape(territory.boundary)
+    point = geometry.centroid if geometry.covers(geometry.centroid) else geometry.representative_point()
+    return [
+        {
+            "id": territory.id,
+            "latitude": point.y,
+            "longitude": point.x,
+            "synthetic": False,
+            "scope": "territory_representative_point",
+        }
+    ]

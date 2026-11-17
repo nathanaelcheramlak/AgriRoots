@@ -93,7 +93,7 @@ class Settings(BaseSettings):
     secret_previous_encryption_keys: list[str] = []
     redis_url: str | None = None
     llm_provider: Literal["gemini", "local"] = "gemini"
-    cloud_model_data_policy: Literal["synthetic_only", "approved_context"] = "synthetic_only"
+    cloud_model_data_policy: Literal["synthetic_only", "approved_context", "environment_only"] = "synthetic_only"
     live_tests_enabled: bool = False
     live_model_tests_enabled: bool = False
     live_diagnosis_tests_enabled: bool = False

@@ -5,9 +5,9 @@ controlled HTTP client. No adapter imports the standalone test harness or its .e
 """
 
 import asyncio
-from datetime import date, datetime, timedelta, timezone
 import json
 import math
+from datetime import UTC, date, datetime, timedelta, timezone
 
 from src.integrations.contracts import ConnectorError, ConnectorResult
 
@@ -224,9 +224,13 @@ async def isda(http, base, args, credential, context):
             "depth_cm": [0, 20],
             "attribution": "iSDAsoil; CC BY 4.0",
         },
-        model_data={"depth_cm": [0, 20], "properties": {
-            prop: [{key: row.get(key) for key in ("value", "depth", "uncertainty")} for row in rows[:1]]
-            for prop, rows in properties.items()}},
+        model_data={
+            "depth_cm": [0, 20],
+            "properties": {
+                prop: [{key: row.get(key) for key in ("value", "depth", "uncertainty")} for row in rows[:1]]
+                for prop, rows in properties.items()
+            },
+        },
         limitations=limitations
         + ["Mapped estimates, not laboratory samples. Response does not echo coordinates or supply observation dates."],
     )
@@ -235,18 +239,37 @@ async def isda(http, base, args, credential, context):
 async def chirps(http, base, args, credential, context):
     start, end = date_range(args)
     lat, lon = args["latitude"], args["longitude"]
-    require(-59.999 <= lat <= 59.999 and -179.999 <= lon <= 179.999, "CHIRPS supports latitude -60..60 without dateline crossing")
-    polygon = {"type": "Polygon", "coordinates": [[[lon-.001, lat-.001], [lon+.001, lat-.001],
-                [lon+.001, lat+.001], [lon-.001, lat+.001], [lon-.001, lat-.001]]]}
+    require(
+        -59.999 <= lat <= 59.999 and -179.999 <= lon <= 179.999,
+        "CHIRPS supports latitude -60..60 without dateline crossing",
+    )
+    # CHIRPS cells are 0.05 degrees. A 0.002-degree box can miss all cell centres.
+    half_cell = 0.025
+    polygon = {
+        "type": "Polygon",
+        "coordinates": [
+            [
+                [lon - half_cell, lat - half_cell],
+                [lon + half_cell, lat - half_cell],
+                [lon + half_cell, lat + half_cell],
+                [lon - half_cell, lat + half_cell],
+                [lon - half_cell, lat - half_cell],
+            ]
+        ],
+    }
     # Current ClimateSERV 2 developer documentation uses /api/. The legacy
     # /chirps/ routes now return the website rather than a JSON job response.
     api = base + "/api/"
     from src.integrations.contracts import digest
+
     fingerprint = digest({"start": str(start), "end": str(end), "polygon": polygon})
     prior = args.get("resume_invocation_id")
     if prior:
         state = http.gate.load_provider_state(prior, "chirps_job")
-        require(state and state.get("fingerprint") == fingerprint and state.get("job_id"), "No matching resumable CHIRPS job")
+        require(
+            state and state.get("fingerprint") == fingerprint and state.get("job_id"),
+            "No matching resumable CHIRPS job",
+        )
         job_id = state["job_id"]
     else:
         http.gate.save_provider_state("chirps_job", {"fingerprint": fingerprint, "state": "submission_attempted"})
@@ -283,6 +306,13 @@ async def chirps(http, base, args, credential, context):
         )
     raw = await http.json("GET", api + "getDataFromRequest/", params={"id": job_id}, legacy_climateserv_json=True)
     rows = raw.get("data", [])
+    if not rows:
+        return ConnectorResult(
+            data_outcome="NO_DATA",
+            limitations=[
+                "ClimateSERV returned no daily rainfall for this location and period. No values were substituted; try an older month."
+            ],
+        )
     dates = []
     for row in rows:
         value = row.get("value", {}).get("avg")
@@ -291,14 +321,32 @@ async def chirps(http, base, args, credential, context):
         dates.append(day)
     require(len(set(dates)) == len(dates) == (end - start).days + 1, "Incomplete ClimateSERV daily data")
     return ConnectorResult(
-        data={"job_id": job_id, "polygon": polygon, "units": "mm", "data": rows},
+        data={
+            "job_id": job_id,
+            "polygon": polygon,
+            "units": "mm",
+            "data": rows,
+            "summary": {
+                "total_mm": round(sum(row["value"]["avg"] for row in rows), 4),
+                "day_count": len(rows),
+                "from": str(start),
+                "to": str(end),
+                "method": "Sum of validated daily spatial-average rainfall; not a whole-territory total",
+            },
+        },
         source={
             "provider": "CHIRPS / ClimateSERV",
             "url": api,
             "valid_time_range": {"from": str(start), "to": str(end)},
             "units": "mm",
+            "spatial_resolution": "0.05 degrees",
+            "spatial_support": "0.05-degree box around the authorized territory representative point"
+            if getattr(context, "territory_id", None)
+            else "0.05-degree box around the authorized plot point",
         },
-        limitations=["Historical area averages over a plot-centred 0.002-degree box, not the registered farm boundary. Resume a timed-out job using its invocation ID."],
+        limitations=[
+            "Historical rainfall estimates over a representative-point 0.05-degree box, not an average of the full farm or territory boundary. Missing days are not replaced with zeros. Resume a timed-out job using its invocation ID."
+        ],
     )
 
 
@@ -321,7 +369,9 @@ async def fpma(http, base, args, credential, context):
         if args.get(field):
             series = [row for row in series if row.get(field, "").casefold() == args[field].casefold()]
     if not series:
-        return ConnectorResult(data_outcome="NO_DATA", limitations=["No Ethiopian series matches the requested market/commodity"])
+        return ConnectorResult(
+            data_outcome="NO_DATA", limitations=["No Ethiopian series matches the requested market/commodity"]
+        )
     chosen = max(
         series,
         key=lambda row: (
@@ -417,8 +467,8 @@ async def locust(http, base, args, credential, context):
             "Locust observation lies outside requested region",
         )
         require(numeric(values.get(date_field)), "Locust observation timestamp is missing")
-        observed = datetime.fromtimestamp(values[date_field] / 1000, timezone.utc)
-        require(1980 <= observed.year and observed <= datetime.now(timezone.utc), "Invalid locust observation date")
+        observed = datetime.fromtimestamp(values[date_field] / 1000, UTC)
+        require(1980 <= observed.year and observed <= datetime.now(UTC), "Invalid locust observation date")
         if country:
             require(values.get(country) == "Ethiopia", "Locust country filter was not respected")
         row["observed_at"] = observed.isoformat()

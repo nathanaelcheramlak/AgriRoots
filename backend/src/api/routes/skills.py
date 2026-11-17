@@ -1,15 +1,32 @@
-from fastapi import APIRouter, Depends, Query, UploadFile, File
+from fastapi import APIRouter, Depends, File, Query, UploadFile
 from pydantic import Field
 from sqlalchemy import select
+
 from src.api.routes.integrations import service
-from src.db.models.connectors import RegisteredSkill, PluginPack
-from src.integrations.contracts import Strict, SkillManifest, SkillRunRequest, Enabled, ConnectorError
+from src.db.models.connectors import PluginPack, RegisteredSkill
+from src.integrations.contracts import ConnectorError, Enabled, SkillManifest, SkillRunRequest, Strict
 from src.integrations.jobs import job_view
-from src.skills.service import SkillService
-from src.skills.plugins import PluginService, PackManifest, pack_view
 from src.skills.builtin_pack import agriculture_pack
+from src.skills.plugins import PackManifest, PluginService, pack_view
+from src.skills.service import SkillService
 
 router = APIRouter(prefix="/api/v1", tags=["Skills and plugin packs"])
+
+from src.skills.demo import EvidenceRequest, ExplainRequest
+
+
+@router.post("/skills/{skill_id}/evidence-runs", status_code=202)
+def collect_evidence(skill_id: str, payload: EvidenceRequest, s=Depends(service)):
+    from src.skills.demo import queue_evidence
+
+    return job_view(queue_evidence(s, skill_id, payload))
+
+
+@router.post("/skills/{skill_id}/explanations", status_code=202)
+def explain_evidence(skill_id: str, payload: ExplainRequest, s=Depends(service)):
+    from src.skills.demo import queue_explanation
+
+    return job_view(queue_explanation(s, skill_id, payload))
 
 
 class SkillExact(Strict):
@@ -36,7 +53,12 @@ def skills(s):
 
 
 @router.get("/skills")
-def list_skills(limit: int = Query(20, ge=1, le=100), offset: int = Query(0, ge=0), include_execution: bool = False, s=Depends(service)):
+def list_skills(
+    limit: int = Query(20, ge=1, le=100),
+    offset: int = Query(0, ge=0),
+    include_execution: bool = False,
+    s=Depends(service),
+):
     ss = skills(s)
     rows = s.db.scalars(
         select(RegisteredSkill)
@@ -45,7 +67,11 @@ def list_skills(limit: int = Query(20, ge=1, le=100), offset: int = Query(0, ge=
         .offset(offset)
         .limit(limit)
     )
-    return {"items": [ss.skill_view(row, ss.version(row.id)[1], include_execution=include_execution) for row in rows], "limit": limit, "offset": offset}
+    return {
+        "items": [ss.skill_view(row, ss.version(row.id)[1], include_execution=include_execution) for row in rows],
+        "limit": limit,
+        "offset": offset,
+    }
 
 
 @router.post("/skills", status_code=201)
@@ -133,7 +159,8 @@ def enable_pack(pack_id: str, payload: PackEnabled, s=Depends(service)):
 
 @router.post("/image-assets", status_code=201)
 async def upload_image(image: UploadFile = File(...), s=Depends(service)):
-    from src.services.image_asset_service import save_image, MAX_IMAGE_BYTES
+    from src.services.image_asset_service import MAX_IMAGE_BYTES, save_image
+
     try:
         content = await image.read(MAX_IMAGE_BYTES + 1)
         return save_image(s.db, s.principal, content, image.content_type)
@@ -144,4 +171,5 @@ async def upload_image(image: UploadFile = File(...), s=Depends(service)):
 @router.get("/plugins/templates/verified-agriculture")
 def verified_template(s=Depends(service)):
     from src.skills.verified_pack import verified_pack
+
     return verified_pack()

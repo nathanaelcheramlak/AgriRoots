@@ -127,6 +127,12 @@ def context(s: Annotated[Any, Depends(service)], plot_ids: str | None = Query(No
             if s.principal.role == "viewer":
                 raise ConnectorError("POLICY_DENIED", "Viewers cannot start investigations")
             snapshot = Registry(s.db, s.principal).snapshot(skill.id)
+            if settings.cloud_model_data_policy == "environment_only":
+                from src.agent.companion.environment_policy import scope_environment_snapshot
+                try:
+                    snapshot = scope_environment_snapshot(snapshot)
+                except ConnectorError:
+                    continue
             item.version = snapshot["skill_version"]
             item.description = snapshot["manifest"]["description"]
             item.missing_optional_capabilities = snapshot["missing_optional_capabilities"]
@@ -154,6 +160,14 @@ def context(s: Annotated[Any, Depends(service)], plot_ids: str | None = Query(No
         except ConnectorError as error:
             item.blocked_reason = error.message
         skills.append(item)
+    if settings.cloud_model_data_policy == "environment_only":
+        # One Home choice per capability combination, preferring the existing FieldOps skills.
+        unique = {}
+        for item in sorted(skills, key=lambda k: (not k.name.startswith("fieldops_"), k.name)):
+            key = tuple(sorted({cap for tool in item.tools for cap in tool.capabilities}))
+            if key and set(key) <= {"weather.forecast", "soil.profile"}:
+                unique.setdefault(key, item)
+        skills = list(unique.values())
     if settings.llm_provider == "gemini":
         configured = bool(
             settings.gemini_api_key and settings.gemini_model and "gemini_model" in settings.model_fields_set

@@ -99,7 +99,8 @@ export function createHomeStore(api: HomeApi, pollMs = 1200) {
       const old = get().context
       if (old && (old.user_id !== context.user_id || old.office_id !== context.office_id)) { clear(); throw new Error('Office membership changed. Sign in again to clear the previous workspace.') }
       const combined = context.skills.find(k => k.available && k.tools.some(t => t.capabilities.includes('weather.forecast')) && k.tools.some(t => t.capabilities.includes('soil.profile')))
-      set({ context, plots: context.plots, session: 'ready', skillId: get().skillId || combined?.id || context.skills.find(k => k.available)?.id || '', error: null,
+      const nextSkill = context.skills.some(k => k.id === get().skillId && k.available) ? get().skillId : combined?.id || context.skills.find(k => k.available)?.id || ''
+      set({ context, plots: context.plots, session: 'ready', skillId: nextSkill, ...(nextSkill !== get().skillId ? { parameters: {} } : {}), error: null,
         selectedIds: get().selectedIds.filter(id => context.plots.some(p => p.id === id)) })
       project(); get().focusMap('farms', get().farms.map(f => f.id))
     }

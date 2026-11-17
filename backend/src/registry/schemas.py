@@ -100,6 +100,24 @@ class PlotEdit(PlotInput):
     expected_revision: int = Field(ge=1)
 
 
+class FarmRegistration(Strict):
+    """The map-first form: geographic scope plus only three farmer fields."""
+
+    selection_boundary: dict
+    geometry: dict
+    farmer_name: str = Field(min_length=1, max_length=120)
+    farmer_reference: str = Field(min_length=1, max_length=80)
+    phone: str = Field(min_length=7, max_length=40, pattern=r"^\+?[0-9 ()-]{7,40}$")
+    request_key: str = Field(min_length=8, max_length=100)
+
+    @field_validator("phone")
+    @classmethod
+    def phone_digits(cls, value):
+        if not 7 <= sum(c.isdigit() for c in value) <= 15:
+            raise ValueError("Use a telephone number containing 7 to 15 digits")
+        return value
+
+
 class ObservationInput(Strict):
     provenance: Literal["measured", "self-reported", "model-derived", "synthetic"]
     observed_at: datetime | None = None

@@ -46,6 +46,8 @@ def guard_plot(db, principal, plot_id, *, write=False):
 
 def guard_record(db, principal, row):
     """Also protects legacy evidence envelopes referencing a newly registered plot."""
+    if row.data.get("territory_id"):
+        require_territory(db, principal, row.data["territory_id"])
     ids = [row.id] if row.kind == "plot" else []
     ids += [row.data["plot_id"]] if row.data.get("plot_id") else []
     ids += row.data.get("permitted_plot_ids", [])

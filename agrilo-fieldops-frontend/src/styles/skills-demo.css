@@ -1,0 +1,30 @@
+.demo-skills { margin: 22px 0 30px; border: 1px solid #363936; border-radius: 16px; background: #171917; overflow: hidden; color: #e4e8e4; }
+.demo-skill-tabs { display: flex; gap: 8px; padding: 12px; border-bottom: 1px solid #343734; }
+.demo-skill-tabs button { display: flex; gap: 10px; align-items: center; padding: 14px 20px; border: 1px solid transparent; border-radius: 9px; background: transparent; color: #b7bdb7; cursor: pointer; }
+.demo-skill-tabs button[aria-pressed=true] { background: #25352c; color: #c1ebd2; border-color: #466150; }
+.demo-skill-body { padding: clamp(16px, 3vw, 30px); max-width: 950px; }
+.demo-skill-body h2 { font-size: 23px; margin: 0 0 8px; }
+.demo-skill-body p, .demo-skill-body small { color: #bac2bb; line-height: 1.6; }
+.demo-skill-body form { display: grid; gap: 16px; margin-top: 25px; }
+.demo-skill-body label { display: grid; gap: 9px; font-size: 14px; }
+.demo-skill-body input:not([type=checkbox]), .demo-skill-body select, .demo-skill-body textarea { width: 100%; max-width: 100%; box-sizing: border-box; border: 1px solid #454a44; background: #101210; color: #e7eee8; padding: 12px; border-radius: 8px; color-scheme: dark; }
+.demo-skill-body textarea { min-height: 95px; resize: vertical; }
+.demo-skill-body .demo-check { display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; }
+.demo-check input { flex: 0 0 auto; margin-top: 4px; accent-color: #91c9a9; }
+.demo-date-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.demo-ready { color: #a6d3b6; font-size: 12px; }
+.demo-blocked { color: #e7c384; font-size: 12px; }
+.demo-skill-body button:disabled { opacity: .45; cursor: not-allowed; }
+.demo-run-status, .demo-report { border-top: 1px solid #373d37; margin-top: 24px; padding-top: 20px; }
+.demo-total strong { font-size: 26px; color: #b0e4c6; }
+.demo-rain-chart { margin: 20px 0; }
+.demo-rain-chart svg { width: 100%; height: auto; fill: #9ad8b6; }
+.demo-rain-chart text { font-size: 11px; fill: #c5cdc7; }
+.demo-ask-ai { padding: 20px; margin: 24px 0; background: #1e251f; border: 1px solid #435445; border-radius: 12px; display: grid; gap: 15px; }
+.demo-ask-ai h3 { display: flex; align-items: center; gap: 8px; margin: 0; }
+.demo-ask-ai button, .demo-skill-body form > button { justify-self: start; display: flex; align-items: center; gap: 8px; }
+.demo-ai-answer { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.75; border-top: 1px solid #465347; padding-top: 18px; }
+.demo-report details { margin-top: 20px; }
+.demo-report .live-evidence { overflow-wrap: anywhere; }
+.demo-report .live-evidence pre { white-space: pre-wrap; max-width: 100%; overflow: auto; }
+@media(max-width: 600px) { .demo-date-fields { grid-template-columns: 1fr; } .demo-skill-tabs button { padding: 10px; font-size: 13px; } .demo-ask-ai { padding: 14px; } }

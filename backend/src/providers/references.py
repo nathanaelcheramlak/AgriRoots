@@ -211,8 +211,14 @@ async def kindwise(http, base, args, credential, context):
         )
     data = {
         "image_sha256": asset_digest,
-        "crop_candidates": [{k: r[k] for k in ("name", "probability")} for r in crops[:3]],
-        "disease_candidates": [{k: r[k] for k in ("name", "probability")} for r in diseases[:3]],
+        "crop_candidates": [
+            {"name": r["name"], "probability": r["probability"], "confidence_percent": round(r["probability"] * 100, 2)}
+            for r in crops[:3]
+        ],
+        "disease_candidates": [
+            {"name": r["name"], "probability": r["probability"], "confidence_percent": round(r["probability"] * 100, 2)}
+            for r in diseases[:3]
+        ],
     }
     complete_diagnosis(context, asset_digest)
     return ConnectorResult(

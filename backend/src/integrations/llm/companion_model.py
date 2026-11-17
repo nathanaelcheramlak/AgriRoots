@@ -50,6 +50,8 @@ def function_response(name, result, call_id=None):
                 "full_name",
                 "household_id",
                 "farmer_user_id",
+                "image_sha256",
+                "image_asset_id",
             }
             return {key: minimized(item) for key, item in value.items() if key.lower() not in withheld}
         if isinstance(value, list):

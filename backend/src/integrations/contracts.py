@@ -194,6 +194,7 @@ class ExecutionContext:
     job_id: str | None = None
     run_id: str | None = None
     plot_ids: list[str] = field(default_factory=list)
+    territory_id: str | None = None
     plots: list[dict] = field(default_factory=list)
     mode: str = "runtime"
     authorize_network: bool = False
