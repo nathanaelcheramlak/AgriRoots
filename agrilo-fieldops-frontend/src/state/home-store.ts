@@ -13,15 +13,19 @@ export interface HomeState extends MapState {
   plots: HomePlot[]; search: string; selectedIds: string[]; skillId: string; parameters: Record<string, string>;
   conversationId: string; investigations: HomeInvestigation[]; activeId: string | null; imageAssetId: string | null; imageName: string | null;
   authorizations: { network: boolean; model: boolean; credit: boolean };
+  localDraftSelected: boolean; territoryPlotIds: string[] | null;
+  setLocalDraftSelected(value: boolean): void; setTerritoryScope(ids: string[] | null, reset?: boolean): void;
   login: (phone: string, password: string) => Promise<void>; logout: () => void; reload: () => Promise<void>;
   setSearch: (text: string) => void; chooseSkill: (id: string) => void; setParameter: (key: string, value: string) => void;
   prepareSkill: (id: string, plotIds: string[], parameters: Record<string, string>) => Promise<boolean>;
   authorize: (key: 'network' | 'model' | 'credit', value: boolean) => void; upload: (file: File) => Promise<void>;
+  openSavedJob: (jobId: string, plotId: string) => Promise<void>;
   submit: (question: string) => Promise<void>; resume: (id: string) => Promise<void>; cancel: (id: string) => Promise<void>;
 }
 
-export function investigationBlock(s: Pick<HomeState, 'context' | 'selectedIds' | 'skillId' | 'parameters' | 'imageAssetId' | 'authorizations' | 'investigations'>): string | null {
+export function investigationBlock(s: Pick<HomeState, 'context' | 'selectedIds' | 'skillId' | 'parameters' | 'imageAssetId' | 'authorizations' | 'investigations' | 'localDraftSelected' | 'territoryPlotIds'>): string | null {
   const context = s.context, skill = context?.skills.find(k => k.id === s.skillId)
+  if (s.localDraftSelected) return 'Live investigation requires a registered, authorized farm.'
   if (s.investigations.some(r => r.ambiguous && !r.job)) return 'Recover the uncertain submission before starting another investigation.'
   if (!context || !skill) return 'Choose an available backend skill.'
   if (!skill.available) return skill.blocked_reason ?? 'This skill is not enabled.'
@@ -31,6 +35,8 @@ export function investigationBlock(s: Pick<HomeState, 'context' | 'selectedIds' 
   const isRoute = skill.tools.some(t => t.capabilities.includes('logistics.route'))
   if (isRoute && s.selectedIds.length !== 2) return 'Select two authorized farms for this route.'
   if (!isRoute && skill.tools.some(t => t.plot_scoped) && s.selectedIds.length !== 1) return 'This skill requires exactly one selected farm. Your other selections are preserved.'
+  if (s.selectedIds.some(id => !context.plots.some(p => p.id === id))) return 'Live investigation requires a registered, authorized farm.'
+  if (s.territoryPlotIds && s.selectedIds.some(id => !s.territoryPlotIds!.includes(id))) return 'Select farms from the current authorized territory.'
   if (context.model.provider === 'gemini' && context.model.plot_data_policy === 'synthetic_only' && s.selectedIds.some(id => !context.plots.find(p => p.id === id)?.synthetic)) return 'Backend cloud policy currently permits synthetic farm contexts only.'
   if (skill.tools.some(t => t.requires_image) && (!s.imageAssetId || !s.authorizations.credit)) return 'Upload a crop image and authorize diagnosis credit use.'
   const fields = skillInputs(skill)
@@ -52,10 +58,10 @@ export function createHomeStore(api: HomeApi, pollMs = 1200) {
     const update = (id: string, patch: Partial<HomeInvestigation>) => set(s => ({ investigations: s.investigations.map(r => r.id === id ? { ...r, ...patch } : r) }))
     const project = () => {
       const s = get(), box = s.selection?.bbox
-      const visible = s.plots.filter(p => (!box || (p.longitude >= box[0] && p.longitude <= box[2] && p.latitude >= box[1] && p.latitude <= box[3])) && `${p.name} ${p.id} ${p.crop ?? ''}`.toLowerCase().includes(s.search.toLowerCase()))
+      const visible = s.plots.filter(p => (s.territoryPlotIds === null || s.territoryPlotIds.includes(p.id)) && (!box || (s.context?.registry_workspace?.available && s.territoryPlotIds !== null) || (p.longitude >= box[0] && p.longitude <= box[2] && p.latitude >= box[1] && p.latitude <= box[3])) && `${p.name} ${p.id} ${p.crop ?? ''}`.toLowerCase().includes(s.search.toLowerCase()))
       set({ farms: visible.map(p => ({ id: p.id, displayName: p.name, point: { lat: p.latitude, lon: p.longitude }, currentCrop: p.crop ?? 'Crop not recorded', riskLevel: 'unknown' as const })) })
     }
-    const clear = () => { generation++; uploadGeneration++; controller.abort(); controller = new AbortController(); polling = null; api.clearSession(); set({ context: null, session: 'signed_out', plots: [], farms: [], selectedIds: [], highlightedIds: [], selectedFarmId: null, investigations: [], activeId: null, imageAssetId: null, imageName: null, parameters: {}, skillId: '', error: null, toast: null, search: '', conversationId: crypto.randomUUID(), selection: null, authorizations: { network: false, model: false, credit: false } }) }
+    const clear = () => { generation++; uploadGeneration++; controller.abort(); controller = new AbortController(); polling = null; api.clearSession(); set({ localDraftSelected: false, territoryPlotIds: null }); set({ context: null, session: 'signed_out', plots: [], farms: [], selectedIds: [], highlightedIds: [], selectedFarmId: null, investigations: [], activeId: null, imageAssetId: null, imageName: null, parameters: {}, skillId: '', error: null, toast: null, search: '', conversationId: crypto.randomUUID(), selection: null, authorizations: { network: false, model: false, credit: false } }) }
     const finish = async (id: string, job: HomeJob, token: number) => {
       if (generation !== token) return
       const parsed = resultSchema.safeParse(job.result)
@@ -99,6 +105,13 @@ export function createHomeStore(api: HomeApi, pollMs = 1200) {
     }
     return {
       context: null, session: 'signed_out', error: null, toast: null, plots: [], farms: [], search: '', selectedIds: [], highlightedIds: [], selectedFarmId: null, skillId: '', parameters: {},
+      localDraftSelected: false, territoryPlotIds: null,
+      setLocalDraftSelected: localDraftSelected => set({ localDraftSelected }),
+      setTerritoryScope: (ids, reset = false) => {
+        const s = get(), selected = reset ? [] : s.selectedIds.filter(id => ids === null || ids.includes(id))
+        set({ territoryPlotIds: ids, selectedIds: selected, highlightedIds: selected, selectedFarmId: selected.at(-1) ?? null, localDraftSelected: reset ? false : s.localDraftSelected,
+          parameters: Object.fromEntries(Object.entries(s.parameters).filter(([key, value]) => !key.endsWith('_plot_id') || selected.includes(value))) }); project()
+      },
       conversationId: crypto.randomUUID(), investigations: [], activeId: null, imageAssetId: null, imageName: null, authorizations: { network: false, model: false, credit: false },
       selection: null, phase: 'idle', analysis: null, layers: { farms: true, selection: true, soil: false, rainfall: false, satellite: false, pests: false }, focus: { serial: 0, type: 'reset' },
       login: async (phone, password) => { clear(); const token = generation; set({ session: 'loading', error: null }); try { await api.login(phone, password, controller.signal); await load() } catch (e) { if (token === generation) { api.clearSession(); set({ session: 'signed_out', error: e instanceof Error ? e.message : 'Sign-in failed.' }) } } },
@@ -109,14 +122,14 @@ export function createHomeStore(api: HomeApi, pollMs = 1200) {
       setPhase: phase => set({ phase }), notify: toast => set({ toast }),
       toggleLayer: id => { if (id !== 'farms' && id !== 'selection') { set({ toast: 'No backend overlay is available.' }); return } set(s => ({ layers: { ...s.layers, [id]: !s.layers[id] } })) },
       focusMap: (type, farmIds) => set(s => ({ focus: { type, farmIds, serial: s.focus.serial + 1 } })),
-      selectFarm: id => { if (!get().plots.some(p => p.id === id)) return; const ids = get().selectedIds.includes(id) ? get().selectedIds.filter(p => p !== id) : [...get().selectedIds, id]; if (ids.length > (get().context?.max_plots_per_run ?? 5)) { set({ toast: 'Select at most five authorized farms.' }); return } set({ selectedIds: ids, highlightedIds: ids, selectedFarmId: ids.at(-1) ?? null }) },
+      selectFarm: id => { if (!get().plots.some(p => p.id === id) || get().territoryPlotIds && !get().territoryPlotIds!.includes(id)) return; const ids = get().localDraftSelected ? [id] : get().selectedIds.includes(id) ? get().selectedIds.filter(p => p !== id) : [...get().selectedIds, id]; if (ids.length > (get().context?.max_plots_per_run ?? 5)) { set({ toast: 'Select at most five authorized farms.' }); return } set({ selectedIds: ids, highlightedIds: ids, selectedFarmId: ids.at(-1) ?? null, localDraftSelected: false }) },
       setSearch: search => { set({ search }); project() },
       chooseSkill: skillId => { uploadGeneration++; set({ skillId, parameters: {}, imageAssetId: null, imageName: null }); },
       prepareSkill: async (id, plotIds, parameters) => {
         const token = generation, old = get().context
         if (!old || get().activeId || get().investigations.some(r => r.ambiguous && !r.job)) { set({ error: 'Finish or recover the active investigation before preparing another skill.' }); return false }
         try {
-          const fresh = await api.context(controller.signal)
+          const fresh = old.registry_workspace?.available ? await api.context(controller.signal, plotIds) : await api.context(controller.signal)
           if (token !== generation) return false
           if (fresh.office_id !== old.office_id || fresh.user_id !== old.user_id) { clear(); return false }
           if (get().activeId || get().investigations.some(r => r.ambiguous && !r.job)) throw new Error('An investigation became active. Return to Home without replacing it.')
@@ -127,7 +140,7 @@ export function createHomeStore(api: HomeApi, pollMs = 1200) {
           if (Object.entries(parameters).some(([key, value]) => !allowed.has(key) || typeof value !== 'string' || value.length > 100)) throw new Error('The selected skill inputs changed. Reload Skills before continuing.')
           const same = get().skillId === id
           uploadGeneration++
-          set({ context: fresh, plots: fresh.plots, skillId: id, selectedIds: [...plotIds], highlightedIds: [...plotIds], selectedFarmId: plotIds.at(-1) ?? null,
+          set({ localDraftSelected: false, context: fresh, plots: fresh.plots, skillId: id, selectedIds: [...plotIds], highlightedIds: [...plotIds], selectedFarmId: plotIds.at(-1) ?? null,
             parameters: { ...parameters }, authorizations: { network: false, model: false, credit: false }, error: null,
             ...(!same ? { imageAssetId: null, imageName: null } : {}) })
           project()
@@ -150,6 +163,24 @@ export function createHomeStore(api: HomeApi, pollMs = 1200) {
         set({ investigations: [...s.investigations, run], activeId: id, error: null })
         try { const job = await api.start(skill.id, request, controller.signal); if (generation === token) await poll(id, job) }
         catch (error) { if (generation === token) { update(id, { error: error instanceof Error ? error.message : 'Submission failed.', ambiguous: error instanceof HomeApiError && error.ambiguous }); set({ activeId: null }) } }
+      },
+      openSavedJob: async (jobId, plotId) => {
+        const state = get(), token = generation
+        if (!state.context || state.activeId || !state.plots.some(p => p.id === plotId)) return
+        const existing = state.investigations.find(r => r.job?.id === jobId)
+        if (existing) { await get().resume(existing.id); return }
+        const id = crypto.randomUUID()
+        set({ activeId: id, error: null })
+        try {
+          const job = await api.job(jobId, controller.signal)
+          if (generation !== token) return
+          const skill = get().context?.skills.find(k => k.id === job.target_id)
+          const run: HomeInvestigation = { id, conversationId: get().conversationId, question: 'Saved farm investigation', skillId: job.target_id,
+            skillName: skill?.name ?? 'Saved registered skill', plotIds: [plotId], geometry: null, job, result: null, evidence: [], error: null, ambiguous: false,
+            request: { task: 'Restored investigation', plot_ids: [plotId], parameters: {}, request_key: id, authorize_network: false, authorize_model: false, authorize_credit_use: false } }
+          set(v => ({ investigations: [...v.investigations, run] }))
+          await poll(id, job)
+        } catch (e) { if (generation === token) set({ activeId: null, error: e instanceof Error ? e.message : 'Saved investigation could not be opened.' }) }
       },
       resume: async id => { const run = get().investigations.find(r => r.id === id); if (!run || get().activeId) return; set({ activeId: id }); const token = generation; try { const job = run.job ? await api.job(run.job.id, controller.signal) : await api.start(run.skillId, run.request, controller.signal); if (generation === token) await poll(id, job) } catch (e) { if (generation === token) { update(id, { error: e instanceof Error ? e.message : 'Recovery failed.' }); set({ activeId: null }) } } },
       cancel: async id => { const run = get().investigations.find(r => r.id === id); if (!run?.job) return; const token = generation; try { const job = await api.cancel(run.job.id, controller.signal); if (generation !== token) return; update(id, { job, error: job.error?.message ?? null }) } catch (e) { if (generation !== token) return; update(id, { error: e instanceof Error ? e.message : 'Cancellation failed.' }) } },

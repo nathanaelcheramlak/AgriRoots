@@ -18,3 +18,4 @@ from src.db.models.advisory_run import AdvisoryRun, RunCall, RunEvidence
 from src.db.models import connectors
 
 from src.db.models.image_asset import ImageAsset, DiagnosisReceipt
+from src.db.models import farm_registry

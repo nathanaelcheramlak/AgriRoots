@@ -65,7 +65,19 @@ def records(office_id: str, kind: str | None = None, s: WorkspaceService = Depen
     query = select(WorkspaceRecord).where(WorkspaceRecord.office_id == office_id)
     if kind:
         query = query.where(WorkspaceRecord.kind == kind)
-    return list(s.db.scalars(query.order_by(WorkspaceRecord.created_at)))
+    from src.registry.access import guard_record
+    from src.tools.policy import principal_for
+    from src.integrations.contracts import ConnectorError
+    principal = principal_for(s.db, s.user.user_id)
+    result = []
+    for row in s.db.scalars(query.order_by(WorkspaceRecord.created_at)):
+        try:
+            guard_record(s.db, principal, row)
+            result.append(row)
+        except ConnectorError as exc:
+            if exc.code != "POLICY_DENIED":
+                raise
+    return result
 
 
 @router.post("/offices/{office_id}/records", status_code=201)

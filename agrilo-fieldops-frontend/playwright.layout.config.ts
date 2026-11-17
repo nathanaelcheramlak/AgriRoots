@@ -4,7 +4,7 @@ import base from './playwright.home.config'
 // Visual/layout tests use bounded HTTP fixtures, never a real office account.
 export default defineConfig({
   ...base,
-  testMatch: 'workspace-layout.spec.ts',
+  testMatch: ['workspace-layout.spec.ts', 'territory.spec.ts'],
   outputDir: 'test-results-layout',
   reporter: [['list'], ['html', { open: 'never', outputFolder: 'playwright-report-layout' }]],
   use: { ...base.use, baseURL: 'http://127.0.0.1:5177' },

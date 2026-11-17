@@ -66,18 +66,21 @@ async def checkpointer():
             yield saver
 
 
-def validate_claims(text, outcomes):
+def validate_claims(text, outcomes, *, context_ids=()):
     evidence = {ident for item in outcomes for ident in item.get("evidence_ids", [])}
+    authorized_context = set(context_ids)
     mentioned = set(re.findall(r"\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b", text, re.I))
-    if evidence and not mentioned:
+    if evidence and not mentioned.intersection(evidence):
         raise ConnectorError("OUTPUT_VALIDATION_FAILED", "The answer must cite evidence from this run")
-    if not mentioned <= evidence:
+    if not mentioned <= evidence | authorized_context:
         raise ConnectorError("OUTPUT_VALIDATION_FAILED", "Model cited an evidence ID absent from this run")
     haystack = json.dumps([{ "data": item.get("data"), "source": item.get("source")} for item in outcomes])
     numbers = [float(n) for n in re.findall(r"(?<![\w])[+-]?\d+(?:\.\d+)?(?![\w])", haystack)]
     stripped = text
-    for ident in evidence:
+    for ident in evidence | authorized_context:
         stripped = stripped.replace(ident, "")
+    # Markdown heading/list ordinals are presentation markers, not measured values.
+    stripped = re.sub(r"(?m)^([ \t]*(?:#{1,6}[ \t]+)?)[0-9]+[.)][ \t]+", r"\1", stripped)
     for number in re.findall(r"(?<![\w])[+-]?\d+(?:\.\d+)?(?![\w])", stripped):
         if not any(math.isclose(float(number), candidate, rel_tol=1e-7, abs_tol=1e-7) for candidate in numbers):
             raise ConnectorError(
@@ -128,6 +131,7 @@ async def execute_skill_job(job, principal, lease_token, *, model=None):
                     "CANCELLED", "Run permission, skill enablement or worker lease is no longer current"
                 )
             pack_allows(db, principal.office_id, skill.id, "skills")
+            authorized_plots(db, actor, request.get("plot_ids", []))
 
     async def prepare(state):
         reauthorize()
@@ -145,6 +149,8 @@ async def execute_skill_job(job, principal, lease_token, *, model=None):
                                     "parameters": request.get("parameters", {}),
                                     "image_attached": bool(request.get("image_asset_id")),
                                     "plot_references": [plot["id"] for plot in plots],
+                                    "farm_contexts": [plot.get("farm_context", {}) for plot in plots],
+                                    "record_provenance_note": "Synthetic farm records may use real provider evidence; provider provenance is separate.",
                                     "input_provenance": "synthetic"
                                     if all(plot["synthetic"] for plot in plots)
                                     else "approved_context",
@@ -263,7 +269,7 @@ async def execute_skill_job(job, principal, lease_token, *, model=None):
         elif state.get("proposed"):
             text = "The bounded investigation reached its follow-up limit. Validated evidence is available; further analysis requires another authorized run."
         else:
-            validate_claims(text, state["outcomes"])
+            validate_claims(text, state["outcomes"], context_ids=[plot["id"] for plot in plots])
         return {"final_text": text}
 
     graph = StateGraph(State)

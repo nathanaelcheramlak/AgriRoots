@@ -2,7 +2,7 @@
 
 from typing import Annotated, Any, Literal
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from pydantic import BaseModel
 from sqlalchemy import select
 
@@ -70,46 +70,52 @@ class HomeContext(BaseModel):
     max_plots_per_run: int = 5
     server_area_query: bool = False
     shared_conversation: bool = False
+    territory_workspace: dict | None = None
+    registry_workspace: dict | None = None
 
 
 @router.get("/context", response_model=HomeContext)
-def context(s: Annotated[Any, Depends(service)]):
+def context(s: Annotated[Any, Depends(service)], plot_ids: str | None = Query(None, max_length=200)):
     settings = get_settings()
     office = s.db.get(Office, s.principal.office_id)
-    records = list(
-        s.db.scalars(
-            select(WorkspaceRecord).where(
-                WorkspaceRecord.office_id == office.id, WorkspaceRecord.kind.in_(["plot", "household", "season"])
-            )
-        )
-    )
-    households = {r.id: r for r in records if r.kind == "household"}
-    seasons = {}
-    for record in sorted(records, key=lambda r: r.created_at):
-        if record.kind == "season":
-            seasons[record.data["plot_id"]] = record.data
+    # Registry pages are bounded; only authorized records become Home points.
+    from src.registry.service import FarmRegistry
+    from src.db.models.farm_registry import RegisteredPlot, CropSeason
+    from src.registry.access import territory_scope
+    from src.db.models.farm_registry import Territory
+    registry = FarmRegistry(s.db, s.principal)
+    allowed = select(RegisteredPlot.id).where(RegisteredPlot.office_id == office.id,
+        RegisteredPlot.territory_id.in_(select(Territory.id).where(territory_scope(s.principal))))
+    query = select(WorkspaceRecord).where(WorkspaceRecord.office_id == office.id,
+        WorkspaceRecord.kind == "plot",
+        (~WorkspaceRecord.id.in_(select(RegisteredPlot.id))) | WorkspaceRecord.id.in_(allowed))
+    if plot_ids:
+        ids = plot_ids.split(",")
+        from src.tools.policy import authorized_plots
+        authorized_plots(s.db, s.principal, ids)
+        query = query.where(WorkspaceRecord.id.in_(ids))
+    records = list(s.db.scalars(query.order_by(WorkspaceRecord.created_at, WorkspaceRecord.id).limit(100)))
     plots = []
     for record in records:
-        if record.kind != "plot":
-            continue
         data = record.data
-        household = households.get(data["household_id"])
-        if not household:
+        registered = s.db.get(RegisteredPlot, record.id)
+        if registered:
+            plots.append(HomePlot(**registry.plot_view(registered)["home_plot"]))
             continue
-        season = seasons.get(record.id, {})
-        plots.append(
-            HomePlot(
-                id=record.id,
-                name=data["name"],
-                latitude=data["latitude"],
-                longitude=data["longitude"],
-                area=data["area"],
-                area_unit=data["area_unit"],
-                synthetic=household.data.get("synthetic") is True,
-                crop=season.get("crop"),
-                planting_date=season.get("planting_date"),
-            )
-        )
+        household = s.db.get(WorkspaceRecord, data.get("household_id")) if data.get("household_id") else None
+        if not household or household.office_id != office.id:
+            continue
+        seasons = list(s.db.scalars(select(WorkspaceRecord).where(WorkspaceRecord.office_id == office.id,
+            WorkspaceRecord.kind == "season", WorkspaceRecord.data["plot_id"].as_string() == record.id)
+            .order_by(WorkspaceRecord.created_at.desc()).limit(1)))
+        season = seasons[0].data if seasons else {}
+        plots.append(HomePlot(id=record.id, name=data["name"], latitude=data["latitude"], longitude=data["longitude"],
+            area=data["area"], area_unit=data["area_unit"], synthetic=household.data.get("synthetic") is True,
+            crop=season.get("crop"), planting_date=season.get("planting_date")))
+    territories = registry.territories(limit=100)
+    for item in territories["items"]:
+        item["authorizedPlotIds"] = [p.id for p in plots if (registration := s.db.get(RegisteredPlot, p.id))
+            and registration.territory_id == item["id"]]
     skills = []
     from src.db.models.connectors import ToolVersion
 
@@ -194,4 +200,7 @@ def context(s: Annotated[Any, Depends(service)]):
         plots=plots,
         skills=skills,
         model=model,
+        server_area_query=True,
+        territory_workspace={"status": "available", "territories": territories["items"]},
+        registry_workspace={"available": True, "version": 1, "spatial_engine": "postgis" if s.db.bind.dialect.name == "postgresql" else "sqlite-development", "plot_page_limit": 100, "territory_total": territories["total"]},
     )

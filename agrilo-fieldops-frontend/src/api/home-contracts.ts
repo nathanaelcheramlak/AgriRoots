@@ -10,7 +10,11 @@ export const homeSkillSchema = z.object({ id: z.string(), name: z.string(), desc
 export const homeContextSchema = z.object({
   user_id: z.string(), office_id: z.string(), office_name: z.string(), role: z.string(), plots: z.array(plotSchema), skills: z.array(homeSkillSchema),
   model: z.object({ provider: z.enum(['gemini', 'local']), model: z.string(), configured: z.boolean(), execution_enabled: z.boolean(), blocked_reason: z.string().nullable(), plot_data_policy: z.string(), reachability_verified: z.boolean() }),
-  max_plots_per_run: z.number().int().positive().max(5), server_area_query: z.literal(false), shared_conversation: z.literal(false),
+  max_plots_per_run: z.number().int().positive().max(5), server_area_query: z.boolean(), shared_conversation: z.literal(false),
+  // Optional future metadata; validate independently so unavailable territory data
+  // cannot break the existing authenticated farm/investigation workspace.
+  territory_workspace: z.unknown().optional(),
+  registry_workspace: z.object({ available: z.boolean(), version: z.number(), spatial_engine: z.string(), plot_page_limit: z.number(), territory_total: z.number() }).optional(),
 })
 export const authSchema = z.object({ access_token: z.string().min(1), token_type: z.literal('bearer'), user: z.object({ user_id: z.string() }) })
 const sourceSchema = z.object({ provider: z.string().optional(), url: z.string().optional(), units: z.unknown().optional(), value_kind: z.string().optional(), observed_at: z.string().nullable().optional(), valid_time_range: z.object({ from: z.string(), to: z.string() }).nullable().optional() }).passthrough()

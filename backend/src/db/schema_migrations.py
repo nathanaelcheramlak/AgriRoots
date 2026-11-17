@@ -4,10 +4,10 @@ Run one migration process before starting multiple production workers.
 """
 from sqlalchemy import Column, Integer, Table, select
 from src.db.base import Base
-from src.db.migrations import v001_legacy, v002_workspace, v003_advisory_runs, v004_connectors, v005_image_assets
+from src.db.migrations import v001_legacy, v002_workspace, v003_advisory_runs, v004_connectors, v005_image_assets, v006_farm_registry
 
 revisions = Table("schema_revisions", Base.metadata, Column("version", Integer, primary_key=True))
-MIGRATIONS = ((1, v001_legacy), (2, v002_workspace), (3, v003_advisory_runs), (4, v004_connectors), (5, v005_image_assets))
+MIGRATIONS = ((1, v001_legacy), (2, v002_workspace), (3, v003_advisory_runs), (4, v004_connectors), (5, v005_image_assets), (6, v006_farm_registry))
 
 
 def migrate(engine):

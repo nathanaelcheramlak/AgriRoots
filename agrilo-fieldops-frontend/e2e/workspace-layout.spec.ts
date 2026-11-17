@@ -56,7 +56,7 @@ for (const viewport of [{ width: 1366, height: 768 }, { width: 1280, height: 600
     await page.locator('.live-workspace-body').evaluate(el => { el.scrollTop = el.scrollHeight })
     await expect(start).toBeInViewport({ ratio: 1 })
     await noHorizontalOverflow(page)
-    await page.screenshot({ path: `test-results/home-layout-${viewport.width}.png` })
+    await page.screenshot({ path: `test-results-layout/home-layout-${viewport.width}.png` })
   })
 }
 
@@ -78,7 +78,7 @@ test('Home and all workspaces share the theme, and navigation preserves Home sta
     expect(await page.locator(selector).evaluate(el => getComputedStyle(el).backgroundColor)).toBe(homeBg)
     await noHorizontalOverflow(page)
     if (name === 'Plugins') {
-      await page.screenshot({ path: 'test-results/plugins-layout.png' })
+      await page.screenshot({ path: 'test-results-layout/plugins-layout.png' })
       await page.getByRole('button', { name: 'Add', exact: true }).click()
       await page.getByRole('button', { name: 'Register custom REST API', exact: true }).click()
       const pluginInput = await page.getByRole('dialog').getByLabel('Name', { exact: true }).evaluate(el => ({ bg: getComputedStyle(el).backgroundColor, font: getComputedStyle(el).fontFamily }))
@@ -93,7 +93,7 @@ test('Home and all workspaces share the theme, and navigation preserves Home sta
   await expect(page.locator('.selection-card')).toHaveText(geometry, { useInnerText: true })
   await expect(page.locator('.field-map')).toBeVisible()
   await page.locator('.live-map-panel').evaluate(el => { el.scrollTop = 0 })
-  await page.screenshot({ path: 'test-results/home-layout-ready.png' })
+  await page.screenshot({ path: 'test-results-layout/home-layout-ready.png' })
 })
 
 test('mobile Home uses natural page scrolling and every action remains reachable', async ({ page }) => {
@@ -108,7 +108,7 @@ test('mobile Home uses natural page scrolling and every action remains reachable
   await start.scrollIntoViewIfNeeded()
   await expect(start).toBeInViewport({ ratio: 1 })
   await noHorizontalOverflow(page)
-  await page.screenshot({ path: 'test-results/home-layout-mobile.png' })
+  await page.screenshot({ path: 'test-results-layout/home-layout-mobile.png' })
   await navigate(page, 'Plugins')
   await noHorizontalOverflow(page)
   await navigate(page, 'Home')

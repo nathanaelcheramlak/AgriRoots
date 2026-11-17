@@ -36,7 +36,23 @@ def authorized_plots(db, principal, plot_ids):
         plot = db.get(WorkspaceRecord, plot_id)
         if not plot or plot.office_id != principal.office_id or plot.kind != "plot":
             raise ConnectorError("POLICY_DENIED", "Plot is outside the authenticated office")
-        household = db.get(WorkspaceRecord, plot.data["household_id"])
+        from src.registry.access import guard_plot
+        registered = guard_plot(db, principal, plot_id)
+        if registered:
+            from src.db.models.farm_registry import CropSeason, FarmObservation
+            season = db.scalar(select(CropSeason).where(CropSeason.plot_id == plot_id)
+                .order_by(CropSeason.created_at.desc()).limit(1))
+            observations = list(db.scalars(select(FarmObservation).where(FarmObservation.plot_id == plot_id)
+                .order_by(FarmObservation.created_at.desc()).limit(10)))
+            output.append({"id": plot.id, "latitude": plot.data["latitude"],
+                "longitude": plot.data["longitude"], "synthetic": plot.data.get("synthetic") is True,
+                "farm_context": {"crop_season": season.data if season else {},
+                    "observations": [{"metric": row.data["metric"], "value": row.data["value"],
+                        "unit": row.data["unit"], "provenance": row.provenance,
+                        "observed_at": row.observed_at.isoformat() if row.observed_at else None} for row in observations],
+                    "area_m2": registered.area_m2, "sampling": "registered interior point; not whole-farm measurement"}})
+            continue
+        household = db.get(WorkspaceRecord, plot.data.get("household_id")) if plot.data.get("household_id") else None
         if not household or household.office_id != principal.office_id:
             raise ConnectorError("POLICY_DENIED", "Plot household scope is invalid")
         output.append(

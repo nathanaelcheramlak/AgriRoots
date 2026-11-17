@@ -5,6 +5,7 @@ import { useFieldOps } from '../../state/useFieldOps'
 import { areaKm2, demoSelection, rectangleSelection } from '../../lib/geo'
 import { errorMessage } from '../../lib/format'
 import styles from '../../app/App.module.css'
+import { territoryStore } from '../../features/territory/store'
 export type Coordinate = { lat: number; lng: number }
 export function CoordinateWidget({ coordinate, onCoordinate, binding }: { coordinate: Coordinate | null; onCoordinate: (point: Coordinate) => void; binding?: MapBinding }) {
   const s = (binding ?? { useState: useFieldOps }).useState(), [lat, setLat] = useState(''), [lng, setLng] = useState(''), [width, setWidth] = useState('10')
@@ -13,6 +14,8 @@ export function CoordinateWidget({ coordinate, onCoordinate, binding }: { coordi
   const analyze = (event: React.FormEvent) => {
     event.preventDefault()
     try {
+      const registration = territoryStore.getState()
+      if (registration.dirty || registration.mode.startsWith('draw-') || registration.mode.startsWith('edit-')) throw new Error('Finish or discard the open registration before changing the temporary analysis area.')
       const point = { lat: Number(lat), lng: Number(lng) }, km = Number(width)
       if (!lat.trim() || !lng.trim() || !Number.isFinite(point.lat) || !Number.isFinite(point.lng) || !Number.isFinite(km) || km < .1 || km > 40) throw new Error('Enter valid coordinates and an area width between 0.1 and 40 km.')
       const latOffset = km / (2 * 111.32), lonOffset = latOffset / Math.cos(point.lat * Math.PI / 180)

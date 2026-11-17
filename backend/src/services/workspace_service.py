@@ -37,6 +37,12 @@ class WorkspaceService:
         row = self.db.get(WorkspaceRecord, record_id)
         if not row or row.office_id != office_id or (kind and row.kind != kind):
             fail(404, "Office record not found")
+        from src.registry.access import guard_record
+        from src.tools.policy import principal_for
+        # Farmer-facing legacy reads retain their existing household authorization.
+        member = self.db.get(Membership, (office_id, self.user.user_id))
+        if member and member.role != "farmer":
+            guard_record(self.db, principal_for(self.db, self.user.user_id), row)
         return row
 
     def create_office(self, name):
@@ -84,6 +90,10 @@ class WorkspaceService:
         except ValidationError as exc:
             fail(422, str(exc))
         old = self.record(office_id, record_id, payload.kind) if record_id else None
+        if old:
+            from src.db.models.farm_registry import RegisteredPlot
+            if self.db.get(RegisteredPlot, old.id):
+                fail(409, "Edit registered polygons through the farm registry with its current revision")
         if old and old.kind in ("evidence", "guidance", "calendar"):
             fail(409, "Reviewed sources are immutable; create a new record")
         if "assigned_officer_id" in data:

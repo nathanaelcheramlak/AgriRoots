@@ -19,6 +19,8 @@ import type { Basemap } from './map-config'
 import { GeographicContext } from './GeographicContext'
 import type { Coordinate } from './CoordinateWidget'
 import mapStyles from '../../reference/agrosphere/MapExplorer.module.css'
+import { territoryStore, useTerritory } from '../../features/territory/store'
+import { TerritoryMapLayer } from './TerritoryMapLayer'
 
 L.Icon.Default.mergeOptions({ iconUrl: markerIcon, iconRetinaUrl: markerIcon2x, shadowUrl: markerShadow })
 const colors = { high: '#f87171', moderate: '#fbbf24', low: '#34d399', unknown: '#94a3b8' }
@@ -32,7 +34,9 @@ function MapController({ active = true, controlsTarget, coordinate, onCoordinate
   const map = useMap(), state = binding.useState(), rectangle = useRef<L.Rectangle | null>(null)
   const viewport = useRef({ center: map.getCenter(), zoom: map.getZoom() }), lastFocus = useRef(-1)
   const [drawing, setDrawing] = useState(false), [editing, setEditing] = useState(false)
-  useMapEvents({ moveend: () => { if (active) viewport.current = { center: map.getCenter(), zoom: map.getZoom() } }, click: event => { if (active && !map.pm.globalDrawModeEnabled() && !rectangle.current?.pm?.enabled()) onCoordinate?.(event.latlng) } })
+  const { mode } = useTerritory()
+  useEffect(() => { if (mode !== 'select-analysis-area') { rectangle.current?.pm?.disable(); setEditing(false); setDrawing(false) } }, [mode])
+  useMapEvents({ moveend: () => { if (active) viewport.current = { center: map.getCenter(), zoom: map.getZoom() } }, click: event => { if (active && ['navigate', 'select-analysis-area'].includes(territoryStore.getState().mode) && !map.pm.globalDrawModeEnabled() && !rectangle.current?.pm?.enabled()) onCoordinate?.(event.latlng) } })
   useEffect(() => {
     if (!active) return
     map.invalidateSize(); map.setView(viewport.current.center, viewport.current.zoom, { animate: false })
@@ -53,12 +57,14 @@ function MapController({ active = true, controlsTarget, coordinate, onCoordinate
   useEffect(() => {
     const onCreate = (event: L.LeafletEvent & { layer?: L.Layer }) => {
       if (!(event.layer instanceof L.Rectangle)) return
+      if (!['navigate', 'select-analysis-area'].includes(territoryStore.getState().mode)) return
       const bounds = event.layer.getBounds(); map.removeLayer(event.layer)
       try { binding.getState().setSelection(rectangleSelection(bounds.getSouthWest(), bounds.getNorthEast()), 0) }
       catch (error) { binding.getState().notify(errorMessage(error)) }
       setDrawing(false)
+      territoryStore.getState().setMode('navigate')
     }
-    const onDrawEnd = () => { setDrawing(false); const s = binding.getState(); if (s.phase === 'selecting') s.setPhase(s.analysis?.status ?? 'idle') }
+    const onDrawEnd = () => { setDrawing(false); if (territoryStore.getState().mode === 'select-analysis-area') territoryStore.getState().setMode('navigate'); const s = binding.getState(); if (s.phase === 'selecting') s.setPhase(s.analysis?.status ?? 'idle') }
     const onKey = (event: KeyboardEvent) => { if (event.key === 'Escape' && map.getContainer().clientWidth) { map.pm.disableDraw(); onDrawEnd() } }
     map.on('pm:create', onCreate); map.on('pm:drawend', onDrawEnd); window.addEventListener('keydown', onKey)
     return () => { map.off('pm:create', onCreate); map.off('pm:drawend', onDrawEnd); window.removeEventListener('keydown', onKey); map.pm.disableDraw() }
@@ -67,7 +73,7 @@ function MapController({ active = true, controlsTarget, coordinate, onCoordinate
     if (!state.selection) { rectangle.current?.remove(); rectangle.current = null; setEditing(false); return }
     const bounds = L.latLngBounds(leafletBounds(state.selection))
     if (!rectangle.current) {
-      const layer = L.rectangle(bounds, { color: '#34d399', weight: 2, dashArray: '6 4', fillColor: '#10b981', fillOpacity: .1 }).addTo(map)
+      const layer = L.rectangle(bounds, { color: '#ba9fe3', weight: 2, dashArray: '6 4', fillColor: '#ba9fe3', fillOpacity: .1 }).addTo(map)
       const onEdit = () => {
         const current = binding.getState(), b = layer.getBounds()
         try { const next = rectangleSelection(b.getSouthWest(), b.getNorthEast(), 'map_rectangle_edited'); if (next.bbox.join(',') !== current.selection?.bbox.join(',')) current.setSelection(next, 350) }
@@ -91,12 +97,14 @@ function MapController({ active = true, controlsTarget, coordinate, onCoordinate
     }
   }, [map, state.focus, active, binding])
   const draw = () => {
+    if (territoryStore.getState().dirty) { state.notify('Finish or discard the registration draft before selecting an analysis area.'); return }
     rectangle.current?.pm?.disable(); setEditing(false)
     if (drawing) { map.pm.disableDraw(); return }
-    map.pm.enableDraw('Rectangle', { snappable: false, pathOptions: { color: '#34d399', weight: 2, fillOpacity: .12 } })
+    territoryStore.getState().setMode('select-analysis-area')
+    map.pm.enableDraw('Rectangle', { snappable: false, pathOptions: { color: '#ba9fe3', weight: 2, fillOpacity: .12 } })
     state.setPhase('selecting'); setDrawing(true)
   }
-  const edit = () => { if (!rectangle.current) return; map.pm.disableDraw(); rectangle.current.pm.toggleEdit({ snappable: false, preventMarkerRemoval: true }); setEditing(rectangle.current.pm.enabled()) }
+  const edit = () => { if (!rectangle.current || territoryStore.getState().dirty) return; map.pm.disableDraw(); territoryStore.getState().setMode('select-analysis-area'); rectangle.current.pm.toggleEdit({ snappable: false, preventMarkerRemoval: true }); setEditing(rectangle.current.pm.enabled()); if (!rectangle.current.pm.enabled()) territoryStore.getState().setMode('navigate') }
   const farms = state.farms
   const controls = <><div className="map-tools" aria-label="Map tools"><button className={drawing ? 'active' : ''} onClick={draw} aria-label={drawing ? 'Cancel drawing' : 'Draw rectangle'} title="Draw rectangle"><SquareDashed size={16} /><span>{drawing ? 'Cancel' : 'Draw area'}</span></button><button disabled={!state.selection || !state.layers.selection} className={editing ? 'active' : ''} onClick={edit} aria-label={editing ? 'Finish editing selection' : 'Edit selection'} title="Edit selection">{editing ? <Check size={16} /> : <Pencil size={15} />}<span>{editing ? 'Done' : 'Edit'}</span></button><button disabled={!state.selection} onClick={() => { map.pm.disableDraw(); state.clearSelection() }} aria-label="Clear selection" title="Clear selection"><Trash2 size={15} /><span>Clear</span></button><button onClick={() => state.focusMap('reset')} aria-label="Reset view to Adama" title="Reset view to Adama"><RotateCcw size={15} /></button><button disabled={!farms.length} onClick={() => state.focusMap('farms', farms.map(f => f.id))} aria-label="Fit visible farms" title="Fit visible farms"><LocateFixed size={16} /></button></div>{(drawing || editing) && <p className="map-instruction">{drawing ? 'Click two opposite corners. Esc to cancel.' : 'Drag a corner to resize, then choose Done.'}</p>}</>
   return controlsTarget ? createPortal(controls, controlsTarget) : null
@@ -119,8 +127,9 @@ function MapContents(props: MapProps) {
       <ScaleControl position="bottomleft" imperial={false} />
       <GeographicContext visible={boundaries} />
       {props.coordinate && <Marker position={[props.coordinate.lat, props.coordinate.lng]} alt="Selected coordinate" title="Selected coordinate" interactive={false} />}
-      {state.layers.farms && farms.map(f => <Marker key={`${f.id}-${(state.selectedFarmId === f.id || !!state.highlightedIds?.includes(f.id))}`} position={[f.point.lat, f.point.lon]} icon={farmIcon(f, (state.selectedFarmId === f.id || !!state.highlightedIds?.includes(f.id)))} title={`${f.displayName} · ${f.riskLevel} priority`} alt={`${f.displayName} · ${f.riskLevel} priority`} eventHandlers={{ click: () => state.selectFarm(f.id) }}><Tooltip direction="top" offset={[0, -16]}>{f.displayName} · {f.currentCrop} · {f.riskLevel} priority</Tooltip></Marker>)}
+      {state.layers.farms && farms.map(f => <Marker key={`${f.id}-${(state.selectedFarmId === f.id || !!state.highlightedIds?.includes(f.id))}`} position={[f.point.lat, f.point.lon]} icon={farmIcon(f, (state.selectedFarmId === f.id || !!state.highlightedIds?.includes(f.id)))} title={`${f.displayName} · ${f.riskLevel} priority`} alt={`${f.displayName} · ${f.riskLevel} priority`} eventHandlers={{ click: () => { const t = territoryStore.getState(); if (['navigate', 'select-farm'].includes(t.mode) && !t.dirty) state.selectFarm(f.id) } }}><Tooltip direction="top" offset={[0, -16]}>{f.displayName} · {f.currentCrop} · {f.riskLevel} priority</Tooltip></Marker>)}
       <MapController {...props} />
+      <TerritoryMapLayer active={props.active ?? true} binding={binding} />
       <MapLayers basemap={basemap} onBasemap={changeBasemap} boundaries={boundaries} onBoundaries={setBoundaries} />
     </MapContainer>
     {!loaded && !tileError && <div className="tile-status">Loading {config.label.toLowerCase()} imagery…</div>}

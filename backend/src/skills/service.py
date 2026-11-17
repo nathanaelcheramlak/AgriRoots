@@ -165,4 +165,10 @@ class SkillService(IntegrationService):
         if len(str(payload.parameters).encode()) > 8192:
             raise ConnectorError("INPUT_VALIDATION_FAILED", "Skill parameters exceed the input limit")
         snapshot = Registry(self.db, self.principal).snapshot(skill_id)
-        return self.create_job("skill_run", skill_id, payload.model_dump(mode="json"), snapshot=snapshot)
+        job = self.create_job("skill_run", skill_id, payload.model_dump(mode="json"), snapshot=snapshot)
+        from src.db.models.farm_registry import PlotRun
+        for plot_id in payload.plot_ids:
+            if not self.db.get(PlotRun, (plot_id, job.id)):
+                self.db.add(PlotRun(plot_id=plot_id, job_id=job.id))
+        self.db.commit()
+        return job

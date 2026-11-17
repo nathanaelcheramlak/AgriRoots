@@ -1,8 +1,8 @@
 # AgriLo FieldOps — independent frontend test
 
-The Leaflet-first frontend inside the AgriRoots repository, alongside `backend/`. This directory has its own package, lockfile, configuration, browser storage key, and port. Demo mode remains the default. Explicit HTTP mode connects Home, Plugins and Skills to the existing AgriRoots backend through a development proxy. It does not read sibling environment files.
+A Leaflet-first frontend alongside `AgriRoots/` and `f-test/`. This directory has its own package, lockfile, configuration, browser storage key, and port. Demo mode remains the default. Explicit HTTP mode connects Home, Plugins and Skills to the existing AgriRoots backend through a development proxy. It does not read sibling environment files.
 
-This is now the only active frontend. The old `AgriRoots/frontend` and its Android wrapper were retired; backend history and services remain intact. See the [workspace structure](../docs/WORKSPACE_STRUCTURE.md). The root repository workflow runs frontend checks, demo browser regression and layout checks from this folder. The Home/Plugins/Skills fixture runner uses the backend in the same checkout.
+This is now the only active frontend. The old `AgriRoots/frontend` and its Android wrapper were retired; backend history and services remain intact. See the [workspace structure](../docs/WORKSPACE_STRUCTURE.md). This repository's CI runs `npm run check` and the default demo browser suite; the cross-repository Home fixture suite remains a separate local check.
 
 The frontend adapts [AgroSphere](https://github.com/Leoul39/AgroSphere)'s map sidebar, coordinate widget, report layout, and original CSS modules. All workspaces share AgriLo's charcoal theme through `src/styles/workspace-theme.css`. Its Leaflet satellite configuration, click-coordinate selection, fly-to behavior and zoom-dependent geographic labels are adapted to the FieldOps use case. See [source attribution and MIT notice](THIRD_PARTY_NOTICES.md).
 
@@ -69,6 +69,8 @@ Choose **Expand map** above the map for a 50/50 desktop layout: a larger, taller
 The map has keyboard-focusable controls and markers. At small widths, the panel stacks below the map and scrolls independently. Area boundaries and marker layers can be toggled; unavailable soil/rainfall/satellite/pest overlays are explicitly labeled.
 
 ## Checks
+
+Home includes territory proposals, rectangular farm drafts, temporary farmer profiles and a paginated synthetic farmer directory. See the [Home territory workflow and future backend contract](docs/HOME_TERRITORY_REGISTRATION.md) for local versus authorized behavior, storage privacy and integration gaps.
 
 ```powershell
 npm run typecheck

@@ -1,7 +1,10 @@
 name: agrilo-connectors
 services:
   postgres:
-    image: postgres:16
+    image: agrilo-postgis:16
+    build:
+      context: .
+      dockerfile: Dockerfile.postgis
     environment:
       POSTGRES_DB: agrilo
       POSTGRES_USER: agrilo_owner

@@ -18,9 +18,19 @@ if os.environ.get("AGRI_HOME_FIXTURE") != "1":
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 runtime = Path(tempfile.mkdtemp(prefix="agrilo-home-browser-"))
-os.environ.update(DATABASE_URL="sqlite:///" + (runtime / "fixture.sqlite").as_posix(),
+registry_url = os.environ.get("AGRI_REGISTRY_DATABASE_URL")
+if registry_url:
+    from sqlalchemy.engine import make_url
+    if not (make_url(registry_url).database or "").startswith("agrilo_registry_browser_"):
+        raise SystemExit("Registry browser fixture requires an explicitly disposable database")
+os.environ.update(DATABASE_URL=registry_url or "sqlite:///" + (runtime / "fixture.sqlite").as_posix(),
     JWT_SECRET_KEY=secrets.token_urlsafe(40), APP_ENV="test", REDIS_URL="", DEBUG="false",
     SECRET_ENCRYPTION_KEY="", INTERNAL_MCP_URL="", OUTBOUND_HOSTS_POLICY_FILE="")
+if registry_url:
+    from cryptography.fernet import Fernet
+    os.environ["SECRET_ENCRYPTION_KEY"] = Fernet.generate_key().decode()
+    if os.name == "nt":
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 import pytest
 import uvicorn
@@ -87,15 +97,15 @@ async def main():
                 phone = officer.phone_number
                 db.commit()
             admin_login = None
-            if mcp_endpoint:
+            if mcp_endpoint or registry_url:
                 with SessionLocal() as db:
                     admin = db.get(User, data["users"]["admin"]["id"])
                     admin.password_hash = hash_password(password)
                     admin.phone_number = normalize_phone(admin.phone_number)
                     admin_login = {"phone": admin.phone_number, "password": password}
                     db.commit()
-        return phone, admin_login
-    phone, admin_login = await asyncio.to_thread(prepare)
+        return phone, admin_login, data
+    phone, admin_login, office_data = await asyncio.to_thread(prepare)
 
     class BrowserModelFixture(HomeModelFixture):
         async def generate(self, contents, tools, system):
@@ -120,7 +130,8 @@ async def main():
     task = asyncio.create_task(worker())
     ready = Path(os.environ["AGRI_HOME_READY"])
     ready.write_text(json.dumps({"phone": phone, "password": password, "runtime": str(runtime), "fixture": True,
-        "admin": admin_login, "rest_origin": origin, "mcp_endpoint": mcp_endpoint}), encoding="utf-8")
+        "admin": admin_login, "rest_origin": origin, "mcp_endpoint": mcp_endpoint,
+        "registry_officer_id": office_data["users"]["officer"]["id"], "registry_postgis": bool(registry_url)}), encoding="utf-8")
     try:
         await server.serve()
     finally:

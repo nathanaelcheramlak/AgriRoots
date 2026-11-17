@@ -11,6 +11,13 @@ export class HomeApi {
   onSessionExpired: (() => void) | undefined
   constructor(private readonly baseUrl: string, private readonly transport: typeof fetch = (...args) => fetch(...args)) {}
   clearSession() { this.token = null; this.sessionVersion++ }
+  async registryRequest(path: string, signal: AbortSignal, options: RequestInit = {}): Promise<unknown> {
+    if (!/^\/api\/v1\/registry(\/|\?|$)/.test(path)) throw new Error('Unsupported farm registry route.')
+    const version = this.sessionVersion
+    const data = await this.request(path, signal, options)
+    if (signal.aborted || version !== this.sessionVersion) throw new DOMException('Session changed', 'AbortError')
+    return data
+  }
   async connectorRequest(path: string, signal: AbortSignal, options: RequestInit = {}): Promise<unknown> {
     if (!/^\/api\/v1\/(providers|integrations|connector-jobs|audit)(\/|\?|$)/.test(path)) throw new Error('Unsupported connection-management route.')
     const version = this.sessionVersion
@@ -55,7 +62,7 @@ export class HomeApi {
     this.token = response.access_token // In memory only; never localStorage, sessionStorage, URLs or logs.
     return response.user.user_id
   }
-  async context(signal: AbortSignal) { return homeContextSchema.parse(await this.request('/api/v1/companion/context', signal)) }
+  async context(signal: AbortSignal, plotIds: string[] = []) { return homeContextSchema.parse(await this.request('/api/v1/companion/context' + (plotIds.length ? `?plot_ids=${encodeURIComponent(plotIds.join(','))}` : ''), signal)) }
   async start(skillId: string, input: HomeRunInput, signal: AbortSignal) { return jobSchema.parse(await this.request(`/api/v1/skills/${encodeURIComponent(skillId)}/runs`, signal, { method: 'POST', body: JSON.stringify(input) })) }
   async job(id: string, signal: AbortSignal) { return jobSchema.parse(await this.request(`/api/v1/connector-jobs/${encodeURIComponent(id)}?include_progress=true`, signal)) }
   async cancel(id: string, signal: AbortSignal) { return jobSchema.parse(await this.request(`/api/v1/runs/${encodeURIComponent(id)}/cancel`, signal, { method: 'POST' })) }

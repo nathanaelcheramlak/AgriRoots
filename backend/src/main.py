@@ -60,6 +60,8 @@ app.include_router(advisory_run_router)
 app.include_router(integrations_router)
 app.include_router(skills_router)
 app.include_router(companion_router)
+from src.api.routes.farm_registry import router as farm_registry_router
+app.include_router(farm_registry_router)
 
 
 @app.exception_handler(ConnectorError)

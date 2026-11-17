@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="0" skipped="0" tests="1" time="7.514" timestamp="2026-11-17T09:39:12.481514+03:00" hostname="Fraol-PC"><testcase classname="tests.test_farm_registry" name="test_registered_plot_uses_existing_durable_langgraph_and_evidence" time="5.910" /></testsuite></testsuites>

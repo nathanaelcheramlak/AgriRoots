@@ -88,6 +88,12 @@ class IntegrationService:
         row = self.db.scalar(query)
         if not row:
             raise ConnectorError("NOT_FOUND", "Object was not found in the authenticated office")
+        if cls is ConnectorJob and row.request.get("plot_ids"):
+            authorized_plots(self.db, self.principal, row.request["plot_ids"])
+        from src.db.models.workspace import WorkspaceRecord
+        if cls is WorkspaceRecord:
+            from src.registry.access import guard_record
+            guard_record(self.db, self.principal, row)
         return row
 
     def config(self, connection, revision=None):

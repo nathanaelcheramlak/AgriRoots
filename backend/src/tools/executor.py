@@ -63,6 +63,8 @@ class DispatchGate:
         if principal.office_id != self.context.principal.office_id or principal.role == "viewer":
             raise ConnectorError("POLICY_DENIED", "Actor no longer has execution permission")
         ensure_budget(db, self.context)
+        if self.context.plots:
+            authorized_plots(db, principal, [p["id"] for p in self.context.plots])
         if self.context.job_id:
             lease = db.get(ConnectorJob, self.context.job_id)
             if (

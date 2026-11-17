@@ -1,0 +1,4 @@
+# Keep the existing PostgreSQL-16 Debian base and its collation library.
+# Older prebuilt PostGIS images may silently downgrade PostgreSQL and glibc.
+FROM postgres:16
+RUN apt-get update && apt-get install -y --no-install-recommends postgresql-16 postgresql-16-postgis-3 postgresql-16-postgis-3-scripts && rm -rf /var/lib/apt/lists/*
