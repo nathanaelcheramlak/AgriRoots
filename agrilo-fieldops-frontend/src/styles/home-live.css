@@ -1,0 +1,118 @@
+/* Live Home shares the management workspaces' surfaces and controls. */
+.live-home { display: flex; min-height: 0; background: var(--workspace-bg); color: var(--workspace-text); font-size: 13px; }
+.live-home .live-map-panel {
+  width: clamp(330px, 34%, 440px); min-width: 0; height: 100%; padding: 20px;
+  display: flex; flex-direction: column; gap: 12px; overflow: auto;
+  background: var(--workspace-sidebar); border-right: 1px solid var(--workspace-border);
+}
+.live-home .live-map-panel > * { flex-shrink: 0; }
+.live-home .brand-header { display: flex; align-items: center; gap: 10px; margin: 0 0 4px; }
+.live-home .brand-header > svg { color: var(--workspace-accent); }
+.live-home .brand-header h1 { font-size: 19px; font-weight: 600; letter-spacing: -.5px; }
+.live-home .brand-header p { color: var(--workspace-muted); font-size: 12px; margin-top: 3px; }
+.live-home .sidebar-meta { margin: 0; flex-wrap: wrap; }
+.live-mode-label { display: inline-flex; align-items: center; border: 1px solid var(--workspace-accent-border); background: var(--workspace-accent-bg); color: var(--workspace-accent); padding: 4px 9px; border-radius: 6px; font-size: 11px; font-weight: 500; }
+.live-home .map-card { height: clamp(220px, 36dvh, 360px); min-height: 0; margin: 0; overflow: hidden; border: 1px solid var(--workspace-border); border-radius: 12px; box-shadow: none; }
+.live-home .coordinate-widget { padding: 14px; }
+.live-home .coordinate-widget form { margin-top: 10px; padding-top: 10px; }
+.live-home .selection-sidebar > p { margin: 0; padding: 0; }
+.live-search { display: grid; gap: 7px; font-weight: 500; }
+.live-farm-list { min-height: 56px; }
+.live-farm-list label { display: flex; gap: 10px; align-items: flex-start; border-top: 1px solid var(--workspace-border); padding: 12px 0; }
+.live-farm-list strong { font-size: 13px; font-weight: 500; }
+.live-farm-list small { display: block; color: var(--workspace-muted); font-size: 11px; line-height: 1.6; margin-top: 4px; }
+
+/* The composer stays visible; settings and results have one scroll area. */
+.live-home .live-workspace { flex: 1; min-width: 0; min-height: 0; height: 100%; display: flex; flex-direction: column; overflow: hidden; }
+.live-home .report-topbar { flex-shrink: 0; gap: 14px; min-height: 76px; padding: 16px 24px; border-bottom: 1px solid var(--workspace-border); }
+.live-home .report-topbar strong { font-size: 14px; font-weight: 600; }
+.live-home .report-topbar small { display: block; font-size: 11px; color: var(--workspace-muted); margin-top: 4px; overflow-wrap: anywhere; }
+.live-actions { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.live-actions button { display: inline-flex; gap: 6px; align-items: center; justify-content: center; padding: 8px 10px; border: 1px solid var(--workspace-border); border-radius: 7px; min-height: 34px; font-size: 12px; white-space: nowrap; }
+.live-actions button:hover { background: var(--workspace-hover); }
+.live-workspace-body { flex: 1; min-height: 0; overflow: auto; padding: 20px 24px; scrollbar-gutter: stable; }
+.live-home .live-banner, .live-home .live-blocked { padding: 12px 14px; border: 1px solid var(--workspace-warning-border); border-radius: 8px; background: var(--workspace-warning-bg); color: var(--workspace-warning); font-size: 12px; line-height: 1.65; }
+.live-home .live-banner { margin: 0 0 18px; }
+.live-controls, .live-conversation, .live-details { margin: 0 0 20px; }
+.live-details { border-bottom: 1px solid var(--workspace-border); padding-bottom: 16px; }
+.live-details summary, .live-controls summary { color: var(--workspace-muted); font-size: 12px; }
+.live-details summary::before, .live-controls summary::before { content: '+'; display: inline-block; width: 18px; color: var(--workspace-accent); }
+.live-details[open] > summary::before, .live-controls details[open] > summary::before { content: '−'; }
+.live-details article { padding-top: 12px; overflow-wrap: anywhere; }
+.live-details article p { color: var(--workspace-muted); font-size: 12px; }
+.live-controls > label, .live-inputs label, .live-question > label { display: grid; gap: 7px; font-weight: 500; }
+.live-controls > p { font-size: 12px; color: var(--workspace-muted); margin: 8px 0 12px; }
+.live-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-top: 12px; }
+.live-inputs label { min-width: 0; font-size: 12px; }
+.live-home .live-consent { display: grid; gap: 10px; padding: 16px 0; }
+.live-consent label { display: flex; gap: 9px; align-items: flex-start; font-size: 12px; line-height: 1.65; color: var(--workspace-muted); }
+.live-home input[type=checkbox] { width: 15px; height: 15px; padding: 0; flex-shrink: 0; accent-color: var(--workspace-accent); margin-top: 3px; }
+.live-home .live-blocked { margin: 0 0 14px; }
+.live-conversation { border-top: 1px solid var(--workspace-border); padding-top: 20px; }
+.live-conversation h2 { font-size: 19px; font-weight: 550; letter-spacing: -.4px; margin-bottom: 8px; }
+.live-conversation > p { font-size: 13px; color: var(--workspace-muted); }
+.live-conversation > .tiny { font-size: 11px; margin-bottom: 10px; }
+.live-home .live-question { display: grid; gap: 8px; flex-shrink: 0; padding: 16px 24px; margin: 0; border-top: 1px solid var(--workspace-border); background: var(--workspace-bg); }
+.live-question > label { font-size: 12px; }
+.live-home .live-question textarea { min-height: 70px; height: 70px; max-height: 160px; resize: vertical; font-size: 13px; line-height: 1.55; }
+.live-question .primary { min-height: 38px; padding-block: 8px; }
+.live-run { padding: 18px; margin: 18px 0; background: var(--workspace-panel); border: 1px solid var(--workspace-border); border-radius: 12px; overflow-wrap: anywhere; }
+.live-run h3 { margin: 10px 0 6px; font-size: 14px; font-weight: 600; }
+.live-run > small, .live-call { font-size: 11px; color: var(--workspace-muted); }
+.live-run > button, .live-toast > button { border: 1px solid var(--workspace-border); border-radius: 7px; padding: 8px 12px; margin: 8px 8px 0 0; font-size: 12px; }
+.live-answer { white-space: pre-wrap; line-height: 1.8; }
+.live-outcome { padding: 12px; margin: 12px 0; border-left: 3px solid var(--workspace-accent); background: var(--workspace-accent-bg); color: var(--workspace-accent); font-size: 12px; }
+.live-outcome.error { border-color: var(--workspace-danger); background: var(--workspace-danger-bg); color: var(--workspace-danger); }
+.live-evidence { padding: 14px; border: 1px solid var(--workspace-border); border-radius: 8px; margin: 14px 0; }
+.live-evidence dl { display: grid; grid-template-columns: 115px minmax(0, 1fr); font-size: 12px; gap: 8px; }
+.live-evidence dd { margin: 0; overflow-wrap: anywhere; }
+.live-evidence dt { color: var(--workspace-muted); font-weight: 500; }
+.live-evidence pre { max-height: 280px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; background: var(--workspace-bg); padding: 12px; border-radius: 7px; font-size: 12px; }
+.live-table { max-width: 100%; overflow: auto; }
+.live-table table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.live-table th, .live-table td { padding: 8px; text-align: left; border-bottom: 1px solid var(--workspace-border); }
+.live-chart { margin: 16px 0; color: var(--workspace-accent); }
+.live-chart svg { width: 100%; max-height: 210px; background: var(--workspace-bg); }
+.live-chart text { font-size: 11px; fill: var(--workspace-muted); }
+.live-chart circle { fill: currentColor; }
+.live-home [role=alert], .live-login [role=alert] { color: var(--workspace-danger); background: var(--workspace-danger-bg); padding: 12px; border: 1px solid var(--workspace-danger-border); border-radius: 8px; }
+.live-home .tiny { color: var(--workspace-muted); }
+.live-login { width: min(520px, calc(100% - 32px)); padding: 32px; margin: 40px auto; background: var(--workspace-panel); border: 1px solid var(--workspace-border); border-radius: 16px; color: var(--workspace-text); }
+.live-login > svg { color: var(--workspace-accent); margin-bottom: 16px; }
+.live-login h1 { font-size: 25px; font-weight: 600; letter-spacing: -.6px; }
+.live-login > p { color: var(--workspace-muted); font-size: 13px; margin-top: 12px; }
+.live-login > p.live-mode-label { font-size: 11px; color: var(--workspace-accent); }
+.live-login form { display: grid; gap: 16px; margin: 24px 0; }
+.live-login label { display: grid; gap: 7px; font-size: 13px; font-weight: 500; }
+
+@media (min-width: 761px) {
+  .live-home.map-expanded .live-map-panel { width: 50%; flex: 0 0 50%; }
+  .live-home.map-expanded .live-workspace { width: 50%; flex: 0 0 50%; }
+  .live-home.map-expanded .map-card { height: clamp(240px, 46dvh, 520px); }
+}
+@media (min-width: 761px) and (max-height: 650px) {
+  .live-home .report-topbar { min-height: 60px; padding-block: 10px; }
+  .live-home .live-question { padding-block: 10px; }
+  .live-home .live-question textarea { min-height: 54px; height: 54px; max-height: 100px; }
+}
+@media (max-width: 1050px) {
+  .live-home .live-map-panel { width: 320px; padding: 16px; }
+  .live-home .report-topbar, .live-home .live-question { padding-inline: 18px; }
+  .live-workspace-body { padding: 18px; }
+  .live-home .report-topbar { flex-wrap: wrap; }
+}
+@media (max-width: 760px) {
+  .live-home { flex-direction: column; }
+  .live-home .live-map-panel { width: 100%; height: auto; overflow: visible; border-right: 0; border-bottom: 1px solid var(--workspace-border); padding: 20px 16px; }
+  .live-home .map-card { height: clamp(230px, 40dvh, 350px); }
+  .live-home.map-expanded .map-card { height: 60dvh; min-height: 280px; max-height: 600px; }
+  .live-home .live-workspace { height: auto; min-height: 0; overflow: visible; flex: none; }
+  .live-workspace-body { overflow: visible; flex: none; padding: 20px 16px; }
+  .live-home .report-topbar { padding: 16px; }
+  .live-home .live-question { padding: 16px 16px max(20px, env(safe-area-inset-bottom)); }
+  .live-inputs { grid-template-columns: minmax(0, 1fr); }
+  .live-evidence dl { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .live-evidence dd { margin-bottom: 8px; }
+  .live-run { padding: 14px; }
+  .live-login { margin: 20px auto; padding: 24px; }
+}

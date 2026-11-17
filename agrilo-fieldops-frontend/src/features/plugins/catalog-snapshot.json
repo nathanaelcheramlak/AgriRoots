@@ -1,0 +1,182 @@
+{
+  "source": "Agricultural provider inventory",
+  "snapshotDate": "2026-11-16T12:44:50.397532+03:00",
+  "items": [
+    {
+      "id": "open_meteo",
+      "name": "Open-Meteo",
+      "category": "weather",
+      "authRequired": false,
+      "hasTemplate": true,
+      "docsUrl": "https://open-meteo.com/en/docs"
+    },
+    {
+      "id": "nasa_power",
+      "name": "NASA POWER",
+      "category": "weather",
+      "authRequired": false,
+      "hasTemplate": true,
+      "docsUrl": "https://power.larc.nasa.gov/docs/services/api/temporal/daily/"
+    },
+    {
+      "id": "chirps",
+      "name": "CHIRPS / ClimateSERV",
+      "category": "weather",
+      "authRequired": false,
+      "hasTemplate": true,
+      "docsUrl": "https://climateserv.readthedocs.io/en/latest/api.html"
+    },
+    {
+      "id": "isda_soil",
+      "name": "iSDAsoil",
+      "category": "soil",
+      "authRequired": true,
+      "hasTemplate": true,
+      "docsUrl": "https://www.isda-africa.com/isdasoil/developer/"
+    },
+    {
+      "id": "fao_wapor",
+      "name": "FAO WaPOR",
+      "category": "soil",
+      "authRequired": false,
+      "hasTemplate": false,
+      "docsUrl": "https://www.fao.org/in-action/remote-sensing-for-water-productivity/wapor-data-access/en"
+    },
+    {
+      "id": "copernicus",
+      "name": "Copernicus Sentinel Hub",
+      "category": "satellite",
+      "authRequired": true,
+      "hasTemplate": false,
+      "docsUrl": "https://documentation.dataspace.copernicus.eu/APIs/SentinelHub/Statistical.html"
+    },
+    {
+      "id": "fao_fpma",
+      "name": "FAO FPMA",
+      "category": "markets",
+      "authRequired": false,
+      "hasTemplate": true,
+      "docsUrl": "https://fpma-documentation.web.app/docs/api-docs/series-price/"
+    },
+    {
+      "id": "nasa_power_mcp",
+      "name": "NASA POWER public MCP",
+      "category": "weather",
+      "authRequired": false,
+      "hasTemplate": false,
+      "docsUrl": "https://power.larc.nasa.gov/docs/services/super-intelligence/mcp/"
+    },
+    {
+      "id": "fao_gaez",
+      "name": "FAO GAEZ",
+      "category": "soil",
+      "authRequired": false,
+      "hasTemplate": false,
+      "docsUrl": "https://gaez.fao.org/api/search/definition/"
+    },
+    {
+      "id": "google_earth_engine",
+      "name": "Google Earth Engine",
+      "category": "satellite",
+      "authRequired": true,
+      "hasTemplate": false,
+      "docsUrl": "https://developers.google.com/earth-engine/guides/auth"
+    },
+    {
+      "id": "fao_asis",
+      "name": "FAO ASIS",
+      "category": "satellite",
+      "authRequired": false,
+      "hasTemplate": false,
+      "docsUrl": "https://www.fao.org/giews/earthobservation/access.jsp"
+    },
+    {
+      "id": "deepleaf",
+      "name": "DeepLeaf",
+      "category": "diagnosis",
+      "authRequired": true,
+      "hasTemplate": false,
+      "docsUrl": "https://deepleaf.org/en/platform/api"
+    },
+    {
+      "id": "kindwise",
+      "name": "Kindwise Crop.health",
+      "category": "diagnosis",
+      "authRequired": true,
+      "hasTemplate": false,
+      "docsUrl": "https://github.com/flowerchecker/crop-health-examples"
+    },
+    {
+      "id": "plantix",
+      "name": "Plantix Intelligence",
+      "category": "diagnosis",
+      "authRequired": true,
+      "hasTemplate": false,
+      "docsUrl": "https://plantix.net/en/plantix-intelligence/api-toolkit/"
+    },
+    {
+      "id": "fao_locust",
+      "name": "FAO Locust Hub",
+      "category": "pests",
+      "authRequired": false,
+      "hasTemplate": true,
+      "docsUrl": "https://locust-hub-hqfao.hub.arcgis.com/"
+    },
+    {
+      "id": "eppo",
+      "name": "EPPO Global Database",
+      "category": "pests",
+      "authRequired": true,
+      "hasTemplate": false,
+      "docsUrl": "https://data.eppo.int/apis/"
+    },
+    {
+      "id": "cabi",
+      "name": "CABI PMDG",
+      "category": "pests",
+      "authRequired": true,
+      "hasTemplate": false,
+      "docsUrl": "https://docs-aws.cabi.org/pmdg/"
+    },
+    {
+      "id": "wfp_prices",
+      "name": "WFP / HDX HAPI",
+      "category": "markets",
+      "authRequired": true,
+      "hasTemplate": false,
+      "docsUrl": "https://hdx-hapi.readthedocs.io/en/latest/getting-started/"
+    },
+    {
+      "id": "openrouteservice",
+      "name": "OpenRouteService",
+      "category": "markets",
+      "authRequired": true,
+      "hasTemplate": false,
+      "docsUrl": "https://giscience.github.io/openrouteservice/api-reference/endpoints/directions/"
+    },
+    {
+      "id": "kobotoolbox",
+      "name": "KoboToolbox",
+      "category": "field_operations",
+      "authRequired": true,
+      "hasTemplate": false,
+      "docsUrl": "https://support.kobotoolbox.org/api.html"
+    },
+    {
+      "id": "odk_central",
+      "name": "ODK Central",
+      "category": "field_operations",
+      "authRequired": true,
+      "hasTemplate": false,
+      "docsUrl": "https://docs.getodk.org/central-api-project-management/"
+    },
+    {
+      "id": "africas_talking",
+      "name": "Africa's Talking",
+      "category": "field_operations",
+      "authRequired": true,
+      "hasTemplate": false,
+      "docsUrl": "https://github.com/AfricasTalkingLtd/africastalking-python"
+    }
+  ]
+}

@@ -7,6 +7,7 @@ from fastapi.exceptions import RequestValidationError
 from src.integrations.contracts import ConnectorError
 from src.api.routes.integrations import router as integrations_router
 from src.api.routes.skills import router as skills_router
+from src.api.routes.companion import router as companion_router
 
 from src.api.routes.auth import router as auth_router
 from src.api.routes.alert import router as alert_router
@@ -58,6 +59,7 @@ app.include_router(workspace_router)
 app.include_router(advisory_run_router)
 app.include_router(integrations_router)
 app.include_router(skills_router)
+app.include_router(companion_router)
 
 
 @app.exception_handler(ConnectorError)

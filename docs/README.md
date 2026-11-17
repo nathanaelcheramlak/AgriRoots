@@ -4,11 +4,11 @@ Start with the guide that matches your task:
 
 | Guide | What it covers |
 | --- | --- |
-| [Getting started](getting-started.md) | Supported environment, local launcher, sign-in, and officer-to-farmer walkthrough |
+| [Getting started](getting-started.md) | Current backend/frontend setup and Home walkthrough |
 | [Configuration](configuration.md) | Live versus synthetic data, optional APIs, credentials, and manual setup |
 | [Agent workflow](agent-workflow.md) | Execution path, six LangGraph nodes, model responsibilities, and MCP tools |
 | [Code guide](code-guide.md) | Backend/frontend folders and their responsibilities |
-| [Testing](testing.md) | Checks, troubleshooting, logs, and optional local recording |
+| [Testing](testing.md) | Current checks, troubleshooting and historical verification boundary |
 | [Architecture](../ARCHITECTURE.md) | Evidence validation, permissions, and processing recovery |
 | [Recorded evaluations](../EVALS.md) | Historical measurements and reproducibility limits |
 | [Connector support](CONNECTOR_SUPPORT.md) | Implemented REST/MCP subset, deployment, and exact limitations |
@@ -21,3 +21,10 @@ Start with the guide that matches your task:
 [Project overview](../README.md)
 
 - [Fourteen-provider backend skill integration](VERIFIED_API_INTEGRATION.md) — capabilities, request flow, private images, activation and current results.
+
+- [Workspace structure](WORKSPACE_STRUCTURE.md) - current frontend/backend boundaries and retired UI tools.
+- [Home integration audit](FRONTEND_BACKEND_INTEGRATION_AUDIT.md) - actual routes, checks and live-model blockers.
+- [Phase 2 Plugins integration](PHASE2_PLUGINS_INTEGRATION.md) - authenticated registry, REST/MCP management, exact-version review, tests and limitations.
+- [Phase 3 Skills integration](PHASE3_SKILLS_INTEGRATION.md) - versioned skills, role-specific dependencies, authoring lifecycle and shared Home execution.
+
+- [Repository consolidation](REPOSITORY_CONSOLIDATION.md) - the current frontend and backend in one GitHub repository.

@@ -4,7 +4,7 @@
 
 | Location | Purpose |
 | --- | --- |
-| `frontend/src/` | React + Vite screens, navigation, and API calls. |
+| `agrilo-fieldops-frontend/src/` | Current React/TypeScript frontend in this repository. The old `frontend/` is retired. |
 | `backend/src/api/` | HTTP routes and request/response schemas. |
 | `backend/src/services/` | Application rules: accounts, records, advisory runs, review, and release. |
 | `backend/src/agent/advisory/graph.py` | Current six-step LangGraph workflow. |
@@ -16,6 +16,8 @@
 | `backend/src/common/` | Shared helpers, currently phone-number utilities. |
 | `backend/src/db/` | SQLAlchemy models, database connections, and migrations. |
 | `backend/tests/` | Backend tests. |
-| `scripts/` | Demo launcher, evaluation, and browser workflows. |
+| `scripts/` | Backend evaluation and artifact checks; retired UI scripts are disabled in `scripts/legacy/`. |
 
 SQLite is used for the demo; PostgreSQL verification is documented in [EVALS.md](../EVALS.md). Model/runtime versions and checksums are recorded in [backend/local_model.lock.json](../backend/local_model.lock.json).
+
+See [workspace structure](WORKSPACE_STRUCTURE.md) for repository boundaries and retired frontend capabilities.

@@ -2,40 +2,31 @@
 
 [Documentation index](README.md)
 
-The supplied launcher supports **Linux x86_64**. It does not run directly in Windows PowerShell; Windows and macOS need a compatible Linux environment or a separate manual setup and model-runtime build.
+The active UI is `agrilo-fieldops-frontend/` inside this repository, running on port 5175. The old `AgriRoots/frontend`, Android wrapper and associated demo launcher were retired. The newer UI does not yet replace every old farmer or administration screen. The advisory backend remains intact.
 
-Requirements:
+## Backend
 
-- Python 3.11–3.13, or Python 3.11+ with `uv` to provision Python 3.13.
-- Node.js 22.12+ and npm.
-- At least 2 GB free RAM and 3 GB free disk space.
-- Internet access for installation, weather, and public reference material.
-- Available ports `4173`, `8000`, and `8081`. No GPU or Docker is required.
+Use the existing backend deployment and private configuration described in [connector support](CONNECTOR_SUPPORT.md). Start the API and connector worker; reuse the authorized database and model configuration. Do not run seed/reset commands against an existing installation. An existing authorized officer phone/password is required. The Home companion also needs its explicitly configured model/key and permitted execution setting. Enabling frontend HTTP mode cannot supply these.
 
-From the repository root:
+API normally runs at `http://127.0.0.1:8000`; API documentation is at `/docs`. Keep database, JWT, provider and model secrets on the backend. The local Qwen advisory workflow is a separate path and was not switched to make the Home demonstration pass.
 
-```bash
-python3 scripts/demo.py
+## Frontend
+
+Requires Node.js 22.12+ (Node 24 supported). In PowerShell from the AgriRoots repository root:
+
+```powershell
+cd agrilo-fieldops-frontend
+npm ci
+$env:VITE_API_MODE = 'http'
+$env:VITE_API_BASE_URL = '/backend'
+$env:FIELDOPS_BACKEND_URL = 'http://127.0.0.1:8000'
+npm run dev
 ```
 
-The launcher installs dependencies, downloads and verifies the local model, prepares a dedicated demo database, builds the frontend, and starts the services. Initial model/runtime downloads total about 660 MB, plus dependencies.
+Open `http://127.0.0.1:5175/`, log in with an existing authorized officer account, select an authorized plot and available skill, provide required parameters, review explicit model/network consent and submit. Inspect actual job status, results and evidence. Visit another page and return to verify Home continuity. No messages are sent.
 
-Wait for `READY`, then open [http://127.0.0.1:4173/workspace](http://127.0.0.1:4173/workspace).
+The same-origin development proxy forwards `/backend` to the API. Production hosting needs its own reverse proxy or allowed origin. Do not put secrets in `VITE_*` variables. For the full walkthrough, cancellation, fixtures and limitations, see the [Home integration guide](../agrilo-fieldops-frontend/docs/PHASE1_HOME_INTEGRATION.md).
 
-| Demo role | Phone | Password |
-| --- | --- | --- |
-| Officer | `+251900000002` | `SyntheticDemo123!` |
-| Farmer | `+251900000003` | `SyntheticDemo123!` |
-| Administrator | `+251900000001` | `SyntheticDemo123!` |
+For UI-only demo mode, use `VITE_API_MODE=mock` (the default) and restart Vite. Demo data is synthetic and separate from authenticated Home. Plugins, Monitoring and Outreach remain local drafts/demos in both modes.
 
-These are public demonstration accounts. The launcher needs no cloud API keys: it creates local keys and **does not load `backend/.env` or inherit cloud credentials**.
-
-Keep the terminal open. Press **Ctrl+C** to stop all services; run the command again to restart. Data, keys, model downloads, and logs persist in the ignored `backend/runtime/` directory.
-
-### Try the officer-to-farmer workflow
-
-1. Sign in as the officer and open `/workspace`.
-2. Under **Agent advisory runs**, select **SYNTHETIC cluster** and start a run. CPU inference can take several minutes.
-3. Inspect the evidence and draft in the review queue. Edit it or reject it if needed.
-4. Approve the exact version, then choose **Release approved version to farmers**. Approval alone does not publish it.
-5. Sign in as the farmer and open `/advisories` to read the released advice and play available audio.
+Current live demonstration is blocked until authorized login and backend model configuration are available. Historical public demo credentials belong to the retired isolated launcher, not the operational database. Do not reset accounts or seed a database to recreate them.

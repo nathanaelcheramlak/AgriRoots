@@ -1,0 +1,60 @@
+import { useState } from 'react'
+import { Check, ChevronDown, Download, FileText, Info, TriangleAlert } from 'lucide-react'
+import type { MonitorDefinition, MonitorRun, MonitoringReport, Severity } from '../../features/monitoring/types'
+import { metricSpecs, ruleSentence, scheduleSentence, severityLabels } from '../../features/monitoring/types'
+import { sampleReport, sampleTimelines } from '../../features/monitoring/fixtures'
+import { formatDate, QuietState, SampleNotice } from './MonitoringUi'
+export function PlannedSchedule({ monitor }: { monitor: MonitorDefinition }) {
+  return <section className="monitor-planned-schedule"><div><small>PLANNED RECURRENCE · {monitor.configurationStatus === 'paused' ? 'PAUSED LOCALLY' : 'DRAFT'}</small><h3>{scheduleSentence(monitor.input.schedule)}</h3><p>Starts {monitor.input.schedule.startDate}{monitor.input.schedule.endDate && ' · Ends ' + monitor.input.schedule.endDate}{monitor.input.schedule.reviewDate && ' · Review on ' + monitor.input.schedule.reviewDate}</p></div><span>Scheduler unavailable</span></section>
+}
+export function MonitoringOverview({ monitor, run, onTab }: { monitor: MonitorDefinition; run?: MonitorRun; onTab: (tab: string) => void }) {
+  const [severity, setSeverity] = useState<Severity | 'all'>('all'), [acknowledged, setAcknowledged] = useState<string[]>([]), [showTable, setShowTable] = useState(false)
+  const attention = run?.evaluations.some(e => e.outcome !== 'unknown') ? run.alerts.filter(a => a.state !== 'resolved' && a.severity !== 'unknown').length : undefined
+  const photos = sampleTimelines().filter(t => monitor.input.scope.farms.some(f => f.id === t.farm.id && f.source === 'synthetic'))
+  const cards: [string, string | number, string][] = [
+    ['Farms in scope', monitor.input.scope.farms.length, monitor.input.scope.label],
+    ['Latest available result', run ? 'Sample preview' : 'No result', run ? formatDate(run.completedAt) : 'No monitoring runs connected'],
+    ['Farms requiring attention', attention ?? (run ? 'Unknown' : '—'), attention === undefined ? 'No comparable evidence' : 'Sample matches · inspect unknown farms too'],
+    ['Open review examples', run ? run.alerts.filter(a => a.state !== 'resolved').length : '—', 'Officer review required · includes evidence gaps'],
+    ['Photo records received', run && photos.length && monitor.input.capabilityIds.includes('crop_health') ? photos.reduce((n, t) => n + t.submissions.length, 0) : '—', run ? 'Fixed demonstration records' : 'Photo intake not connected'],
+    ['Missing photo records', run && photos.length && monitor.input.capabilityIds.includes('crop_health') ? photos.reduce((n, t) => n + t.missingDates.length, 0) : '—', 'Missing records do not establish crop risk'],
+    ['Next planned check', 'Not scheduled', 'Recurrence is configuration only'],
+    ['Data availability', run ? run.status === 'partial' ? 'Partial sample' : 'Sample only' : 'Not connected', run ? run.dataGaps.length + ' sample data gaps' : 'No live capabilities connected'],
+  ]
+  return <section>
+    {run && <SampleNotice />}
+    <div className="monitor-stat-grid">{cards.map(([label, value, hint]) => <div className="monitor-stat" key={label}><span>{label}</span><strong>{value}</strong><small>{hint}</small></div>)}</div>
+    <PlannedSchedule monitor={monitor} />
+    {!run ? <QuietState title="Your configuration is ready for review">No background checks have run. Choose “Preview synthetic data” to explore deterministic example findings with traceable evidence.</QuietState> : <>
+      <div className="monitor-section-heading"><div><h2>What changed in the sample</h2><p>{run.alerts.filter(a => a.state === 'new').length} new conditions · {run.alerts.filter(a => a.state === 'resolved').length} resolved sample conditions</p></div><select aria-label="Filter alert severity" value={severity} onChange={e => setSeverity(e.target.value as Severity | 'all')}><option value="all">All severities</option>{Object.entries(severityLabels).map(([id, label]) => <option key={id} value={id}>{label}</option>)}</select></div>
+      <div className="monitor-alert-list">{run.alerts.filter(a => severity === 'all' || a.severity === severity).map(a => <article key={a.id} className={'monitor-alert severity-' + a.severity}><span className="monitor-alert-icon">{a.severity === 'unknown' ? <Info size={18} /> : a.state === 'resolved' ? <Check size={18} /> : <TriangleAlert size={18} />}</span><div><div className="monitor-alert-heading"><h3>{a.title}</h3><span>{a.farmId}</span></div><p>{a.detail}</p><div className="monitor-alert-tags"><span>{severityLabels[a.severity]}</span><span>{a.state} · sample event</span>{acknowledged.includes(a.deduplicationKey) && <span>Reviewed locally</span>}</div><details><summary>Supporting evidence <ChevronDown size={12} /></summary>{a.evidenceIds.map(id => { const e = run.evidence.find(e => e.id === id); return <p key={id}>{id}: {e ? (e.value ?? 'Unavailable') + ' ' + e.unit + ' · ' + e.source + ' · ' + e.observedAt.slice(0, 10) : 'Reference in sample history'}</p> })}</details></div><button className="monitor-text-action" disabled={acknowledged.includes(a.deduplicationKey)} onClick={() => setAcknowledged(v => [...v, a.deduplicationKey])}>{acknowledged.includes(a.deduplicationKey) ? 'Reviewed' : 'Mark reviewed'}</button></article>)}</div>
+      <p className="monitor-footnote">One card per farm and configured condition. Review marks are local to this view. Future alert services will manage cooldown, acknowledgement and evidence-based resolution.</p>
+      {run.dataGaps.length > 0 && <div className="monitor-data-gaps"><Info size={18} /><div><h3>Evidence gaps require follow-up</h3>{run.dataGaps.map(g => <p key={g}>{g}</p>)}</div></div>}
+      {monitor.input.capabilityIds.includes('rainfall') && monitor.input.scope.farms.some(f => f.id === 'F-001' && f.source === 'synthetic') && <section className="monitor-trend-panel"><div className="monitor-section-heading"><div><h2>Rainfall reference comparison</h2><p>Fixed demonstration · F-001 · weekly totals in mm</p></div><button className="monitor-text-action" onClick={() => setShowTable(!showTable)}>{showTable ? 'Hide values' : 'Show values'}</button></div>
+        <svg viewBox="0 0 650 170" className="monitor-rain-chart" role="img" aria-label="Synthetic weekly rainfall: 28, 24, 21.6 and 21 millimetres; baseline 30, 32, 24 and 28 millimetres."><path d="M45 135H620 M45 95H620 M45 55H620 M45 15H620" stroke="#2b302d" strokeWidth="1" /><path d="M70 45L240 39L410 63L580 51" stroke="#69786e" strokeWidth="2" strokeDasharray="5 6" fill="none" /><path d="M70 51L240 63L410 70.2L580 72" stroke="#94bc9c" strokeWidth="2.5" fill="none" />{[70, 240, 410, 580].map((x, i) => <g key={x}><circle cx={x} cy={[51, 63, 70.2, 72][i]} r="4" fill="#a6c4a9" /><text x={x} y="160" textAnchor="middle" fill="#8f9992" fontSize="11">{['26 Oct', '2 Nov', '9 Nov', '16 Nov'][i]}</text></g>)}<text x="8" y="138" fill="#8f9992" fontSize="10">0</text><text x="8" y="18" fill="#8f9992" fontSize="10">40</text></svg>
+        <div className="monitor-chart-key"><span>— Sample weekly rainfall</span><span>┄ Sample seasonal reference</span></div>
+        {showTable && <div className="monitor-table-wrap"><table><caption>Synthetic weekly values · no agricultural observation</caption><thead><tr><th>Week</th><th>Rainfall</th><th>Reference</th></tr></thead><tbody>{[[28, 30], [24, 32], [21.6, 24], [21, 28]].map(([rain, ref], i) => <tr key={i}><td>Week {i + 1}</td><td>{rain} mm</td><td>{ref} mm</td></tr>)}</tbody></table></div>}
+        <p className="monitor-footnote">Source: AgriLo demonstration fixture · observation 26 Oct–16 Nov 2026 · fixed sample, never refreshed. Baselines and coverage require validation before real use.</p>
+      </section>}
+      <div className="monitor-inline-actions"><button className="plugin-secondary" onClick={() => onTab('history')}>Inspect sample history</button><button className="plugin-secondary" onClick={() => onTab('reports')}><FileText size={14} />Open sample report</button></div>
+    </>}
+  </section>
+}
+export function RulePreview({ monitor, run }: { monitor: MonitorDefinition; run?: MonitorRun }) {
+  return <section><div className="monitor-section-heading"><div><h2>Configured thresholds</h2><p>{monitor.input.combination === 'all' ? 'All conditions (AND)' : 'Any condition (OR)'} · values chosen by the officer</p></div></div>
+    {!monitor.input.rules.length && <QuietState title="No threshold rules">This monitor is configured to prepare its selected outputs without threshold matching.</QuietState>}
+    {monitor.input.rules.map(r => <article className="monitor-config-rule" key={r.id}><h3>{ruleSentence(r)}</h3><p>{r.threshold.reference === 'custom' ? r.threshold.referenceNote : r.threshold.reference.replaceAll('_', ' ')} · {r.scope === 'all' ? 'All monitor farms' : r.scope === 'crop' ? r.crop : r.farmIds.join(', ')} · {severityLabels[r.severity]}</p><small>Action: {r.action.replaceAll('_', ' ')} · Illustrative threshold, not a scientific standard</small>
+      {run && <div className="monitor-table-wrap"><table><thead><tr><th>Farm</th><th>Sample evaluation</th><th>Evidence</th></tr></thead><tbody>{run.evaluations.filter(e => e.ruleId === r.id).map(e => <tr key={e.farmId}><td>{e.farmId}</td><td><strong>{e.outcome === 'unknown' ? 'Insufficient evidence' : e.outcome === 'triggered' ? 'Threshold matched' : 'Not matched in sample'}</strong><small>{e.explanation}</small></td><td>{e.evidenceIds.join(', ') || 'No comparable record'}</td></tr>)}</tbody></table></div>}
+    </article>)}
+    {run && <section className="monitor-source-records"><h3>Evidence provenance</h3>{run.evidence.map(e => <details key={e.id}><summary>{e.farmId} · {metricSpecs[e.metric].label} · {e.status === 'available' ? e.value + e.unit : 'Unavailable'}</summary><dl><div><dt>Source</dt><dd>{e.source} · {e.id}</dd></div><div><dt>Observation date</dt><dd>{formatDate(e.observedAt)}</dd></div><div><dt>Analysis timestamp</dt><dd>{e.analyzedAt ? formatDate(e.analyzedAt) : 'No analysis'}</dd></div><div><dt>Freshness</dt><dd>{e.freshness === 'fixed_sample' ? 'Fixed demonstration · not current' : 'Unavailable'}</dd></div><div><dt>Limitations</dt><dd>{e.limitations}</dd></div></dl></details>)}</section>}
+  </section>
+}
+function downloadReport(report: MonitoringReport) {
+  const content = '# ' + report.title + '\n\nSYNTHETIC DEMONSTRATION — NOT AGRICULTURAL ADVICE\n\nRun: ' + report.runId + '\nGenerated (fixture): ' + report.generatedAt + '\n\n' + report.sections.map(s => '## ' + s.heading + '\n\n' + s.text + '\n\nEvidence: ' + s.evidenceIds.join(', ')).join('\n\n') + '\n\n## Limitations\n\n' + report.limitations.join('\n\n')
+  const url = URL.createObjectURL(new Blob([content], { type: 'text/markdown;charset=utf-8' })), a = document.createElement('a'); a.href = url; a.download = 'agrilo-synthetic-monitoring-report.md'; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000)
+}
+export function MonitoringReports({ run, onPrepare }: { run?: MonitorRun; onPrepare?: () => void }) {
+  if (!run) return <QuietState title="No generated reports">No monitoring run has supplied report content. A synthetic preview includes a sample report with source references.</QuietState>
+  const report = sampleReport(run)
+  return <section className="monitor-report"><SampleNotice /><div className="monitor-section-heading"><div><h2>{report.title}</h2><p>Sample content · {formatDate(report.generatedAt)}</p></div><button className="plugin-secondary" onClick={() => downloadReport(report)}><Download size={15} />Download sample .md</button>{onPrepare && <button className="plugin-secondary" onClick={onPrepare}>Prepare weekly guidance</button>}</div>{report.sections.map(s => <section key={s.heading}><h3>{s.heading}</h3><p>{s.text}</p>{!!s.evidenceIds.length && <details><summary>Source references</summary><p>{s.evidenceIds.join(', ')}</p></details>}</section>)}<div className="monitor-info"><Info size={18} /><div>{report.limitations.map(l => <p key={l}>{l}</p>)}</div></div></section>
+}

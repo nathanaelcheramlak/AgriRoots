@@ -1,0 +1,842 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "FieldOps Home \u2014 current backend OpenAPI subset",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Login",
+        "operationId": "login_api_auth_login_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/companion/context": {
+      "get": {
+        "tags": [
+          "Officer Home"
+        ],
+        "summary": "Context",
+        "operationId": "context_api_v1_companion_context_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HomeContext"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/skills/{skill_id}/runs": {
+      "post": {
+        "tags": [
+          "Skills and plugin packs"
+        ],
+        "summary": "Run Skill",
+        "operationId": "run_skill_api_v1_skills__skill_id__runs_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "skill_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Skill Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SkillRunRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/connector-jobs/{job_id}": {
+      "get": {
+        "tags": [
+          "Connectors"
+        ],
+        "summary": "Job",
+        "operationId": "job_api_v1_connector_jobs__job_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Job Id"
+            }
+          },
+          {
+            "name": "include_progress",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Include Progress"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/runs/{job_id}/cancel": {
+      "post": {
+        "tags": [
+          "Connectors"
+        ],
+        "summary": "Cancel",
+        "operationId": "cancel_api_v1_runs__job_id__cancel_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Job Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/evidence/{evidence_id}": {
+      "get": {
+        "tags": [
+          "Connectors"
+        ],
+        "summary": "Evidence",
+        "operationId": "evidence_api_v1_evidence__evidence_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "evidence_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Evidence Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/image-assets": {
+      "post": {
+        "tags": [
+          "Skills and plugin packs"
+        ],
+        "summary": "Upload Image",
+        "operationId": "upload_image_api_v1_image_assets_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_upload_image_api_v1_image_assets_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AuthResponse": {
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "title": "Access Token"
+          },
+          "token_type": {
+            "type": "string",
+            "title": "Token Type",
+            "default": "bearer"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserResponse"
+          }
+        },
+        "type": "object",
+        "required": [
+          "access_token",
+          "user"
+        ],
+        "title": "AuthResponse"
+      },
+      "Body_upload_image_api_v1_image_assets_post": {
+        "properties": {
+          "image": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "Image"
+          }
+        },
+        "type": "object",
+        "required": [
+          "image"
+        ],
+        "title": "Body_upload_image_api_v1_image_assets_post"
+      },
+      "SkillRunRequest": {
+        "properties": {
+          "image_asset_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 36,
+                "minLength": 36
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Image Asset Id"
+          },
+          "parameters": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Parameters"
+          },
+          "task": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 3,
+            "title": "Task"
+          },
+          "plot_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 5,
+            "title": "Plot Ids"
+          },
+          "request_key": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 8,
+            "title": "Request Key"
+          },
+          "authorize_network": {
+            "type": "boolean",
+            "title": "Authorize Network",
+            "default": false
+          },
+          "authorize_model": {
+            "type": "boolean",
+            "title": "Authorize Model",
+            "default": false
+          },
+          "authorize_credit_use": {
+            "type": "boolean",
+            "title": "Authorize Credit Use",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "task",
+          "request_key"
+        ],
+        "title": "SkillRunRequest"
+      },
+      "LoginRequest": {
+        "properties": {
+          "phone_number": {
+            "type": "string",
+            "maxLength": 20,
+            "minLength": 9,
+            "title": "Phone Number"
+          },
+          "password": {
+            "type": "string",
+            "maxLength": 72,
+            "minLength": 8,
+            "title": "Password"
+          }
+        },
+        "type": "object",
+        "required": [
+          "phone_number",
+          "password"
+        ],
+        "title": "LoginRequest"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HomeContext": {
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "title": "User Id"
+          },
+          "office_id": {
+            "type": "string",
+            "title": "Office Id"
+          },
+          "office_name": {
+            "type": "string",
+            "title": "Office Name"
+          },
+          "role": {
+            "type": "string",
+            "title": "Role"
+          },
+          "plots": {
+            "items": {
+              "$ref": "#/components/schemas/HomePlot"
+            },
+            "type": "array",
+            "title": "Plots"
+          },
+          "skills": {
+            "items": {
+              "$ref": "#/components/schemas/HomeSkill"
+            },
+            "type": "array",
+            "title": "Skills"
+          },
+          "model": {
+            "$ref": "#/components/schemas/HomeModel"
+          },
+          "max_plots_per_run": {
+            "type": "integer",
+            "title": "Max Plots Per Run",
+            "default": 5
+          },
+          "server_area_query": {
+            "type": "boolean",
+            "title": "Server Area Query",
+            "default": false
+          },
+          "shared_conversation": {
+            "type": "boolean",
+            "title": "Shared Conversation",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id",
+          "office_id",
+          "office_name",
+          "role",
+          "plots",
+          "skills",
+          "model"
+        ],
+        "title": "HomeContext"
+      },
+      "UserResponse": {
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "title": "User Id"
+          },
+          "phone_number": {
+            "type": "string",
+            "title": "Phone Number"
+          },
+          "is_active": {
+            "type": "boolean",
+            "title": "Is Active"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "onboarding_completed": {
+            "type": "boolean",
+            "title": "Onboarding Completed",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id",
+          "phone_number",
+          "is_active",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "UserResponse"
+      },
+      "HomeModel": {
+        "properties": {
+          "provider": {
+            "type": "string",
+            "enum": [
+              "gemini",
+              "local"
+            ],
+            "title": "Provider"
+          },
+          "model": {
+            "type": "string",
+            "title": "Model"
+          },
+          "configured": {
+            "type": "boolean",
+            "title": "Configured"
+          },
+          "execution_enabled": {
+            "type": "boolean",
+            "title": "Execution Enabled"
+          },
+          "blocked_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Blocked Reason"
+          },
+          "plot_data_policy": {
+            "type": "string",
+            "title": "Plot Data Policy"
+          },
+          "reachability_verified": {
+            "type": "boolean",
+            "title": "Reachability Verified",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "provider",
+          "model",
+          "configured",
+          "execution_enabled",
+          "blocked_reason",
+          "plot_data_policy"
+        ],
+        "title": "HomeModel"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "HomeSkill": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Version"
+          },
+          "available": {
+            "type": "boolean",
+            "title": "Available"
+          },
+          "blocked_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Blocked Reason"
+          },
+          "tools": {
+            "items": {
+              "$ref": "#/components/schemas/HomeTool"
+            },
+            "type": "array",
+            "title": "Tools",
+            "default": []
+          },
+          "missing_optional_capabilities": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Missing Optional Capabilities",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "description",
+          "available"
+        ],
+        "title": "HomeSkill"
+      },
+      "HomePlot": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "latitude": {
+            "type": "number",
+            "title": "Latitude"
+          },
+          "longitude": {
+            "type": "number",
+            "title": "Longitude"
+          },
+          "area": {
+            "type": "number",
+            "title": "Area"
+          },
+          "area_unit": {
+            "type": "string",
+            "title": "Area Unit"
+          },
+          "synthetic": {
+            "type": "boolean",
+            "title": "Synthetic"
+          },
+          "crop": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Crop"
+          },
+          "planting_date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Planting Date"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "latitude",
+          "longitude",
+          "area",
+          "area_unit",
+          "synthetic"
+        ],
+        "title": "HomePlot"
+      },
+      "HomeTool": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "version_id": {
+            "type": "string",
+            "title": "Version Id"
+          },
+          "capabilities": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Capabilities"
+          },
+          "input_schema": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Input Schema"
+          },
+          "plot_scoped": {
+            "type": "boolean",
+            "title": "Plot Scoped"
+          },
+          "requires_image": {
+            "type": "boolean",
+            "title": "Requires Image"
+          },
+          "optional": {
+            "type": "boolean",
+            "title": "Optional"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "version_id",
+          "capabilities",
+          "input_schema",
+          "plot_scoped",
+          "requires_image",
+          "optional"
+        ],
+        "title": "HomeTool"
+      }
+    },
+    "securitySchemes": {
+      "HTTPBearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}

@@ -2,7 +2,7 @@
 
 [Documentation index](README.md)
 
-The repository contains both the current officer workflow and older direct-advice integrations. Their status differs:
+The table below describes the original Qwen advisory workflow and older direct-advice integrations. For the newer registry-based Home companion and fourteen provider skills, consult the [integration audit](FRONTEND_BACKEND_INTEGRATION_AUDIT.md). These are separate execution paths:
 
 | Source or feature | Current behavior | Credentials |
 | --- | --- | --- |
@@ -24,4 +24,4 @@ For manual backend startup, copy [backend/.env.example](../backend/.env.example)
 
 Optional settings include soil and diagnosis credentials, Gemini, SMS Ethiopia for normal phone OTP registration, and Google/Hasab speech. Local advisory audio is selected with `ADVISORY_AUDIO_PROVIDER=local`.
 
-See [manual model and worker setup](../backend/PHASE2.md) and [account and office provisioning](../backend/PHASE1.md). These files retain earlier implementation details; the status table above describes the current workflow. The frontend example is [frontend/.env.example](../frontend/.env.example).
+See [manual model and worker setup](../backend/PHASE2.md) and [account and office provisioning](../backend/PHASE1.md). These files retain earlier implementation details; the status table above describes the current workflow. The current frontend example is [agrilo-fieldops-frontend/.env.example](../agrilo-fieldops-frontend/.env.example); frontend settings are public and must never contain provider/model secrets. See the [current Home run guide](../agrilo-fieldops-frontend/docs/PHASE1_HOME_INTEGRATION.md).

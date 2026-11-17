@@ -1,6 +1,6 @@
 # Recorded evaluations
 
-Historical record: the root `demo/` media folder has been removed. Video/audio paths below identify artifacts used during the original evaluations and are no longer included. JSON reports remain unchanged. New optional recordings are saved under ignored `backend/runtime/browser-recordings/`; see [testing](docs/testing.md).
+Historical record: the root `demo/` media folder has been removed. Video/audio paths below identify artifacts used during the original evaluations and are no longer included. JSON reports remain unchanged. The old frontend and its launch/recording tools are now retired. Reproduce historical UI results only in a separate checkout of the matching revision; see [current testing](docs/testing.md).
 
 Results are from 15 October 2026. Final checks are recorded below; Phase 2/3 results are retained as historical measurements. Households, plots, crop history and office guidance are explicitly synthetic. Tests verify software behavior and evidence controls; they do not establish agronomic accuracy, farmer benefit or real-office adoption.
 

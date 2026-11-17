@@ -58,8 +58,8 @@ class SkillService(IntegrationService):
             raise ConnectorError("VERSION_CONFLICT", "Skill version not found")
         return skill, row
 
-    def skill_view(self, skill, version):
-        return {
+    def skill_view(self, skill, version, *, include_execution=False):
+        result = {
             "id": skill.id,
             "name": skill.name,
             "revision": skill.revision,
@@ -71,6 +71,10 @@ class SkillService(IntegrationService):
             "enabled_version": skill.enabled_version,
             "approved": bool(approval(self.db, version.id, self.principal.office_id)),
         }
+        if include_execution:
+            from src.skills.projection import execution_view
+            result["execution"] = execution_view(self, skill, version)
+        return result
 
     def exact_skill(self, skill_id, version, expected_digest):
         skill, row = self.version(skill_id, version)

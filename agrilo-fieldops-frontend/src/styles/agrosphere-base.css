@@ -1,0 +1,157 @@
+:root {
+  /* Deep Space Dark Mode */
+  --bg-dark: #020617; /* Very dark slate */
+  --bg-panel: rgba(2, 6, 23, 0.6);
+
+  /* Logo colors - enhanced for dark mode */
+  --agro-main: #FFFFFF; /* White for main text */
+  --sphere-green: #10B981; /* Neon emerald */
+  --sphere-light-green: #34D399; /* Bright mint */
+  --emerald-dark: #047857;
+  --emerald: #064E3B;
+
+  /* Text */
+  --text-main: #F8FAFC;
+  --text-muted: #94A3B8;
+
+  /* Cards (Glassmorphism) */
+  --glass-bg: rgba(15, 23, 42, 0.6);
+  --glass-border: rgba(16, 185, 129, 0.2); /* Greenish glass border */
+
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: dark;
+  color: var(--text-main);
+  background-color: var(--bg-dark);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Leaflet Map Label Overrides */
+.leaflet-tooltip.countryLabel {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: rgba(255,255,255,0.8);
+  font-weight: 600;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.8), -1px -1px 3px rgba(0,0,0,0.8);
+  letter-spacing: 1px;
+  transition: opacity 0.3s ease, font-size 0.3s ease !important;
+}
+
+/* Dynamic 5-Tier Zoom Level Styling */
+.leaflet-tooltip.countryLabel, .leaflet-tooltip.regionLabel, .leaflet-tooltip.cityLabel, .city-marker {
+  transition: opacity 0.3s ease, font-size 0.3s ease !important;
+}
+
+/* Africa Labels */
+.zoom-level-1 .leaflet-tooltip.countryLabel { opacity: 0 !important; }
+.zoom-level-2 .leaflet-tooltip.countryLabel { font-size: 0.65rem !important; opacity: 0.5 !important; }
+.zoom-level-3 .leaflet-tooltip.countryLabel,
+.zoom-level-4 .leaflet-tooltip.countryLabel,
+.zoom-level-5 .leaflet-tooltip.countryLabel {
+  opacity: 0 !important; /* Hide when deep in Ethiopia */
+}
+
+/* Ethiopia Regions styling */
+.leaflet-tooltip.regionLabel {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: #a8ffb2;
+  font-weight: 700;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.9);
+}
+.zoom-level-1 .leaflet-tooltip.regionLabel,
+.zoom-level-2 .leaflet-tooltip.regionLabel {
+  opacity: 0 !important;
+}
+.zoom-level-3 .leaflet-tooltip.regionLabel {
+  font-size: 0.55rem !important; opacity: 0.6 !important;
+}
+.zoom-level-4 .leaflet-tooltip.regionLabel {
+  font-size: 0.75rem !important; opacity: 0.9 !important;
+}
+.zoom-level-5 .leaflet-tooltip.regionLabel,
+.zoom-level-6 .leaflet-tooltip.regionLabel {
+  opacity: 0 !important; /* Hide regions when deep into cities or farms */
+}
+
+/* Ethiopia Cities styling */
+.leaflet-tooltip.cityLabel {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: white;
+  font-weight: 500; /* Reduced from 600 to make text narrower */
+  text-shadow: 1px 1px 2px black;
+  margin-top: -5px;
+  letter-spacing: 0px; /* Compress text width */
+}
+
+/* Hide cities entirely at low zooms */
+.zoom-level-1 .city-marker, .zoom-level-2 .city-marker, .zoom-level-3 .city-marker {
+  opacity: 0 !important; pointer-events: none;
+}
+.zoom-level-1 .leaflet-tooltip.cityLabel, .zoom-level-2 .leaflet-tooltip.cityLabel, .zoom-level-3 .leaflet-tooltip.cityLabel {
+  opacity: 0 !important;
+}
+
+/* Zoom 4 (Ethiopia Near): Show dots ONLY to prevent clutter */
+.zoom-level-4 .city-marker { opacity: 0.8 !important; }
+.zoom-level-4 .leaflet-tooltip.cityLabel { opacity: 0 !important; }
+
+/* Zoom 5 (Local): Show dots and smaller crisp text */
+.zoom-level-5 .city-marker { opacity: 1 !important; pointer-events: auto; }
+.zoom-level-5 .leaflet-tooltip.cityLabel { font-size: 0.7rem !important; opacity: 0.9 !important; }
+
+/* Zoom 6 (Farm Level): Hide cities entirely because you are looking at specific fields */
+.zoom-level-6 .city-marker { opacity: 0 !important; pointer-events: none; }
+.zoom-level-6 .leaflet-tooltip.cityLabel { opacity: 0 !important; }
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  overflow: hidden; /* App is full screen */
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: 600;
+  color: var(--agro-white);
+}
+
+p {
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* react-split gutter styling */
+.gutter {
+  background-color: var(--bg-dark);
+  background-repeat: no-repeat;
+  background-position: 50%;
+  cursor: col-resize;
+  position: relative;
+  transition: background-color 0.2s ease;
+  z-index: 500;
+}
+
+.gutter:hover {
+  background-color: var(--sphere-green);
+}
+
+.gutter.gutter-horizontal {
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjbd5MgKJEV8BMRY1cNCsF4AAAAAASUVORK5CYII=');
+}

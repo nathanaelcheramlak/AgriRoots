@@ -36,7 +36,7 @@ def skills(s):
 
 
 @router.get("/skills")
-def list_skills(limit: int = Query(20, ge=1, le=100), offset: int = Query(0, ge=0), s=Depends(service)):
+def list_skills(limit: int = Query(20, ge=1, le=100), offset: int = Query(0, ge=0), include_execution: bool = False, s=Depends(service)):
     ss = skills(s)
     rows = s.db.scalars(
         select(RegisteredSkill)
@@ -45,7 +45,7 @@ def list_skills(limit: int = Query(20, ge=1, le=100), offset: int = Query(0, ge=
         .offset(offset)
         .limit(limit)
     )
-    return {"items": [ss.skill_view(row, ss.version(row.id)[1]) for row in rows], "limit": limit, "offset": offset}
+    return {"items": [ss.skill_view(row, ss.version(row.id)[1], include_execution=include_execution) for row in rows], "limit": limit, "offset": offset}
 
 
 @router.post("/skills", status_code=201)
@@ -56,10 +56,10 @@ def create_skill(payload: SkillManifest, s=Depends(service)):
 
 
 @router.get("/skills/{skill_id}")
-def skill_detail(skill_id: str, s=Depends(service)):
+def skill_detail(skill_id: str, include_execution: bool = False, s=Depends(service)):
     ss = skills(s)
     skill, version = ss.version(skill_id)
-    return ss.skill_view(skill, version)
+    return ss.skill_view(skill, version, include_execution=include_execution)
 
 
 @router.post("/skills/{skill_id}/versions", status_code=201)

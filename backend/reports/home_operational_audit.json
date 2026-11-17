@@ -1,0 +1,147 @@
+{
+  "provider_matrix": [
+    {
+      "provider": "open_meteo",
+      "adapter_implemented": true,
+      "tool_registered": true,
+      "skill_registered": true,
+      "enabled": true,
+      "available_to_home": true,
+      "saved_live_backend_check": "VALID"
+    },
+    {
+      "provider": "isda_soil",
+      "adapter_implemented": true,
+      "tool_registered": true,
+      "skill_registered": true,
+      "enabled": true,
+      "available_to_home": true,
+      "saved_live_backend_check": "VALID"
+    },
+    {
+      "provider": "nasa_power",
+      "adapter_implemented": true,
+      "tool_registered": true,
+      "skill_registered": true,
+      "enabled": true,
+      "available_to_home": true,
+      "saved_live_backend_check": "VALID"
+    },
+    {
+      "provider": "chirps",
+      "adapter_implemented": true,
+      "tool_registered": true,
+      "skill_registered": true,
+      "enabled": true,
+      "available_to_home": true,
+      "saved_live_backend_check": "VALID"
+    },
+    {
+      "provider": "fao_fpma",
+      "adapter_implemented": true,
+      "tool_registered": true,
+      "skill_registered": true,
+      "enabled": true,
+      "available_to_home": true,
+      "saved_live_backend_check": "VALID"
+    },
+    {
+      "provider": "wfp_prices",
+      "adapter_implemented": true,
+      "tool_registered": true,
+      "skill_registered": true,
+      "enabled": true,
+      "available_to_home": true,
+      "saved_live_backend_check": "VALID"
+    },
+    {
+      "provider": "eppo",
+      "adapter_implemented": true,
+      "tool_registered": true,
+      "skill_registered": true,
+      "enabled": true,
+      "available_to_home": true,
+      "saved_live_backend_check": "VALID"
+    },
+    {
+      "provider": "fao_locust",
+      "adapter_implemented": true,
+      "tool_registered": true,
+      "skill_registered": true,
+      "enabled": true,
+      "available_to_home": true,
+      "saved_live_backend_check": "VALID"
+    },
+    {
+      "provider": "fao_wapor",
+      "adapter_implemented": true,
+      "tool_registered": true,
+      "skill_registered": true,
+      "enabled": true,
+      "available_to_home": true,
+      "saved_live_backend_check": "VALID"
+    },
+    {
+      "provider": "fao_gaez",
+      "adapter_implemented": true,
+      "tool_registered": true,
+      "skill_registered": true,
+      "enabled": true,
+      "available_to_home": true,
+      "saved_live_backend_check": "VALID"
+    },
+    {
+      "provider": "fao_asis",
+      "adapter_implemented": true,
+      "tool_registered": true,
+      "skill_registered": true,
+      "enabled": true,
+      "available_to_home": true,
+      "saved_live_backend_check": "VALID"
+    },
+    {
+      "provider": "google_earth_engine",
+      "adapter_implemented": true,
+      "tool_registered": true,
+      "skill_registered": true,
+      "enabled": true,
+      "available_to_home": true,
+      "saved_live_backend_check": "VALID"
+    },
+    {
+      "provider": "kindwise",
+      "adapter_implemented": true,
+      "tool_registered": true,
+      "skill_registered": true,
+      "enabled": false,
+      "available_to_home": false,
+      "saved_live_backend_check": "NOT_RUN_CREDIT_AUTHORIZATION_REQUIRED"
+    },
+    {
+      "provider": "openrouteservice",
+      "adapter_implemented": true,
+      "tool_registered": true,
+      "skill_registered": true,
+      "enabled": true,
+      "available_to_home": true,
+      "saved_live_backend_check": "VALID"
+    }
+  ],
+  "plot_count": 2,
+  "synthetic_plot_count": 2,
+  "skill_count": 23,
+  "available_skill_count": 17,
+  "model": {
+    "provider": "gemini",
+    "model": "",
+    "configured": false,
+    "execution_enabled": false,
+    "blocked_reason": "The backend needs a Gemini key and an explicitly configured model.",
+    "plot_data_policy": "synthetic_only",
+    "reachability_verified": false
+  },
+  "operational_records_seeded": false,
+  "live_model_test": "BLOCKED_MISSING_MODEL_CONFIGURATION",
+  "ready_http": 200,
+  "unauthenticated_context_http": 401
+}

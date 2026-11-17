@@ -1,0 +1,205 @@
+.appContainer {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  background-color: var(--bg-dark);
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(16, 185, 129, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 40%);
+  color: var(--text-main);
+}
+
+.sidebar {
+  width: 400px;
+  min-width: 400px;
+  height: 100vh;
+  background-color: rgba(2, 6, 23, 0.6);
+  backdrop-filter: blur(20px);
+  border-right: 1px solid var(--glass-border);
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+  z-index: 10;
+}
+
+.brandHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+  /* Removed padding-left to push directly against the sidebar padding */
+}
+
+.brandTextContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.logo {
+  width: 140px;
+  height: 140px;
+  margin: -40px; /* Eat more vertical SVG padding */
+  margin-left: -45px; /* Push logo further to the left */
+  margin-right: -28px; /* Bring text even closer to the graphic */
+}
+
+.brandTitle {
+  font-size: 1.8rem;
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+  margin-bottom: 0.15rem; /* Small gap between title and tagline */
+}
+
+.textMain {
+  color: var(--agro-main);
+}
+
+.textGreen {
+  color: var(--sphere-green);
+}
+
+.tagline {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.mapCard {
+  width: 100%;
+  height: 350px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(16, 185, 129, 0.15);
+  margin-bottom: 1.5rem;
+}
+
+.coordinateWidget {
+  background: linear-gradient(145deg, rgba(15, 23, 42, 0.9), rgba(2, 6, 23, 0.9));
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: 12px;
+  padding: 1.2rem;
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5), 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.coordinateWidget strong {
+  display: block;
+  color: var(--sphere-light-green);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+.coordinateWidget p {
+  color: var(--text-main);
+  font-family: monospace;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.mainContent {
+  flex: 1;
+  height: 100vh;
+  background-color: transparent;
+  overflow-y: auto;
+  position: relative;
+}
+
+.coordinateData {
+  margin-bottom: 12px;
+}
+
+.coordForm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.2);
+  padding-top: 15px;
+  margin-top: 15px;
+}
+
+.coordInputsWrapper {
+  display: flex;
+  align-items: center;
+  background: #000000; /* Solid black for high contrast */
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 6px 10px;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.inputGroup {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.inputGroup label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--sphere-light-green);
+  margin-right: 8px;
+  letter-spacing: 1px;
+}
+
+.coordInput {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-family: monospace;
+  font-size: 0.95rem;
+  width: 100%;
+  outline: none;
+}
+
+.coordInput::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* Hide number input spinners */
+.coordInput::-webkit-outer-spin-button,
+.coordInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+.coordInput[type=number] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.inputDivider {
+  width: 1px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 0 12px;
+}
+
+.coordSubmitBtn {
+  background: var(--sphere-green);
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 0;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.coordSubmitBtn:hover {
+  background: var(--sphere-light-green);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(140, 196, 75, 0.3);
+}
+
+.mapHintText {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 10px;
+  font-weight: 500;
+  padding: 0 15px;
+}

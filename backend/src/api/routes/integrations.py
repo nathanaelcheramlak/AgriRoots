@@ -56,9 +56,9 @@ class ProviderTest(ConnectionTest):
 
 @router.get("/providers")
 def providers(s=Depends(service)):
-    from src.providers.inventory import inventory
+    from src.providers.inventory import catalog
 
-    document = inventory()
+    document = catalog()
     return {
         "items": document["providers"],
         "note": document.get("note"),
@@ -68,10 +68,10 @@ def providers(s=Depends(service)):
 
 @router.get("/providers/{provider_id}/template")
 def provider_template(provider_id: str, s=Depends(service)):
-    from src.providers.inventory import inventory
+    from src.providers.inventory import catalog
     from src.providers.factory import template
 
-    provider = next((row for row in inventory()["providers"] if row["id"] == provider_id), None)
+    provider = next((row for row in catalog()["providers"] if row["id"] == provider_id), None)
     if not provider or not provider["handler_id"]:
         raise ConnectorError(
             "UNSUPPORTED_CAPABILITY", provider.get("blocker") if provider else "Provider not found in inventory"
@@ -81,9 +81,9 @@ def provider_template(provider_id: str, s=Depends(service)):
 
 @router.post("/providers/{provider_id}/verify", status_code=202)
 def verify_provider(provider_id: str, payload: ProviderTest, s=Depends(service)):
-    from src.providers.inventory import inventory
+    from src.providers.inventory import catalog
 
-    provider = next((row for row in inventory()["providers"] if row["id"] == provider_id), None)
+    provider = next((row for row in catalog()["providers"] if row["id"] == provider_id), None)
     connection = s.owned(Integration, payload.connection_id)
     if (
         not provider
@@ -300,8 +300,18 @@ def tests(connection_id: str, limit: int = Query(20, ge=1, le=100), offset: int 
 
 @router.get("/connector-jobs/{job_id}")
 @router.get("/runs/{job_id}")
-def job(job_id: str, s=Depends(service)):
-    return job_view(s.owned(ConnectorJob, job_id))
+def job(job_id: str, include_progress: bool = False, s=Depends(service)):
+    row = s.owned(ConnectorJob, job_id)
+    result = job_view(row)
+    if include_progress:
+        from src.db.models.connectors import ToolInvocation, ToolVersion
+        calls = []
+        for invocation in s.db.scalars(select(ToolInvocation).where(ToolInvocation.job_id == row.id).order_by(ToolInvocation.started_at)):
+            version = s.db.get(ToolVersion, invocation.tool_version_id) if invocation.tool_version_id else None
+            calls.append({"id": invocation.id, "name": version.specification["name"] if version else "recorded_operation",
+                "status": invocation.status, "started_at": invocation.started_at, "finished_at": invocation.finished_at})
+        result["progress"] = {"calls": calls}
+    return result
 
 
 @router.get("/runs/{job_id}/results")

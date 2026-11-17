@@ -1,0 +1,39 @@
+@media(min-width:1600px) {
+  .selection-sidebar { width:420px; min-width:420px; padding:24px; }.map-card { height:380px; }
+}
+@media(max-width:1150px) {
+  .selection-sidebar { width:360px; min-width:360px; padding:18px; }.map-card { height:320px; }.brand-title { font-size:1.4rem; }.brand-mark { width:130px; height:130px; margin-top:-35px; margin-bottom:-35px; }
+  .report-topbar { padding:20px 24px; }.report-navigation { padding:0 24px; gap:20px; }.analysis-status { padding:12px 24px; }.overview-results { padding:22px!important; }.overview-results [class*="environmentGrid"],.overview-results [class*="actionGrid"] { gap:16px; }
+  .priority-summary { gap:10px; }.priority-summary button { padding:14px; }.candidate-farm-grid,.farm-list { grid-template-columns:1fr; }.farms-tab,.farm-detail,.advisories-tab,.assistant-tab { padding-left:24px; padding-right:24px; }.filter-grid { grid-template-columns:1fr 1fr; }.detail-grid { grid-template-columns:1fr 1fr; }
+}
+@media(max-width:950px) {
+  .overview-results [class*="environmentGrid"],.overview-results [class*="actionGrid"] { grid-template-columns:1fr; }.priority-summary { grid-template-columns:1fr 1fr; }.report-navigation { gap:17px; }.report-navigation button { font-size:.72rem; gap:6px; }.report-navigation button svg { width:15px; }.suggestion-list { grid-template-columns:1fr; }.officer>div { display:none; }.context-cards { gap:12px; }.context-cards .card { padding:18px; }
+}
+@media(max-width:760px) {
+  body { overflow:auto; }.agrosphere-app { width:100%; height:auto; min-height:100dvh; flex-direction:column; background-attachment:fixed; }.selection-sidebar { width:100%; min-width:0; height:auto; padding:20px; overflow:visible; border-right:0; border-bottom:1px solid var(--line); }.report-main { height:auto; min-height:600px; overflow:visible; flex:none; }
+  .brand-header { margin-bottom:15px; }.brand-title { font-size:1.6rem; }.map-card { height:340px; margin-bottom:12px; }.sidebar-note,.sidebar-help { display:none; }.map-legend { max-width:440px; width:100%; margin:18px auto 0; }.sidebar-meta { font-size:.7rem; }.demo-area-button { padding:13px; font-size:.8rem; }.map-tools button { min-height:40px; font-size:.72rem; }.map-tools { gap:7px; }
+  .report-topbar { padding:21px 20px; }.report-navigation { padding:0 20px; justify-content:space-between; gap:7px; }.report-navigation button { min-height:57px; font-size:.75rem; gap:6px; }.report-navigation button svg { width:16px; }.analysis-status { padding:13px 20px; font-size:.63rem; }.status-right { display:none; }
+  .main-report.tab-overview>[class*="idleState"] { min-height:500px; }.main-report { min-height:500px; } [class*="idleTitle"] { font-size:1.65rem; } [class*="promptBox"] { padding:20px; font-size:.85rem; }.overview-results { padding:20px!important; gap:22px!important; }.overview-results [class*="statusBadge"] { padding:11px 16px; gap:9px; }.overview-results [class*="statusBadge"] h2 { font-size:.9rem; }.overview-results [class*="locationContainer"] { padding:20px; }.overview-results [class*="locationSummary"] { font-size:.8rem; }
+  .report-title { font-size:1.5rem; }.report-subtitle { font-size:.77rem; }.overview-results .section-heading { align-items:flex-start; flex-direction:column; }.overview-results .section-heading>.text-button { margin-top:9px; }.overview-results [class*="card"],.overview-results [class*="cropItem"],.overview-results [class*="irrigationCard"] { padding:20px; }.overview-results [class*="cropHeader"] { flex-wrap:wrap; gap:8px; }
+  .farms-tab,.farm-detail,.advisories-tab,.assistant-tab { padding:23px 20px 35px; }.farm-list { gap:13px; }.farm-row { padding:18px; }.farm-row-body strong { font-size:.85rem; }.context-cards { gap:12px; }.context-cards .card { padding:17px; }.context-cards strong { font-size:1.35rem; }.context-cards small { font-size:.65rem; }
+  .detail-title h2 { font-size:1.35rem; }.detail-title .section-kicker { font-size:.57rem; }.farm-illustration { width:52px; height:58px; }.detail-meta { gap:9px; font-size:.73rem; }.detail-grid { padding:17px; }.candidate-card { padding:18px; }.risk-reasons { padding:17px; }.assistant-tab { min-height:650px; }.chat-welcome h3 { font-size:1.8rem; }.chat-message.user { margin-left:15%; }
+  .advisory-card { padding:19px; }.review-actions button { font-size:.72rem; padding:11px 8px; }.advisory-header { font-size:.7rem; }.help-modal { padding:28px; }.toast { font-size:.75rem; width:max-content; max-width:calc(100vw - 30px); bottom:18px; }
+}
+@media(max-width:380px) {
+  .selection-sidebar { padding:17px; }.report-navigation { padding:0 16px; }.report-navigation button { font-size:.7rem; }.report-navigation button svg { width:14px; }.report-navigation i { font-size:.55rem; padding:1px 3px; }.demo-area-button span { font-size:.6rem; }.detail-meta { flex-wrap:wrap; }.detail-title h2 { font-size:1.2rem; }.candidate-status { font-size:.6rem; }.candidate-header { gap:8px; }
+}
+/* Change the existing map's size without remounting its selection or analysis. */
+@media(min-width:761px) {
+  .map-expanded .selection-sidebar { width:50%; min-width:0; flex:0 0 50%; }
+  .map-expanded .report-main { width:50%; min-width:0; flex:0 0 50%; }
+  .map-expanded .map-card { height:clamp(460px,calc(100dvh - 260px),900px); }
+  .map-expanded .report-navigation { padding-inline:16px; gap:12px; }
+  .map-expanded .report-navigation button { font-size:.72rem; gap:6px; }
+}
+@media(min-width:761px) and (max-width:1200px) {
+  .map-expanded .overview-results [class*="environmentGrid"],.map-expanded .overview-results [class*="actionGrid"],.map-expanded .candidate-farm-grid,.map-expanded .farm-list,.map-expanded .suggestion-list { grid-template-columns:1fr; }
+}
+@media(max-width:760px) {
+  .map-expanded .map-card { height:70dvh; min-height:400px; max-height:800px; }
+}
+@media(prefers-reduced-motion:reduce) { *,*:before,*:after { animation:none!important; transition:none!important; scroll-behavior:auto!important; } }

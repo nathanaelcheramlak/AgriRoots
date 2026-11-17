@@ -1,0 +1,37 @@
+.mapContainer {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  background-color: #000;
+}
+
+.hintOverlay {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  padding: 12px 24px;
+  border-radius: 30px;
+  color: var(--agro-white);
+  font-weight: 500;
+  font-size: 0.95rem;
+  z-index: 1000;
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(140, 196, 75, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(140, 196, 75, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(140, 196, 75, 0);
+  }
+}

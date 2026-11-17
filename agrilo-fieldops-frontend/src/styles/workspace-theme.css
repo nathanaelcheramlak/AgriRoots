@@ -1,0 +1,73 @@
+/* One neutral AgriLo theme, with semantic sage, amber and red accents. */
+:root {
+  --workspace-bg: #101010;
+  --workspace-sidebar: #111111;
+  --workspace-panel: #191919;
+  --workspace-input: #171717;
+  --workspace-hover: #262626;
+  --workspace-border: #333333;
+  --workspace-text: #ececec;
+  --workspace-muted: #a3a3a3;
+  --workspace-accent: #b4d3c1;
+  --workspace-accent-bg: #1d2b23;
+  --workspace-accent-border: #3c5143;
+  --workspace-warning: #e8c88d;
+  --workspace-warning-bg: #2a2419;
+  --workspace-warning-border: #51432a;
+  --workspace-danger: #edb0a9;
+  --workspace-danger-bg: #30201f;
+  --workspace-danger-border: #65413d;
+  --bg-dark: var(--workspace-bg);
+  --bg-panel: var(--workspace-sidebar);
+  --text-main: var(--workspace-text);
+  --text-muted: var(--workspace-muted);
+  --glass-bg: var(--workspace-panel);
+  --glass-border: var(--workspace-border);
+  --line: var(--workspace-border);
+  --sphere-green: var(--workspace-accent);
+  --sphere-light-green: var(--workspace-accent);
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  background: var(--workspace-bg);
+  color: var(--workspace-text);
+}
+/* Apply to the reset, legacy CSS modules, and portal dialogs as well. */
+html, body, .app-shell, .plugins-theme { font-family: Inter, "Segoe UI", Arial, sans-serif; }
+body, .app-shell, .plugins-theme { background: var(--workspace-bg); color: var(--workspace-text); }
+button, input, select, textarea { font: inherit; }
+.app-shell, .plugins-theme { font-size: 13px; color-scheme: dark; --text-muted: var(--workspace-muted); --line: var(--workspace-border); --glass-border: var(--workspace-border); }
+.app-shell .agrosphere-app { background: var(--workspace-bg); background-image: none; min-width: 0; }
+.app-shell .selection-sidebar { background: var(--workspace-sidebar); border-color: var(--workspace-border); box-shadow: none; backdrop-filter: none; scrollbar-color: #444 transparent; }
+.app-shell .report-main { min-width: 0; }
+.app-shell :is(input, select, textarea):not([type=checkbox]):not([type=radio]), .plugins-theme :is(input, select, textarea):not([type=checkbox]):not([type=radio]) { color: var(--workspace-text); border-color: var(--workspace-border); }
+.app-shell :where(.live-login, .live-home) :where(input, select, textarea):not(:where([type=checkbox], [type=radio])) { width: 100%; min-width: 0; max-width: 100%; padding: 10px 12px; background: var(--workspace-input); border: 1px solid var(--workspace-border); border-radius: 8px; }
+.app-shell :is(input, textarea)::placeholder, .plugins-theme :is(input, textarea)::placeholder { color: #828282; opacity: 1; }
+.app-shell :is(button, a, input, select, textarea, summary, [tabindex]):focus-visible, .plugins-theme :is(button, a, input, select, textarea, summary):focus-visible { outline: 2px solid var(--workspace-accent); outline-offset: 3px; }
+:where(.app-shell) a { color: var(--workspace-accent); }
+.app-shell .primary { background: #ececec; color: #181818; box-shadow: none; text-transform: none; letter-spacing: 0; }
+.app-shell .primary:hover { background: #fff; box-shadow: none; }
+.app-shell .secondary, .app-shell .map-layout-toggle, .app-shell .map-tools button { color: var(--workspace-muted); border-color: var(--workspace-border); background: transparent; }
+.app-shell .secondary:hover, .app-shell .map-layout-toggle:hover, .app-shell .map-tools button:hover { background: var(--workspace-hover); }
+.app-shell .map-layout-toggle[aria-pressed=true], .app-shell .map-tools button.active { background: var(--workspace-accent-bg); color: var(--workspace-accent); border-color: var(--workspace-accent-border); }
+.app-shell .coordinate-widget { background: var(--workspace-panel); border: 1px solid var(--workspace-border); box-shadow: none; }
+.app-shell .coordinate-widget form { border-color: var(--workspace-border); }
+.app-shell .coordinate-widget form > div:first-child { background: var(--workspace-input); border-color: var(--workspace-border); box-shadow: none; }
+.app-shell .coordinate-widget form > div:first-child input { padding: 4px 0; background: transparent; border: 0; border-radius: 0; }
+.app-shell .coordinate-widget form > button { background: #ececec; color: #181818; text-transform: none; letter-spacing: 0; box-shadow: none; min-height: 36px; }
+.app-shell .coordinate-widget form > button:hover { background: #fff; transform: none; }
+.app-shell .selection-card { border-color: var(--workspace-border); }
+.app-shell .layers-panel { background: var(--workspace-panel); border-color: var(--workspace-border); color: var(--workspace-text); }
+.app-shell .layers-panel h3 { color: var(--workspace-accent); }
+.app-shell .map-instruction { background: var(--workspace-accent-bg); color: var(--workspace-accent); }
+.app-shell .map-card { border-color: var(--workspace-border); box-shadow: none; }
+.app-shell .report-topbar { border-color: var(--workspace-border); }
+/* Management surfaces match Plugins while retaining meaningful status colors. */
+.app-shell :is(.plugins-main, .monitoring-main, .outreach-main), .monitor-opening { background: var(--workspace-bg); }
+.app-shell :is(.plugins-secondary, .monitoring-sidebar, .outreach-sidebar) { background: var(--workspace-sidebar); border-color: var(--workspace-border); }
+.app-shell :is(.monitoring-page, .outreach-page) { --monitor-muted: var(--workspace-muted); --monitor-accent: var(--workspace-accent); --outreach-muted: var(--workspace-muted); --outreach-accent: var(--workspace-accent); }
+.app-shell :is(.monitor-category-nav, .outreach-sidebar > nav) .selected { background: var(--workspace-hover); color: var(--workspace-text); }
+.app-shell :is(.monitor-sidebar-list, .outreach-recent-list) a[aria-current=page] { background: var(--workspace-hover); }
+.plugins-theme :is(.monitor-field, .outreach-message-editor) :is(input, select, textarea), .outreach-step-content .monitor-field :is(input, select, textarea) { background: var(--workspace-input); border-color: var(--workspace-border); color: var(--workspace-text); }
+.plugin-modal:has(.monitoring-wizard), .plugin-modal:has(.outreach-wizard), .monitor-wizard-footer, .outreach-wizard-footer { background: var(--workspace-panel); }
+.plugins-theme .monitor-primary { background: #ececec !important; color: #181818 !important; }
+.plugins-theme .monitor-primary:hover { background: #fff !important; }
+@media (min-width: 761px) { .home-surface:has(.live-login) { overflow-y: auto; } }

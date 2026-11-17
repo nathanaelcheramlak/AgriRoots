@@ -1,0 +1,68 @@
+import { beforeEach, describe, expect, it } from 'vitest'
+import { render, screen, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import PluginsPage from '../src/components/plugins/PluginsPage'
+import { pluginStore } from '../src/features/plugins/store'
+import { PLUGIN_STORAGE_KEY } from '../src/features/plugins/service'
+
+beforeEach(() => { localStorage.clear(); pluginStore.setState({ catalog: [], drafts: [], loading: false, loaded: false, warning: null, notice: null }) })
+describe('Plugins catalog and draft UI', () => {
+  it('searches the real catalog and shows office integrations as unavailable without inventing entries', async () => {
+    const user = userEvent.setup(); render(<PluginsPage />)
+    expect(await screen.findByText('No plugins saved yet.')).toBeInTheDocument()
+    await screen.findByRole('button', { name: 'View Open-Meteo details' })
+    await user.type(screen.getByRole('textbox', { name: 'Search plugins' }), 'rainfall')
+    expect(screen.getByRole('button', { name: 'View CHIRPS / ClimateSERV details' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'View iSDAsoil details' })).not.toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'Office' }))
+    expect(screen.getByText('An office catalog, when you’re ready.')).toBeInTheDocument()
+  })
+  it('saves a catalog draft and displays independent local, health, approval and enablement statuses', async () => {
+    const user = userEvent.setup(); render(<PluginsPage />)
+    await user.click(await screen.findByRole('button', { name: 'Save Open-Meteo draft' }))
+    const dialog = await screen.findByRole('dialog', { name: 'Plugin details' })
+    expect(within(dialog).getByText('Setup available')).toBeInTheDocument()
+    expect(within(dialog).getAllByText('Saved locally')).toHaveLength(2)
+    expect(within(dialog).getAllByText('Not connected')).toHaveLength(2)
+    expect(within(dialog).getByText('Not submitted')).toBeInTheDocument()
+    expect(within(dialog).getByText('Not enabled')).toBeInTheDocument()
+    await user.click(within(dialog).getByRole('tab', { name: 'Testing & approval' }))
+    expect(within(dialog).getByRole('button', { name: 'Test connection' })).toBeDisabled()
+    expect(within(dialog).getByRole('button', { name: 'Enable integration' })).toBeDisabled()
+    expect(localStorage.getItem(PLUGIN_STORAGE_KEY)).not.toContain('approved')
+    await user.click(within(dialog).getByRole('button', { name: 'Remove local draft' }))
+    expect(await screen.findByText('No plugins saved yet.')).toBeInTheDocument()
+  })
+  it('validates custom URLs, saves only metadata, and supports editing and removal', async () => {
+    const user = userEvent.setup(); render(<PluginsPage />)
+    await user.click(screen.getByRole('button', { name: 'Add plugin' })); await user.click(screen.getByRole('menuitem', { name: /Add MCP server/ }))
+    let dialog = screen.getByRole('dialog', { name: 'Add MCP server' })
+    await user.click(within(dialog).getByRole('textbox', { name: 'Name' })); await user.paste('Adama MCP')
+    const endpoint = within(dialog).getByRole('textbox', { name: 'Server URL' })
+    await user.click(endpoint); await user.paste('https://fields.example/mcp?api_key=do-not-store')
+    await user.click(within(dialog).getByRole('button', { name: 'Save draft' }))
+    expect(within(dialog).getByText(/Use a credential-free HTTPS URL/)).toBeInTheDocument()
+    expect(localStorage.getItem(PLUGIN_STORAGE_KEY)).toBeNull()
+    await user.clear(endpoint); await user.paste('https://fields.example/mcp')
+    await user.selectOptions(within(dialog).getByRole('combobox', { name: 'Authentication method' }), 'api_key')
+    expect(within(dialog).getByRole('textbox', { name: 'API key header name' })).toHaveValue('X-API-Key')
+    await user.click(within(dialog).getByRole('button', { name: 'Save draft' }))
+    dialog = await screen.findByRole('dialog', { name: 'Plugin details' })
+    expect(within(dialog).getByRole('heading', { name: 'Adama MCP' })).toBeInTheDocument()
+    await user.click(within(dialog).getByRole('button', { name: 'Edit' }))
+    dialog = screen.getByRole('dialog', { name: 'Edit MCP server' })
+    const name = within(dialog).getByRole('textbox', { name: 'Name' }); await user.clear(name); await user.paste('Updated Adama MCP')
+    await user.click(within(dialog).getByRole('button', { name: 'Save draft' }))
+    dialog = await screen.findByRole('dialog', { name: 'Plugin details' })
+    expect(within(dialog).getByRole('heading', { name: 'Updated Adama MCP' })).toBeInTheDocument()
+    await user.click(within(dialog).getByRole('button', { name: 'Remove local draft' }))
+    expect(await screen.findByText('No plugins saved yet.')).toBeInTheDocument()
+  })
+  it('focuses the form and closes a dialog with Escape', async () => {
+    const user = userEvent.setup(); render(<PluginsPage />)
+    await user.click(screen.getByRole('button', { name: 'Add plugin' })); await user.click(screen.getByRole('menuitem', { name: /Add API plugin/ }))
+    const dialog = screen.getByRole('dialog', { name: 'Add API plugin' })
+    expect(within(dialog).getByRole('textbox', { name: 'Name' })).toHaveFocus()
+    await user.keyboard('{Escape}'); expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+  })
+})

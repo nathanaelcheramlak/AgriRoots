@@ -1,0 +1,17 @@
+node_modules/
+dist/
+test-results/
+playwright-report/
+*.tsbuildinfo
+.env
+.env.local
+.reference-agrosphere/
+
+playwright-report-home/
+test-results-home/
+test-results-plugins/
+playwright-report-plugins/
+playwright-report-skills/
+test-results-skills/
+test-results-layout/
+playwright-report-layout/

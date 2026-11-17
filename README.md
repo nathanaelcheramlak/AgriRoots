@@ -4,7 +4,11 @@ AgriRoots helps Ethiopian extension officers prepare farming advice from plot re
 
 **Status:** local prototype with synthetic demonstration records. Field validation with an extension office is pending.
 
-The `agri-mcp` branch adds a registry-driven Gemini companion with reviewed REST/MCP connectors, reusable skills, configuration-only plugin packs, and PostgreSQL/Redis deployment. Start with [connector support](docs/CONNECTOR_SUPPORT.md) and the [implementation report](backend/reports/CONNECTOR_TEST_REPORT.md). Existing farmer review and release rules still apply.
+This repository houses the backend, current FieldOps frontend and their documentation. The current frontend is [agrilo-fieldops-frontend](agrilo-fieldops-frontend); the older `frontend/` and Android wrapper were retired. See the [workspace structure](docs/WORKSPACE_STRUCTURE.md) and [current Home integration guide](agrilo-fieldops-frontend/docs/PHASE1_HOME_INTEGRATION.md).
+
+The backend includes a registry-driven companion with reviewed REST/MCP connectors, reusable skills, configuration-only plugin packs, and PostgreSQL/Redis deployment. Start with [connector support](docs/CONNECTOR_SUPPORT.md) and the [integration audit](docs/FRONTEND_BACKEND_INTEGRATION_AUDIT.md). Existing farmer review and release rules still apply.
+
+See [repository consolidation](docs/REPOSITORY_CONSOLIDATION.md) for the canonical layout and setup commands.
 
 ## Main features
 
@@ -26,7 +30,7 @@ The `agri-mcp` branch adds a registry-driven Gemini companion with reviewed REST
 
 See the [documentation index](docs/README.md) for architecture and recorded evaluations.
 
-The supplied launcher supports Linux x86_64 and runs with `python3 scripts/demo.py`. It uses an isolated environment and ignores `backend/.env`. The current advisory agent uses weather; soil API and photo-diagnosis integrations remain outside that workflow. See the configuration guide for details.
+Use [Getting started](docs/getting-started.md) for the current backend/frontend setup. The retired demo launcher and browser tools are archived under `scripts/legacy/` and disabled; their historical results do not verify the new UI. Local Qwen advisory execution remains unchanged in the backend. Current Home live use still requires authorized login and backend model configuration.
 
 ## Current limits
 
